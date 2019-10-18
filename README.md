@@ -1,0 +1,2 @@
+# cloudstate-cli
+Cloudstate CLI
