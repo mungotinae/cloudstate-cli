@@ -1,7 +1,9 @@
 #[macro_use]
 extern crate clap;
+extern crate cloudstate;
 
 use clap::App;
+use cloudstate::commands::command;
 
 fn main() {
     // The YAML file is found relative to the current file, similar to how modules are found
@@ -10,8 +12,7 @@ fn main() {
 
     // handle matches
     if matches.is_present("init") {
-        println!("Creting CloudState namespace...");
-        println!("Initializing CloudState operator...");
+        command::init();
     }
 
     // Vary the output based on how many times the user used the "verbose" flag

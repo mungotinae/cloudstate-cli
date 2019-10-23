@@ -36,7 +36,19 @@ Initialize CloudState Operator:
 ```
 [cloudstate]# cloudstate --init
 Creating CloudState namespace...
+namespace/cloudstate created
 Initializing CloudState operator...
+customresourcedefinition.apiextensions.k8s.io/statefulservices.cloudstate.io unchanged
+customresourcedefinition.apiextensions.k8s.io/journals.cloudstate.io unchanged
+serviceaccount/cloudstate-operator created
+configmap/cloudstate-operator-config created
+clusterrole.rbac.authorization.k8s.io/cloudstate-operator-role unchanged
+role.rbac.authorization.k8s.io/cloudstate-operator-role created
+clusterrolebinding.rbac.authorization.k8s.io/cloudstate-operator unchanged
+rolebinding.rbac.authorization.k8s.io/cloudstate-operator created
+deployment.apps/cloudstate-operator created
+
+[cloudstate]#
 ```
 
 Create User Function Project from specific template:
