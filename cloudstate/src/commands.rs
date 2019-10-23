@@ -23,10 +23,15 @@ pub mod command {
         templates.insert("python", "python, virtualenv");
         templates.insert("scala", "java, scala, sbt");
 
-        println!("[Template Name]:[Dependencies]:");
-        for (k, v) in &templates {
-            println!("[{}]:[{}]", k, v);
+        println!("[Template Name]:[Dependencies]:[Resolved]");
+        for (template, dependencies) in &templates {
+            println!("[{}]:[{}]:[{}]", template, dependencies, resolve_dependencies(template));
         }
+    }
+
+    fn resolve_dependencies(template_name: &str) -> bool {
+        //TODO: resolve dependencies her
+        true
     }
 
     fn create_namespace(namespace: String) -> Result<(), String> {
