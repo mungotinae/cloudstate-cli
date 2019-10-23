@@ -54,7 +54,20 @@ deployment.apps/cloudstate-operator created
 ### Create User Function Project from specific template:
 ```
 [cloudstate]# cloudstate --create=shopping-cart --template=rust
+Creating user function project: "shopping-cart"
+Using template: "rust"
+     Created binary (application) `shopping-cart` package
+Creating Dockerfile
+Creating deployment.yml
+Project created!
 No verbose info
+Ok(())
+total 4
+drwxrwxr-x. 2 root root  21 Out 23 17:07 src
+-rw-rw-r--. 1 root root 233 Out 23 17:07 Cargo.toml
+-rw-rw-r--. 1 root root   0 Out 23 17:07 Dockerfile
+-rw-rw-r--. 1 root root   0 Out 23 17:07 deployment.yml
+[cloudstate]#
 ```
 
 ### Listing supported templates:
