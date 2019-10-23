@@ -3,20 +3,34 @@ version: "0.0.1"
 author: Adriano Santos <sleipnir@bsd.com.br>
 about: CloudState CLI
 args:
-    - config:
+    - init:
+        short: i
+        long: init
+        help: Init a CloudState k8s namespace/operator
+    - create:
         short: c
-        long: config
-        value_name: FILE
-        help: Sets a custom config file
+        long: create
+        help: Create a new user function project from template
         takes_value: true
-    - INPUT:
-        help: Sets the input file to use
-        required: true
-        index: 1
-    - verbose:
-        short: v
-        multiple: true
-        help: Sets the level of verbosity
+        requires: template
+    - template:
+        short: t
+        long: template
+        help: Set language template for this project. Possible values is [java, node, go, csharp, rust, python]
+    - list-templates:
+        short: l
+        long: list-templates
+        help: List all templates supported
+    - build:
+        long: build
+        help: Build project with template specified
+    - deploy:
+        long: deploy
+        help: Deploy user function with CloudState sidecar in K8s environment
+        requires: namespace
+    - namespace:
+        long: namespace
+        help: Set k8s namespace for user functioncargo
 subcommands:
     - test:
         about: controls testing features
