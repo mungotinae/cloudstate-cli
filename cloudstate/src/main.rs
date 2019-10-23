@@ -15,6 +15,10 @@ fn main() {
         command::init();
     }
 
+    if matches.is_present("list-templates") {
+        command::list_templates();
+    }
+
     // Vary the output based on how many times the user used the "verbose" flag
     // (i.e. 'myprog -v -v -v' or 'myprog -vvv' vs 'myprog -v'
     match matches.occurrences_of("v") {

@@ -1,13 +1,13 @@
 # CloudState CLI
 
-Client Line Interface for management CloudState artifacts
+## Client Line Interface for management CloudState artifacts
 
-Install:
+### Install:
 ```
 [cloudstate]#  curl ...... | sh -
 ```
 
-Usage:
+### Usage:
 ```
 [cloudstate]# cloudstate --help
 cloudstate 0.0.1
@@ -32,7 +32,7 @@ OPTIONS:
     -c, --create <create>    Create a new user function project from template
 ```
 
-Initialize CloudState Operator:
+### Initialize CloudState Operator:
 ```
 [cloudstate]# cloudstate --init
 Creating CloudState namespace...
@@ -51,16 +51,30 @@ deployment.apps/cloudstate-operator created
 [cloudstate]#
 ```
 
-Create User Function Project from specific template:
+### Create User Function Project from specific template:
 ```
 [cloudstate]# cloudstate --create=shopping-cart --template=rust
 No verbose info
 ```
 
-Build function:
+### Listing supported templates:
+```
+[cloudstate]# cloudstate --list-templates
+Template Name, Dependencies
+go:[go]
+node:[node]
+python:[python, virtualenv]
+rust:[rust, cargo]
+dotnet:[dotnet]
+scala:[java, scala, sbt]
+java:[java, [maven | sbt]]
+No verbose info
+```
+
+### Build function:
 ```
 ```
 
-Deploy function:
+### Deploy function:
 ```
 ```

@@ -16,7 +16,7 @@ args:
     - template:
         short: t
         long: template
-        help: Set language template for this project. Possible values is [java, node, go, csharp, rust, python]
+        help: Set language template for this project. Possible values is [java, node, go, csharp, rust, python, scala]
     - list-templates:
         short: l
         long: list-templates

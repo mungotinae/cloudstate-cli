@@ -2,6 +2,7 @@
 pub mod command {
     use std::process::Command;
     use std::fmt::Error;
+    use std::collections::HashMap;
 
     const CLOUD_STATE_NAMESPACE: &str = "cloudstate";
     const CLOUD_STATE_OPERATOR_DEPLOYMENT: &str = "https://github.com/cloudstateio/cloudstate/releases/download/v0.4.3/cloudstate-0.4.3.yaml";
@@ -9,6 +10,22 @@ pub mod command {
     pub fn init(){
         if let Ok(()) = create_namespace(CLOUD_STATE_NAMESPACE.parse().unwrap()) {
             init_operator(CLOUD_STATE_NAMESPACE.parse().unwrap());
+        }
+    }
+
+    pub fn list_templates() {
+        let mut templates = HashMap::new();
+        templates.insert("java", "java, [maven | sbt]");
+        templates.insert("node", "node");
+        templates.insert("go", "go");
+        templates.insert("dotnet", "dotnet");
+        templates.insert("rust", "rust, cargo");
+        templates.insert("python", "python, virtualenv");
+        templates.insert("scala", "java, scala, sbt");
+
+        println!("[Template Name]:[Dependencies]:");
+        for (k, v) in &templates {
+            println!("[{}]:[{}]", k, v);
         }
     }
 
