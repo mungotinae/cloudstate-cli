@@ -10,7 +10,7 @@ pub struct Resolver<'a> { pub args: ArgMatches<'a>, }
 
 impl<'a> Resolver<'a> {
 
-    pub fn matches(self) -> Result<(), Error> {
+    pub fn matches(self) -> Result<(), String> {
         let _matches = self.args.clone();
 
         // handle matches
@@ -20,6 +20,21 @@ impl<'a> Resolver<'a> {
 
         if _matches.is_present("list-templates") {
             command::list_templates();
+        }
+
+        if let Some(ref project_name) = _matches.value_of("create") {
+            println!("Creating user function project: {:?}", project_name);
+            if let Some(ref template) = _matches.value_of("template") {
+
+                let supported = ["java", "node", "go", "dotnet", "rust", "python", "scala"];
+                if !supported.contains(template) {
+                    return Err(String::from("Invalid Template name!"));
+                }
+
+                println!("Using template: {:?}", template);
+                command::create_project(project_name, template);
+            }
+
         }
 
         // Vary the output based on how many times the user used the "verbose" flag
@@ -33,14 +48,14 @@ impl<'a> Resolver<'a> {
 
         // You can handle information about subcommands by requesting their matches by name
         // (as below), requesting just the name used, or both at the same time
-        if let Some(_matches) = _matches.subcommand_matches("test") {
-            if _matches.is_present("debug") {
+        if let Some(_matches) = _matches.subcommand_matches("template") {
+            if _matches.is_present("name") {
                 println!("Printing debug info...");
             } else {
                 println!("Printing normally...");
             }
         }
 
-        Ok(())
+        return Ok(());
     }
 }

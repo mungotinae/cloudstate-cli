@@ -16,7 +16,8 @@ args:
     - template:
         short: t
         long: template
-        help: Set language template for this project. Possible values is [java, node, go, csharp, rust, python, scala]
+        takes_value: true
+        help: Set language template for this project. Possible values is [java, node, go, dotnet, rust, python, scala]
     - list-templates:
         short: l
         long: list-templates
@@ -31,12 +32,3 @@ args:
     - namespace:
         long: namespace
         help: Set k8s namespace for user functioncargo
-subcommands:
-    - test:
-        about: controls testing features
-        version: "1.3"
-        author: Someone E. <someone_else@other.com>
-        args:
-            - debug:
-                short: d
-                help: print debug information

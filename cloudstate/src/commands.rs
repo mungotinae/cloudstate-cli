@@ -1,8 +1,8 @@
 
 pub mod command {
     use std::process::Command;
-    use std::fmt::Error;
     use std::collections::HashMap;
+    use crate::builders::*;
 
     const CLOUD_STATE_NAMESPACE: &str = "cloudstate";
     const CLOUD_STATE_OPERATOR_DEPLOYMENT: &str = "https://github.com/cloudstateio/cloudstate/releases/download/v0.4.3/cloudstate-0.4.3.yaml";
@@ -11,6 +11,20 @@ pub mod command {
         if let Ok(()) = create_namespace(CLOUD_STATE_NAMESPACE.parse().unwrap()) {
             init_operator(CLOUD_STATE_NAMESPACE.parse().unwrap());
         }
+    }
+
+    pub fn create_project(name: &str, template: &str) {
+        match template {
+            "java"   => JavaBuilder{}.build(name),
+            "node"   => NodeBuilder{}.build(name),
+            "go"     => GoBuilder{}.build(name),
+            "dotnet" => DotNetBuilder{}.build(name),
+            "rust"   => RustBuilder{}.build(name),
+            "python" => PythonBuilder{}.build(name),
+            "scala"  => ScalaBuilder{}.build(name),
+            _        => println!("invalid")
+        }
+
     }
 
     pub fn list_templates() {

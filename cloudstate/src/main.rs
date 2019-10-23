@@ -14,6 +14,13 @@ fn main() {
         args: matches
     };
 
-    resolver.matches();
+    let res = match resolver.matches(){
+        Ok(res)  => {
+            Ok(res)
+        },
+        Err(e) => Err(e),
+    };
+
+    println!("{:?}", res.map_err(|err| err.to_string()).map(|e| e));
 
 }
