@@ -73,15 +73,17 @@ drwxrwxr-x. 2 root root  21 Out 23 17:07 src
 ### Listing supported templates:
 ```
 [cloudstate]# cloudstate --list-templates
-Template Name, Dependencies
-go:[go]
-node:[node]
-python:[python, virtualenv]
-rust:[rust, cargo]
-dotnet:[dotnet]
-scala:[java, scala, sbt]
-java:[java, [maven | sbt]]
+[Template Name]:[Dependencies]:[Resolved]
+[go]:[go]:[true]
+[java]:[java, [maven | sbt]]:[true]
+[dotnet]:[dotnet]:[true]
+[rust]:[rust, cargo]:[true]
+[python]:[python, virtualenv]:[true]
+[node]:[node]:[true]
+[scala]:[java, scala, sbt]:[true]
 No verbose info
+Ok(())
+[cloudstate]#
 ```
 
 ### Build function:
