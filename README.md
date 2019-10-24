@@ -4,7 +4,7 @@
 
 ### Install:
 ```
-[cloudstate]#  curl ...... | sh -
+[cloudstate]#  curl https://raw.githubusercontent.com/sleipnir/cloudstate-cli/master/bin/cloudstate-installer.sh | sh -
 ```
 
 ### Usage:
