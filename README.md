@@ -79,7 +79,7 @@ drwxrwxr-x. 2 root root  21 Out 23 17:07 src
 
 ### Build function: 
 ```
-[shopping-cart]# cloudstate --build=com.acme/shopping-cart
+[shopping-cart]# cloudstate --build
 Sending build context to Docker daemon  6.144kB
 Step 1/10 : ARG BASE_IMAGE=ekidd/rust-musl-builder:latest
 Step 2/10 : FROM ${BASE_IMAGE} AS cargo-build
