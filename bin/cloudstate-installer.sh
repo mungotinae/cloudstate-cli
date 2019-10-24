@@ -103,6 +103,6 @@ fi
 #......
 
 # Download binary
-curl --url https://raw.githubusercontent.com/sleipnir/cloudstate-cli/master/bin/linux-x86/cloudstate --output /tmp/cloudstate
+curl -vvv --url https://raw.githubusercontent.com/sleipnir/cloudstate-cli/master/bin/linux-x86/cloudstate --output /tmp/cloudstate
 mv /tmp/cloudstate /usr/local/bin
 chmod +x /usr/local/bin/cloudstate
