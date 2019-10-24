@@ -7,6 +7,10 @@ args:
         short: i
         long: init
         help: Initialize a CloudState k8s namespace/operator
+    - group-id:
+        long: group-id
+        takes_value: true
+        help: Used in conjunction with 'create'. Only for java/dotnet idioms. Set the name of package or namespace
     - tag:
         short: t
         long: tag
