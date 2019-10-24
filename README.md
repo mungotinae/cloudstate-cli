@@ -18,12 +18,12 @@ USAGE:
     cloudstate [FLAGS] [OPTIONS]
 
 FLAGS:
-        --build          Build project with template specified
+        --build          Build project with specified idiom
         --deploy         Deploy user function with CloudState sidecar in K8s environment
     -h, --help           Prints help information
     -i, --init           Initialize a CloudState k8s namespace/operator
     -l, --list-idioms    List all idioms supported
-        --namespace      Set k8s namespace for user functioncargo
+        --namespace      Set k8s namespace for user function
         --publish        Publish container image in repository
     -V, --version        Prints version information
 
