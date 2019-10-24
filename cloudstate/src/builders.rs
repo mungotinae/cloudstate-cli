@@ -1,3 +1,4 @@
+extern crate dirs;
 extern crate cargo_toml_builder;
 
 use std::process::Command;
@@ -571,6 +572,19 @@ impl ProjectBuilder for JavaBuilder {
                 .arg("-ltr")
                 .spawn()
                 .expect("Error during create Java project");
+
+            println!("Open editor!");
+            let cached = dirs::home_dir().unwrap();
+            Command::new("code")
+                .arg(".")
+                .arg(format!("--user-data-dir={}", cached.as_path().display().to_string()))
+                .status()
+                .expect("Error on open code editor");
+
+            Command::new("idea")
+                .arg(".")
+                .status()
+                .expect("Error on open code editor");
 
         } else {
             println!("Error on create Java project")
