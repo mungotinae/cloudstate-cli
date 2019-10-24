@@ -21,19 +21,30 @@ impl<'a> Resolver<'a> {
             command::list_idioms();
         }
 
-        if let Some(ref project_name) = _matches.value_of("create") {
-            println!("Creating user function project: {:?}", project_name);
-            if let Some(ref idiom) = _matches.value_of("idiom") {
+        match _matches.value_of("create") {
+            Some(ref project_name) => {
+                println!("Creating user function project: {:?}", project_name);
+                if let Some(ref idiom) = _matches.value_of("idiom") {
+                    let supported = ["java", "node", "go", "dotnet", "rust", "python", "scala"];
+                    if !supported.contains(idiom) {
+                        return Err(String::from("Invalid Template name!"));
+                    }
 
-                let supported = ["java", "node", "go", "dotnet", "rust", "python", "scala"];
-                if !supported.contains(idiom) {
-                    return Err(String::from("Invalid Template name!"));
+                    println!("Using template: {:?}", idiom);
+                    command::create_project(project_name, idiom);
                 }
-
-                println!("Using template: {:?}", idiom);
-                command::create_project(project_name, idiom);
             }
+            None => {}
+        }
 
+        //docker build -t shopping-cart .
+        match _matches.value_of("build") {
+            Some(ref path) => {
+                // TODO: Validating other params
+                println!("Building user function project... ");
+                command::build(path);
+            }
+            None => {}
         }
 
         // Vary the output based on how many times the user used the "verbose" flag

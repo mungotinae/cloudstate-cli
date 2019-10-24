@@ -43,7 +43,8 @@ args:
         help: List all idioms supported
     - build:
         long: build
-        help: Build project with template specified
+        takes_value: true
+        help: Build project with template specified. Requires path. Example cloudstate --build=.
     - publish:
         long: publish
         help: Publish container image in repository

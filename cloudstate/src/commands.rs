@@ -13,6 +13,11 @@ pub mod command {
         }
     }
 
+    pub fn build(path: &str) {
+        // Retrive project configuration
+
+    }
+
     pub fn create_project(name: &str, idiom: &str) {
         match idiom {
             "java"   => JavaBuilder{}.build(name),
