@@ -8,6 +8,31 @@ use cargo_toml_builder::prelude::*;
 use std::path::Path;
 use std::{env, fs};
 
+pub struct Application {
+    application_name: String,
+    application_tag: String,
+    group_id: Option<String>,
+    repo: Option<String>,
+    idiom: String,
+    datastore: String,
+    port: u16,
+}
+
+impl Default for Application {
+
+    fn default() -> Self {
+        Application {
+            application_name: "shopping-cart".to_string(),
+            application_tag: "0.0.1".to_string(),
+            group_id: None,
+            repo: None,
+            idiom: "".to_string(),
+            datastore: "InMemory".to_string(),
+            port: 8088
+        }
+    }
+}
+
 pub trait ProjectBuilder {
     fn build(self, name: &str);
 }
