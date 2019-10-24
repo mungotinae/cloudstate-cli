@@ -107,3 +107,6 @@ touch /tmp/cloudstate
 curl -vvv -H 'Cache-Control: no-cache' --url https://raw.githubusercontent.com/sleipnir/cloudstate-cli/master/bin/linux-x86/cloudstate --output /tmp/cloudstate
 mv /tmp/cloudstate /usr/local/bin
 chmod +x /usr/local/bin/cloudstate
+
+echo "Install Finish"
+exit 0
