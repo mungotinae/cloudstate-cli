@@ -1,7 +1,6 @@
 extern crate clap;
 
 use clap::ArgMatches;
-use std::fmt::Error;
 
 use crate::commands::command;
 
@@ -18,21 +17,21 @@ impl<'a> Resolver<'a> {
             command::init();
         }
 
-        if _matches.is_present("list-templates") {
-            command::list_templates();
+        if _matches.is_present("list-idioms") {
+            command::list_idioms();
         }
 
         if let Some(ref project_name) = _matches.value_of("create") {
             println!("Creating user function project: {:?}", project_name);
-            if let Some(ref template) = _matches.value_of("template") {
+            if let Some(ref idiom) = _matches.value_of("idiom") {
 
                 let supported = ["java", "node", "go", "dotnet", "rust", "python", "scala"];
-                if !supported.contains(template) {
+                if !supported.contains(idiom) {
                     return Err(String::from("Invalid Template name!"));
                 }
 
-                println!("Using template: {:?}", template);
-                command::create_project(project_name, template);
+                println!("Using template: {:?}", idiom);
+                command::create_project(project_name, idiom);
             }
 
         }
@@ -48,7 +47,7 @@ impl<'a> Resolver<'a> {
 
         // You can handle information about subcommands by requesting their matches by name
         // (as below), requesting just the name used, or both at the same time
-        if let Some(_matches) = _matches.subcommand_matches("template") {
+        if let Some(_matches) = _matches.subcommand_matches("idiom") {
             if _matches.is_present("name") {
                 println!("Printing debug info...");
             } else {

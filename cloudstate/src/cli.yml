@@ -6,25 +6,43 @@ args:
     - init:
         short: i
         long: init
-        help: Init a CloudState k8s namespace/operator
+        help: Initialize a CloudState k8s namespace/operator
+    - tag:
+        short: t
+        long: tag
+        takes_value: true
+        help: Used in conjunction with 'create' and/or 'build'. Set version of user function. Used to create container images. Example -t 1.0.1 or --tag=0.1.0
+    - repo:
+        short: r
+        long: repo
+        takes_value: true
+        help: Used in conjunction with 'create'. Set the docker repository. Used to create container images. Example -r quay.io/myuser or --repo=sleipnir/test
     - create:
         short: c
         long: create
-        help: Create a new user function project from template
+        help: Create a new user function project from template. Example --create=shopping-cart
         takes_value: true
-        requires: template
-    - template:
-        short: t
-        long: template
+        requires: idiom
+    - idiom:
+        short: I
+        long: idiom
         takes_value: true
-        help: Set language template for this project. Possible values is [java, node, go, dotnet, rust, python, scala]
-    - list-templates:
+        help: Used in conjunction with 'create'. Set language template for this project. Possible values is [java, node, go, dotnet, rust, python, scala]
+    - datastore:
+        short: d
+        long: datastore
+        takes_value: true
+        help: Used in conjunction with 'create'. Enable CloudState Stateful stores. Example --datastore=Cassandra. Valid values [Cassandra, Postgres or InMemory]
+    - list-idioms:
         short: l
-        long: list-templates
-        help: List all templates supported
+        long: list-idioms
+        help: List all idioms supported
     - build:
         long: build
         help: Build project with template specified
+    - publish:
+        long: publish
+        help: Publish container image in repository
     - deploy:
         long: deploy
         help: Deploy user function with CloudState sidecar in K8s environment

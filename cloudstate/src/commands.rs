@@ -13,8 +13,8 @@ pub mod command {
         }
     }
 
-    pub fn create_project(name: &str, template: &str) {
-        match template {
+    pub fn create_project(name: &str, idiom: &str) {
+        match idiom {
             "java"   => JavaBuilder{}.build(name),
             "node"   => NodeBuilder{}.build(name),
             "go"     => GoBuilder{}.build(name),
@@ -27,23 +27,23 @@ pub mod command {
 
     }
 
-    pub fn list_templates() {
-        let mut templates = HashMap::new();
-        templates.insert("java", "java, [maven | sbt]");
-        templates.insert("node", "node");
-        templates.insert("go", "go");
-        templates.insert("dotnet", "dotnet");
-        templates.insert("rust", "rust, cargo");
-        templates.insert("python", "python, virtualenv");
-        templates.insert("scala", "java, scala, sbt");
+    pub fn list_idioms() {
+        let mut idioms = HashMap::new();
+        idioms.insert("java", "java, [maven | sbt]");
+        idioms.insert("node", "node");
+        idioms.insert("go", "go");
+        idioms.insert("dotnet", "dotnet");
+        idioms.insert("rust", "rust, cargo");
+        idioms.insert("python", "python, virtualenv");
+        idioms.insert("scala", "java, scala, sbt");
 
-        println!("[Template Name]:[Dependencies]:[Resolved]");
-        for (template, dependencies) in &templates {
-            println!("[{}]:[{}]:[{}]", template, dependencies, resolve_dependencies(template));
+        println!("[Idiom Name]:[Dependencies]:[Resolved]");
+        for (idiom, dependencies) in &idioms {
+            println!("[{}]:[{}]:[{}]", idiom, dependencies, resolve_dependencies(idiom));
         }
     }
 
-    fn resolve_dependencies(template_name: &str) -> bool {
+    fn resolve_dependencies(idiom: &str) -> bool {
         //TODO: resolve dependencies her
         true
     }
