@@ -60,6 +60,15 @@ args:
         long: build
         takes_value: true
         help: Build project with template specified. Requires path. Example cloudstate --build=.
+    - run:
+        short: R
+        long: run
+        help: Running user function & cloudstate proxy in Docker
+    - build-deploy:
+          short: B
+          long: build-deploy
+          takes_value: true
+          help: Shortcut to build, push and deploy. Example cloudstate -B . --tag=1.0.1
     - push:
         long: push
         help: Push container image in repository
