@@ -87,22 +87,22 @@ USAGE:
     cloudstate [FLAGS] [OPTIONS]
 
 FLAGS:
-        --build          Build project with template specified
+        --build          Build project with profile specified
         --deploy         Deploy user function with CloudState sidecar in K8s environment
     -h, --help           Prints help information
     -i, --init           Initialize a CloudState k8s namespace/operator
-    -l, --list-idioms    List all idioms supported
+    -l, --list-profiles    List all profiles supported
         --namespace      Set k8s namespace for user functioncargo
-        --publish        Publish container image in repository
+        --push        Publish container image in repository
     -V, --version        Prints version information
 
 OPTIONS:
-    -c, --create <create>          Create a new user function project from template. Example --create=shopping-cart
+    -c, --create <create>          Create a new user function project from profile. Example --create=shopping-cart
     -d, --datastore <datastore>    Used in conjunction with 'create'. Enable CloudState Stateful stores. Example
                                    --datastore=Cassandra. Valid values [Cassandra, Postgres or InMemory]
-        --group-id <group-id>      Used in conjunction with 'create'. Only for java/dotnet idioms. Set the name of
+        --group-id <group-id>      Used in conjunction with 'create'. Only for java/dotnet profiles. Set the name of
                                    package or namespace
-    -I, --idiom <idiom>            Used in conjunction with 'create'. Set language template for this project. Possible
+    -I, --profile <profile>            Used in conjunction with 'create'. Set language profile for this project. Possible
                                    values is [java, node, go, dotnet, rust, python, scala]
     -r, --repo <repo>              Used in conjunction with 'create'. Set the docker repository. Used to create
                                    container images. Example -r quay.io/myuser or --repo=sleipnir/test
@@ -165,11 +165,11 @@ kube-system       Active   84d
 
 ```
 
-### Create Project from Java template:
+### Create Project from Java profile:
 ```shell script
-[sleipnir@sleipnir cloudstate-cli]# cloudstate --create=shopping-cart --idiom=java --group-id=com.example --repo=sleipnir --tag=1.0-SNAPSHOT -d InMemory
+[sleipnir@sleipnir cloudstate-cli]# cloudstate --create=shopping-cart --profile=java --group-id=com.example --repo=sleipnir --tag=1.0-SNAPSHOT -d InMemory
 Creating user function project: "shopping-cart"
-Using template: "java"
+Using profile: "java"
 [INFO] Scanning for projects...
 [INFO] 
 [INFO] ------------------< org.apache.maven:standalone-pom >-------------------
@@ -297,7 +297,7 @@ Ok(())
 ### Build, Publish and Deploy your own User function in CloudState:
 TODO: Commands not implemented yet
 ```shell script
-[sleipnir@sleipnir shopping-cart]# cloudstate --build --publish
+[sleipnir@sleipnir shopping-cart]# cloudstate --build --push
 No verbose info
 Ok(())
 [sleipnir@sleipnir shopping-cart]# cloudstate --deploy

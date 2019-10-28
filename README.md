@@ -31,10 +31,10 @@ FLAGS:
     -V, --version        Prints version information
 
 OPTIONS:
-    -c, --create <create>          Create a new user function project from template. Example --create=shopping-cart
+    -c, --create <create>          Create a new user function project from profile. Example --create=shopping-cart
     -d, --datastore <datastore>    Used in conjunction with 'create'. Enable CloudState Stateful stores. Example
                                    --datastore=Cassandra. Valid values [Cassandra, Postgres or InMemory]
-    -I, --idiom <idiom>            Used in conjunction with 'create'. Set language template for this project. Possible
+    -I, --idiom <idiom>            Used in conjunction with 'create'. Set language profile for this project. Possible
                                    values is [java, node, go, dotnet, rust, python, scala]
     -r, --repo <repo>              Used in conjunction with 'create'. Set the docker repository. Used to create
                                    container images. Example -r quay.io/myuser or --repo=sleipnir/test
@@ -61,11 +61,11 @@ deployment.apps/cloudstate-operator created
 [cloudstate]#
 ```
 
-### Create User Function Project from specific template:
+### Create User Function Project from specific profile:
 ```
-[cloudstate]# cloudstate --create=shopping-cart --template=rust
+[cloudstate]# cloudstate --create=shopping-cart --profile=rust
 Creating user function project: "shopping-cart"
-Using template: "rust"
+Using profile: "rust"
      Created binary (application) `shopping-cart` package
 Creating Dockerfile
 Creating deployment.yml
@@ -184,9 +184,9 @@ Ok(())
 ```
 ```
 
-### Listing supported templates:
+### Listing supported profiles:
 ```
-[cloudstate]# cloudstate --list-templates
+[cloudstate]# cloudstate --list-profiles
 [Template Name]:[Dependencies]:[Resolved]
 [go]:[go]:[true]
 [java]:[java, [maven | sbt]]:[true]

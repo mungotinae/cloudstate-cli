@@ -3,6 +3,9 @@ version: "0.0.1"
 author: Adriano Santos <sleipnir@bsd.com.br>
 about: CloudState CLI
 args:
+    - upgrade:
+        long: upgrade
+        help: Update CloudState CLI
     - init:
         short: i
         long: init
@@ -10,7 +13,7 @@ args:
     - group-id:
         long: group-id
         takes_value: true
-        help: Used in conjunction with 'create'. Only for java/dotnet idioms. Set the name of package or namespace
+        help: Used in conjunction with 'create'. Only for java/dotnet profiles. Set the name of package or namespace
     - tag:
         short: t
         long: tag
@@ -24,34 +27,46 @@ args:
     - create:
         short: c
         long: create
-        help: Create a new user function project from template. Example --create=shopping-cart
+        help: Create a new user function project from template. Example --create=shopping-cart --profile=java --repo=cloudstate --tag=1.0.1
         takes_value: true
-        requires: idiom
-    - idiom:
-        short: I
-        long: idiom
+        requires: profile
+    - profile:
+        short: P
+        long: profile
         takes_value: true
+        possible_values:
+            - java
+            - node
+            - go
+            - dotnet
+            - rust
+            - python
+            - scala
         help: Used in conjunction with 'create'. Set language template for this project. Possible values is [java, node, go, dotnet, rust, python, scala]
     - datastore:
         short: d
         long: datastore
         takes_value: true
+        possible_values:
+            - InMemory
+            - Cassandra
+            - Postgres
         help: Used in conjunction with 'create'. Enable CloudState Stateful stores. Example --datastore=Cassandra. Valid values [Cassandra, Postgres or InMemory]
-    - list-idioms:
+    - list-profiles:
         short: l
-        long: list-idioms
-        help: List all idioms supported
+        long: list-profiles
+        help: List all profiles supported
     - build:
         long: build
         takes_value: true
         help: Build project with template specified. Requires path. Example cloudstate --build=.
-    - publish:
-        long: publish
-        help: Publish container image in repository
+    - push:
+        long: push
+        help: Push container image in repository
     - deploy:
         long: deploy
         help: Deploy user function with CloudState sidecar in K8s environment
         requires: namespace
     - namespace:
         long: namespace
-        help: Set k8s namespace for user functioncargo
+        help: Set k8s namespace for user function

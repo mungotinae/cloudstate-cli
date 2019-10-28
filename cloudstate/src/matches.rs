@@ -17,21 +17,21 @@ impl<'a> Resolver<'a> {
             command::init();
         }
 
-        if _matches.is_present("list-idioms") {
-            command::list_idioms();
+        if _matches.is_present("list-profiles") {
+            command::list_profiles();
         }
 
         match _matches.value_of("create") {
             Some(ref project_name) => {
                 println!("Creating user function project: {:?}", project_name);
-                if let Some(ref idiom) = _matches.value_of("idiom") {
+                if let Some(ref profile) = _matches.value_of("profile") {
                     let supported = ["java", "node", "go", "dotnet", "rust", "python", "scala"];
-                    if !supported.contains(idiom) {
+                    if !supported.contains(profile) {
                         return Err(String::from("Invalid Template name!"));
                     }
 
-                    println!("Using template: {:?}", idiom);
-                    command::create_project(project_name, idiom);
+                    println!("Using profile: {:?}", profile);
+                    command::create_project(project_name, profile);
                 }
             }
             None => {}
@@ -58,7 +58,7 @@ impl<'a> Resolver<'a> {
 
         // You can handle information about subcommands by requesting their matches by name
         // (as below), requesting just the name used, or both at the same time
-        if let Some(_matches) = _matches.subcommand_matches("idiom") {
+        if let Some(_matches) = _matches.subcommand_matches("profile") {
             if _matches.is_present("name") {
                 println!("Printing debug info...");
             } else {
