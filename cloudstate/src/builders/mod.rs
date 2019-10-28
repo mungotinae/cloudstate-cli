@@ -1,3 +1,5 @@
+use std::path::Path;
+
 pub mod java;
 pub mod node;
 pub mod go;
@@ -36,5 +38,6 @@ impl Default for Application {
 }
 
 pub trait ProjectBuilder {
-    fn build(self, name: &str);
+    fn create(self, name: &str);
+    fn build(self, path: &Path, app: Application);
 }

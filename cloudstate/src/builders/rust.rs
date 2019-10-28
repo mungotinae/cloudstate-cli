@@ -8,7 +8,7 @@ use cargo_toml_builder::prelude::*;
 use std::path::Path;
 use std::{env, fs};
 use std::string::ToString;
-use crate::builders::ProjectBuilder;
+use crate::builders::{ProjectBuilder, Application};
 
 pub struct RustBuilder;
 
@@ -102,7 +102,7 @@ CMD ["/usr/local/bin/myapp"]
 
 impl ProjectBuilder for RustBuilder {
 
-    fn build(self, name: &str) {
+    fn create(self, name: &str) {
         let status = Command::new("cargo")
             .arg("new")
             //.arg("--bin")
@@ -145,5 +145,9 @@ impl ProjectBuilder for RustBuilder {
             println!("Error on create Rust project")
         }
 
+    }
+
+    fn build(self, path: &Path, app: Application) {
+        unimplemented!()
     }
 }

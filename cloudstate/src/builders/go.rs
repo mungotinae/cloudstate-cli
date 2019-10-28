@@ -1,10 +1,15 @@
-use crate::builders::ProjectBuilder;
+use crate::builders::{ProjectBuilder, Application};
+use std::path::Path;
 
 pub struct GoBuilder;
 
 impl ProjectBuilder for GoBuilder {
 
-    fn build(self, name: &str) {
+    fn create(self, name: &str) {
+        unimplemented!()
+    }
+
+    fn build(self, path: &Path, app: Application) {
         unimplemented!()
     }
 }

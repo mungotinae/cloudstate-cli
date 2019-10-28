@@ -1,11 +1,20 @@
-
 pub mod command {
+
+    use std::fs;
+    use std::path::Path;
     use git2::Repository;
     use std::process::Command;
     use std::collections::HashMap;
-    use crate::builders::{java::JavaBuilder, node::NodeBuilder, go::GoBuilder, dotnet::DotNetBuilder, rust::RustBuilder, python::PythonBuilder, scala::ScalaBuilder, ProjectBuilder};
-    use std::path::Path;
-    use std::fs;
+    use crate::builders::{
+        java::JavaBuilder,
+        node::NodeBuilder,
+        go::GoBuilder,
+        dotnet::DotNetBuilder,
+        rust::RustBuilder,
+        python::PythonBuilder,
+        scala::ScalaBuilder,
+        ProjectBuilder
+    };
 
     const CLOUD_STATE_NAMESPACE: &str = "cloudstate";
     const CLOUD_STATE_LANGUAGE_TEMPLATES: &str = "https://github.com/sleipnir/cloudstate-templates.git";
@@ -38,13 +47,13 @@ pub mod command {
         if Path::new(home_dir.as_str()).exists() {
 
             match profile {
-                "java"   => JavaBuilder{}.build(name),
-                "node"   => NodeBuilder{}.build(name),
-                "go"     => GoBuilder{}.build(name),
-                "dotnet" => DotNetBuilder{}.build(name),
-                "rust"   => RustBuilder{}.build(name),
-                "python" => PythonBuilder{}.build(name),
-                "scala"  => ScalaBuilder{}.build(name),
+                "java"   => JavaBuilder{}.create(name),
+                "node"   => NodeBuilder{}.create(name),
+                "go"     => GoBuilder{}.create(name),
+                "dotnet" => DotNetBuilder{}.create(name),
+                "rust"   => RustBuilder{}.create(name),
+                "python" => PythonBuilder{}.create(name),
+                "scala"  => ScalaBuilder{}.create(name),
                 _        => println!("Invalid profile option")
             }
         } else {

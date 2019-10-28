@@ -8,7 +8,7 @@ use cargo_toml_builder::prelude::*;
 use std::path::Path;
 use std::{env, fs};
 use std::string::ToString;
-use crate::builders::ProjectBuilder;
+use crate::builders::{ProjectBuilder, Application};
 
 pub struct JavaBuilder;
 
@@ -327,7 +327,7 @@ public class ShoppingCartEntity {
 
 impl ProjectBuilder for JavaBuilder {
 
-    fn build(self, name: &str) {
+    fn create(self, name: &str) {
         // mvn archetype:generate -DgroupId=ToolsQA -DartifactId=DemoMavenProject -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
         let package: &str = "com.example.";
 
@@ -445,5 +445,9 @@ impl ProjectBuilder for JavaBuilder {
         } else {
             println!("Error on create Java project")
         }
+    }
+
+    fn build(self, path: &Path, app: Application) {
+        unimplemented!()
     }
 }
