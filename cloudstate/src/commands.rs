@@ -1,13 +1,27 @@
 
 pub mod command {
+    use git2::Repository;
     use std::process::Command;
     use std::collections::HashMap;
-    use crate::builders::*;
+    use crate::builders::{java::JavaBuilder, node::NodeBuilder, go::GoBuilder, dotnet::DotNetBuilder, rust::RustBuilder, python::PythonBuilder, scala::ScalaBuilder, ProjectBuilder};
+    use std::path::Path;
+    use std::fs;
 
     const CLOUD_STATE_NAMESPACE: &str = "cloudstate";
+    const CLOUD_STATE_LANGUAGE_TEMPLATES: &str = "https://github.com/sleipnir/cloudstate-templates.git";
     const CLOUD_STATE_OPERATOR_DEPLOYMENT: &str = "https://github.com/cloudstateio/cloudstate/releases/download/v0.4.3/cloudstate-0.4.3.yaml";
 
     pub fn init(){
+        // First download templates
+        println!("Downloading languages templates...");
+        let home_dir = get_work_dir();
+
+        if Path::new(home_dir.as_str()).exists() {
+            fs::remove_dir_all(home_dir.clone());
+        }
+
+        get_templates(home_dir);
+
         if let Ok(()) = create_namespace(CLOUD_STATE_NAMESPACE.parse().unwrap()) {
             init_operator(CLOUD_STATE_NAMESPACE.parse().unwrap());
         }
@@ -18,37 +32,57 @@ pub mod command {
 
     }
 
-    pub fn create_project(name: &str, idiom: &str) {
-        match idiom {
-            "java"   => JavaBuilder{}.build(name),
-            "node"   => NodeBuilder{}.build(name),
-            "go"     => GoBuilder{}.build(name),
-            "dotnet" => DotNetBuilder{}.build(name),
-            "rust"   => RustBuilder{}.build(name),
-            "python" => PythonBuilder{}.build(name),
-            "scala"  => ScalaBuilder{}.build(name),
-            _        => println!("invalid")
+    pub fn create_project(name: &str, profile: &str) {
+        let home_dir = get_work_dir();
+
+        if Path::new(home_dir.as_str()).exists() {
+
+            match profile {
+                "java"   => JavaBuilder{}.build(name),
+                "node"   => NodeBuilder{}.build(name),
+                "go"     => GoBuilder{}.build(name),
+                "dotnet" => DotNetBuilder{}.build(name),
+                "rust"   => RustBuilder{}.build(name),
+                "python" => PythonBuilder{}.build(name),
+                "scala"  => ScalaBuilder{}.build(name),
+                _        => println!("Invalid profile option")
+            }
+        } else {
+            println!("You must first boot CloudState with cloudstate --init. See cloudstate --help for help")
         }
 
     }
 
-    pub fn list_idioms() {
-        let mut idioms = HashMap::new();
-        idioms.insert("java", "java, [maven | sbt]");
-        idioms.insert("node", "node");
-        idioms.insert("go", "go");
-        idioms.insert("dotnet", "dotnet");
-        idioms.insert("rust", "rust, cargo");
-        idioms.insert("python", "python, virtualenv");
-        idioms.insert("scala", "java, scala, sbt");
+    pub fn list_profiles() {
+        let mut profiles = HashMap::new();
+        profiles.insert("java", "java, [maven | sbt]");
+        profiles.insert("node", "node");
+        profiles.insert("go", "go");
+        profiles.insert("dotnet", "dotnet");
+        profiles.insert("rust", "rust, cargo");
+        profiles.insert("python", "python, virtualenv");
+        profiles.insert("scala", "java, scala, sbt");
 
         println!("[Idiom Name]:[Dependencies]:[Resolved]");
-        for (idiom, dependencies) in &idioms {
-            println!("[{}]:[{}]:[{}]", idiom, dependencies, resolve_dependencies(idiom));
+        for (profile, dependencies) in &profiles {
+            println!("[{}]:[{}]:[{}]", profile, dependencies, resolve_dependencies(profile));
         }
     }
 
-    fn resolve_dependencies(idiom: &str) -> bool {
+    fn get_work_dir() -> String  {
+        dirs::home_dir().unwrap().to_str().unwrap().to_owned() + "/.cloudstate"
+    }
+
+    fn get_templates(home_dir: String) -> Repository {
+        let repo = match Repository::clone(CLOUD_STATE_LANGUAGE_TEMPLATES, home_dir) {
+            Ok(repo) => repo,
+            Err(e) => panic!("Failed to clone: {}", e),
+        };
+
+        repo
+    }
+
+    fn resolve_dependencies(profile: &str) -> bool {
         //TODO: resolve dependencies her
         true
     }
