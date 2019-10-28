@@ -77,5 +77,6 @@ args:
         help: Deploy user function with CloudState sidecar in K8s environment
         requires: namespace
     - namespace:
+        short: n
         long: namespace
-        help: Set k8s namespace for user function
+        help: Set k8s namespace for user function. Example cloudstate -n namespace
