@@ -159,7 +159,15 @@ impl ProjectBuilder for RustBuilder {
         Ok(())
     }*/
 
-    fn build(self, path: &Path, app: Application) {
+    fn build(self, app: Application) {
+        unimplemented!()
+    }
+
+    fn push(self, app: Application) {
+        unimplemented!()
+    }
+
+    fn deploy(self, app: Application) {
         unimplemented!()
     }
 }

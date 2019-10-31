@@ -13,7 +13,7 @@ use std::fs::File;
 use tar::Archive;
 use flate2::read::GzDecoder;
 
-#[derive(Serialize, Deserialize, Clone)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct Application {
     pub name: String,
     pub tag: String,
@@ -23,6 +23,8 @@ pub struct Application {
     pub profile: String,
     pub namespace: String,
     pub repo: String,
+    pub repo_user: String,
+    pub repo_pass: String,
     pub editor: String,
     pub data_store: String,
     pub port: u16,
@@ -40,6 +42,8 @@ impl Default for Application {
             profile: String::from(""),
             namespace: String::from("cloudstate"),
             repo: "".to_string(),
+            repo_user: "".to_string(),
+            repo_pass: "".to_string(),
             editor: "vi".to_string(),
             data_store: String::from("InMemory"),
             port: 8088
@@ -110,8 +114,23 @@ pub trait ProjectBuilder {
     ///
     /// # Arguments
     ///
-    /// * `path` - A project path
     /// * `app` - A application metadata
     ///
-    fn build(self, path: &Path, app: Application);
+    fn build(self, app: Application);
+
+    /// Push image to registry
+    ///
+    /// # Arguments
+    ///
+    /// * `app` - A application metadata
+    ///
+    fn push(self, app: Application);
+
+    /// Push image to registry
+    ///
+    /// # Arguments
+    ///
+    /// * `app` - A application metadata
+    ///
+    fn deploy(self, app: Application);
 }

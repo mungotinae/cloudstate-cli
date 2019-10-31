@@ -26,8 +26,48 @@ pub mod command {
         }
     }
 
-    pub fn build(path: &str) {
+    pub fn build(app: Application) {
         // Retrive project configuration
+        match app.profile.as_str() {
+            "java"   => JavaBuilder{}.build(app),
+            "node"   => NodeBuilder{}.build(app),
+            "go"     => GoBuilder{}.build(app),
+            "dotnet" => DotNetBuilder{}.build(app),
+            "rust"   => RustBuilder{}.build(app),
+            "python" => PythonBuilder{}.build(app),
+            "scala"  => ScalaBuilder{}.build(app),
+            _        => println!("Invalid profile option")
+        }
+
+    }
+
+    pub fn push(app: Application) {
+        // Retrive project configuration
+        match app.profile.as_str() {
+            "java"   => JavaBuilder{}.push(app),
+            "node"   => NodeBuilder{}.push(app),
+            "go"     => GoBuilder{}.push(app),
+            "dotnet" => DotNetBuilder{}.push(app),
+            "rust"   => RustBuilder{}.push(app),
+            "python" => PythonBuilder{}.push(app),
+            "scala"  => ScalaBuilder{}.push(app),
+            _        => println!("Invalid profile option")
+        }
+
+    }
+
+    pub fn deploy(app: Application) {
+        // Retrive project configuration
+        match app.profile.as_str() {
+            "java"   => JavaBuilder{}.deploy(app),
+            "node"   => NodeBuilder{}.deploy(app),
+            "go"     => GoBuilder{}.deploy(app),
+            "dotnet" => DotNetBuilder{}.deploy(app),
+            "rust"   => RustBuilder{}.deploy(app),
+            "python" => PythonBuilder{}.deploy(app),
+            "scala"  => ScalaBuilder{}.deploy(app),
+            _        => println!("Invalid profile option")
+        }
 
     }
 

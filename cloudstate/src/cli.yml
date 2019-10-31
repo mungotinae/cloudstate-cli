@@ -20,6 +20,14 @@ args:
         long: repo
         takes_value: true
         help: Used in conjunction with 'create'. Set the docker repository. Used to create container images. Example -r quay.io/myuser or --repo=sleipnir/test
+    - set-user:
+        long: set-user
+        takes_value: true
+        help: Used in conjunction with 'repo'. Set the username for the target docker registry
+    - set-pass:
+        long: set-pass
+        takes_value: true
+        help: Used in conjunction with 'repo'. Set the password for the target docker registry
     - create:
         short: c
         long: create

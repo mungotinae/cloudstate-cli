@@ -5,10 +5,10 @@ extern crate cargo_toml_builder;
 extern crate throw;
 
 use std::path::Path;
-use std::process::Command;
+use std::process::{Command, ExitStatus};
 use std::string::ToString;
 
-use std::{env, fs};
+use std::{env, fs, io};
 use std::fs::File;
 use std::io::Write;
 
@@ -26,16 +26,13 @@ impl ProjectBuilder for JavaBuilder {
 
         // Find and replace occurrences of {application-name}, {application-version} in pom.xml
         JavaBuilder::set_pom_vars(&app);
-
     }
 
     fn compile(&self, app: &Application) {
         env::set_current_dir(&app.work_dir);
 
         println!("Downloading and install dependencies...");
-        let install_status = Command::new("mvn")
-            .arg("install")
-            .status();
+        let install_status = JavaBuilder::install();
 
         println!("Compiling project...");
         if install_status.is_ok() {
@@ -62,10 +59,50 @@ impl ProjectBuilder for JavaBuilder {
 
     }
 
-    fn build(self, path: &Path, app: Application) {
-        unimplemented!()
+    fn build(self, app: Application) {
+        println!("Building Project...");
+        env::set_current_dir(&app.work_dir);
+
+        let install_status = JavaBuilder::install();
+
+        println!("Compiling project...");
+        if install_status.is_ok() {
+            println!("Project successfully compiled");
+        };
+
+    }
+
+    fn push(self, app: Application) {
+        env::set_current_dir(&app.work_dir);
+
+        let push_status = JavaBuilder::push(&app);
+
+        println!("Push container image...");
+        if push_status.is_ok() {
+            println!("Pushed!");
+        };
+    }
+
+    fn deploy(self, app: Application) {
+        env::set_current_dir(&app.work_dir);
+
+        let result = Command::new("kubectl")
+            .arg("apply")
+            .arg("-n")
+            .arg(&app.namespace)
+            .arg("-f")
+            .arg("deployment.yml")
+            .spawn();
+
+        if result.is_ok() {
+            println!("Success on installing 'User Function' {} in namespace: {}", &app.name, &app.namespace);
+        }
+
+        panic!("Error on installing 'User Function' {} in namespace: {}", &app.name, &app.namespace)
+
     }
 }
+
 
 impl JavaBuilder {
     fn set_deployment_vars(app: &&Application) {
@@ -89,8 +126,32 @@ impl JavaBuilder {
         let pom_name = pom_template_content.replace("<artifactId>{application-name}</artifactId>", name.as_ref());
 
         let version = format!("<version>{}</version>", app.tag);
-        let pom_content = pom_name.replace("<version>{tag}</version>", version.as_ref());
+        let repo_name = format!("<repo.name>{}</repo.name>", app.repo);
+        let tag_version = format!("<tag.version>{}</tag.version>", app.tag);
+
+        let repo = pom_name.replace("<repo.name>{repo}</repo.name>", repo_name.as_ref());
+        let tag = repo.replace("<tag.version>{tag}</tag.version>", tag_version.as_ref());
+        let pom_content = tag.replace("<version>{tag}</version>", version.as_ref());
         let mut pom_file = File::create(pom_path).unwrap();
         pom_file.write_all(pom_content.as_ref());
+    }
+
+    fn install() -> io::Result<ExitStatus> {
+        //TODO: Rewrite pom.xml with tag specified
+        let install_status = Command::new("mvn")
+            .arg("install")
+            .status();
+        install_status
+    }
+
+    fn push(app: &Application) -> io::Result<ExitStatus> {
+        //TODO: Rewrite deployment.yml with tag specified
+
+        let push_status = Command::new("mvn")
+            .arg("jib:build")
+            .arg(format!("-Djib.to.auth.username={}", &app.repo_user))
+            .arg(format!("-Djib.to.auth.password={}", &app.repo_pass))
+            .status();
+        push_status
     }
 }

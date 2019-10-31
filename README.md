@@ -18,37 +18,41 @@ Adriano Santos <sleipnir@bsd.com.br>
 CloudState CLI
 
 USAGE:
-  cloudstate [FLAGS] [OPTIONS]
+    cloudstate [FLAGS] [OPTIONS]
 
 FLAGS:
-      --deploy           Deploy user function with CloudState sidecar in K8s environment
-  -h, --help             Prints help information
-  -i, --init             Initialize a CloudState k8s namespace/operator
-  -l, --list-profiles    List all profiles supported
-  -n, --namespace        Set k8s namespace for user function. Example cloudstate -n namespace
-      --push             Push container image in repository
-  -R, --run              Running user function & cloudstate proxy in Docker
-      --upgrade          Update CloudState CLI
-  -V, --version          Prints version information
+        --deploy           Deploy user function with CloudState sidecar in K8s environment
+    -h, --help             Prints help information
+    -i, --init             Initialize a CloudState k8s namespace/operator
+    -l, --list-profiles    List all profiles supported
+    -n, --namespace        Set k8s namespace for user function. Example cloudstate -n namespace
+        --push             Push container image in repository
+    -R, --run              Running user function & cloudstate proxy in Docker
+        --upgrade          Update CloudState CLI
+    -V, --version          Prints version information
 
 OPTIONS:
-      --build <build>                  Build project with template specified. Requires path. Example cloudstate
-                                       --build=.
-  -B, --build-deploy <build-deploy>    Shortcut to build, push and deploy. Example cloudstate -B . --tag=1.0.1
-  -c, --create <create>                Create a new user function project from template. Example --create=shopping-
-                                       cart --profile=java --repo=cloudstate --tag=1.0.1
-  -d, --datastore <datastore>          Used in conjunction with 'create'. Enable CloudState Stateful stores. Example
-                                       --datastore=Cassandra. Valid values [Cassandra, Postgres or InMemory] [possible
-                                       values: InMemory, Cassandra, Postgres]
-      --group-id <group-id>            Used in conjunction with 'create'. Only for java/dotnet profiles. Set the name
-                                       of package or namespace
-  -P, --profile <profile>              Used in conjunction with 'create'. Set language template for this project.
-                                       Possible values is [java, node, go, dotnet, rust, python, scala] [possible
-                                       values: java, node, go, dotnet, rust, python, scala]
-  -r, --repo <repo>                    Used in conjunction with 'create'. Set the docker repository. Used to create
-                                       container images. Example -r quay.io/myuser or --repo=sleipnir/test
-  -t, --tag <tag>                      Used in conjunction with 'create' and/or 'build'. Set version of user function.
-                                       Used to create container images. Example -t 1.0.1 or --tag=0.1.0
+        --build <build>                  Build project with template specified. Requires path. Example cloudstate
+                                         --build=.
+    -B, --build-deploy <build-deploy>    Shortcut to build, push and deploy. Example cloudstate -B . --tag=1.0.1
+    -c, --create <create>                Create a new user function project from template. Example --create=shopping-
+                                         cart --profile=java --repo=cloudstate --tag=1.0.1
+    -d, --datastore <datastore>          Used in conjunction with 'create'. Enable CloudState Stateful stores. Example
+                                         --datastore=Cassandra. Valid values [Cassandra, Postgres or InMemory] [possible
+                                         values: InMemory, Cassandra, Postgres]
+    -P, --profile <profile>              Used in conjunction with 'create'. Set language template for this project.
+                                         Possible values is [java, node, go, dotnet, rust, python, scala] [possible
+                                         values: java, node, go, dotnet, rust, python, scala]
+    -r, --repo <repo>                    Used in conjunction with 'create'. Set the docker repository. Used to create
+                                         container images. Example -r quay.io/myuser or --repo=sleipnir/test
+    -E, --set-editor <set-editor>        Used in conjunction with 'create'. Set the default code editor. Default 'vi'.
+                                         [possible values: vi, nano, code, idea]
+        --set-pass <set-pass>            Used in conjunction with 'repo'. Set the password for the target docker
+                                         registry
+        --set-user <set-user>            Used in conjunction with 'repo'. Set the username for the target docker
+                                         registry
+    -t, --tag <tag>                      Used in conjunction with 'create' and/or 'build'. Set version of user function.
+                                         Used to create container images. Example -t 1.0.1 or --tag=0.1.0
 ```
 
 ### Initialize CloudState Operator:
@@ -72,125 +76,256 @@ deployment.apps/cloudstate-operator created
 
 ### Create User Function Project from specific profile:
 ```
-[cloudstate]# cloudstate --create=shopping-cart --profile=rust
+[cloudstate]# cloudstate --create=shopping-cart --profile=java --repo=docker.io/sleipnir --set-user=sleipnir --set-pass=***** --tag=1.0.1 --set-editor=idea
 Creating user function project: "shopping-cart"
-Using profile: "rust"
-     Created binary (application) `shopping-cart` package
-Creating Dockerfile
-Creating deployment.yml
+Using profile: "java"
+Extracting profile template.... /root/.cloudstate/templates/java/java.tar.gz
+Downloading and install dependencies...
+[INFO] Scanning for projects...
+.....
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  3.489 s
+[INFO] Finished at: 2019-10-31T18:16:33-03:00
+[INFO] ------------------------------------------------------------------------
+Compiling project...
+Project successfully compiled
 Project created!
-No verbose info
+Open editor!
+total 8
+drwxrwxr-x. 4 root root   30 Out 31 18:16 src
+-rw-rw-r--. 1 root root 3252 Out 31 18:16 pom.xml
+-rw-rw-r--. 1 root root  304 Out 31 18:16 deployment.yml
+drwxrwxr-x. 8 root root  168 Out 31 18:16 target
 Ok(())
-total 4
-drwxrwxr-x. 2 root root  21 Out 23 17:07 src
--rw-rw-r--. 1 root root 233 Out 23 17:07 Cargo.toml
--rw-rw-r--. 1 root root   0 Out 23 17:07 Dockerfile
--rw-rw-r--. 1 root root   0 Out 23 17:07 deployment.yml
+
 [cloudstate]#
 ```
 
 ### Build function: 
 ```
 [shopping-cart]# cloudstate --build=.
-Sending build context to Docker daemon  6.144kB
-Step 1/10 : ARG BASE_IMAGE=ekidd/rust-musl-builder:latest
-Step 2/10 : FROM ${BASE_IMAGE} AS cargo-build
- ---> 04b7a7c5fd0a
-Step 3/10 : RUN sudo apt-get update && sudo apt-get install -y upx-ucl
- ---> Running in 720ef81f00a1
-Get:1 http://security.ubuntu.com/ubuntu bionic-security InRelease [88.7 kB]
-Get:2 http://archive.ubuntu.com/ubuntu bionic InRelease [242 kB]
-Get:3 http://security.ubuntu.com/ubuntu bionic-security/multiverse amd64 Packages [5945 B]
-Get:4 http://security.ubuntu.com/ubuntu bionic-security/restricted amd64 Packages [12.6 kB]
-Get:5 http://archive.ubuntu.com/ubuntu bionic-updates InRelease [88.7 kB]
-Get:6 http://security.ubuntu.com/ubuntu bionic-security/main amd64 Packages [695 kB]
-Get:7 http://archive.ubuntu.com/ubuntu bionic-backports InRelease [74.6 kB]
-Get:8 http://archive.ubuntu.com/ubuntu bionic/restricted amd64 Packages [13.5 kB]
-Get:9 http://security.ubuntu.com/ubuntu bionic-security/universe amd64 Packages [782 kB]
-Get:10 http://archive.ubuntu.com/ubuntu bionic/universe amd64 Packages [11.3 MB]
-Get:11 http://archive.ubuntu.com/ubuntu bionic/main amd64 Packages [1344 kB]
-Get:12 http://archive.ubuntu.com/ubuntu bionic/multiverse amd64 Packages [186 kB]
-Get:13 http://archive.ubuntu.com/ubuntu bionic-updates/multiverse amd64 Packages [9023 B]
-Get:14 http://archive.ubuntu.com/ubuntu bionic-updates/restricted amd64 Packages [23.2 kB]
-Get:15 http://archive.ubuntu.com/ubuntu bionic-updates/universe amd64 Packages [1299 kB]
-Get:16 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 Packages [990 kB]
-Get:17 http://archive.ubuntu.com/ubuntu bionic-backports/universe amd64 Packages [4227 B]
-Get:18 http://archive.ubuntu.com/ubuntu bionic-backports/main amd64 Packages [2496 B]
-Fetched 17.2 MB in 20s (862 kB/s)
-Reading package lists...
-Reading package lists...
-Building dependency tree...
-Reading state information...
-The following additional packages will be installed:
-  libucl1
-The following NEW packages will be installed:
-  libucl1 upx-ucl
-0 upgraded, 2 newly installed, 0 to remove and 34 not upgraded.
-Need to get 401 kB of archives.
-After this operation, 2083 kB of additional disk space will be used.
-Get:1 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libucl1 amd64 1.03+repack-4 [23.9 kB]
-Get:2 http://archive.ubuntu.com/ubuntu bionic/universe amd64 upx-ucl amd64 3.94-4 [377 kB]
-debconf: delaying package configuration, since apt-utils is not installed
-Fetched 401 kB in 2s (180 kB/s)
-Selecting previously unselected package libucl1:amd64.
-(Reading database ... 20378 files and directories currently installed.)
-Preparing to unpack .../libucl1_1.03+repack-4_amd64.deb ...
-Unpacking libucl1:amd64 (1.03+repack-4) ...
-Selecting previously unselected package upx-ucl.
-Preparing to unpack .../upx-ucl_3.94-4_amd64.deb ...
-Unpacking upx-ucl (3.94-4) ...
-Setting up libucl1:amd64 (1.03+repack-4) ...
-Processing triggers for libc-bin (2.27-3ubuntu1) ...
-Setting up upx-ucl (3.94-4) ...
-update-alternatives: error: no alternatives for upx
-update-alternatives: using /usr/bin/upx-ucl to provide /usr/bin/upx (upx) in auto mode
-update-alternatives: warning: skip creation of /usr/share/man/man1/upx.1.gz because associated file /usr/share/man/man1/upx-ucl.1.gz (of link group upx) doesn't exist
-Removing intermediate container 720ef81f00a1
- ---> 6a221b663780
-Step 4/10 : ADD . ./
- ---> 40aaf88290da
-Step 5/10 : RUN sudo chown -R rust:rust /home/rust
- ---> Running in b7cfbdf218a6
-Removing intermediate container b7cfbdf218a6
- ---> 6bc0ff9a3982
-Step 6/10 : RUN cargo build --release
- ---> Running in 0f0a76776562
-   Compiling shopping-cart v0.1.0 (/home/rust/src)
-    Finished release [optimized] target(s) in 0.78s
-Removing intermediate container 0f0a76776562
- ---> 402eb736d0ea
-Step 7/10 : RUN /usr/bin/upx --brute /home/rust/src/target/x86_64-unknown-linux-musl/release/shopping-cart
- ---> Running in 115e1425d413
-                       Ultimate Packer for eXecutables
-                          Copyright (C) 1996 - 2017
-UPX 3.94        Markus Oberhumer, Laszlo Molnar & John Reiser   May 12th 2017
+Application { name: "shopping-cart", tag: "1.0.1", home_dir: "/root/.cloudstate", work_dir: "/home/sleipnir/development/workspace/pessoal/cloudstate-cli/cloudstate/shopping-cart", user_dir: "/home/sleipnir/development/workspace/pessoal/cloudstate-cli/cloudstate/shopping-cart/.cloudstate", profile: "java", namespace: "cloudstate", repo: "docker.io/sleipnir/shopping-cart", repo_user: "sleipnir", repo_pass: "bsd*a211003", editor: "idea", data_store: "InMemory", port: 8088 }
+Building Project...
+[INFO] Scanning for projects...
+[WARNING] 
+[WARNING] Some problems were encountered while building the effective model for com.example:shopping-cart:jar:1.0.1
+[WARNING] 'build.plugins.plugin.version' for org.apache.maven.plugins:maven-compiler-plugin is missing. @ line 37, column 21
+[WARNING] 
+[WARNING] It is highly recommended to fix these problems because they threaten the stability of your build.
+[WARNING] 
+[WARNING] For this reason, future Maven versions might no longer support building such malformed projects.
+[WARNING] 
+[INFO] ------------------------------------------------------------------------
+[INFO] Detecting the operating system and CPU architecture
+[INFO] ------------------------------------------------------------------------
+[INFO] os.detected.name: linux
+[INFO] os.detected.arch: x86_64
+[INFO] os.detected.version: 3.10
+[INFO] os.detected.version.major: 3
+[INFO] os.detected.version.minor: 10
+[INFO] os.detected.release: centos
+[INFO] os.detected.release.version: 7
+[INFO] os.detected.release.like.centos: true
+[INFO] os.detected.release.like.rhel: true
+[INFO] os.detected.release.like.fedora: true
+[INFO] os.detected.classifier: linux-x86_64
+[INFO] 
+[INFO] ---------------------< com.example:shopping-cart >----------------------
+[INFO] Building shopping-cart 1.0.1
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- protobuf-maven-plugin:0.6.1:compile (default) @ shopping-cart ---
+[INFO] Compiling 2 proto file(s) to /home/sleipnir/development/workspace/pessoal/cloudstate-cli/cloudstate/shopping-cart/target/generated-sources/protobuf/java
+[WARNING] PROTOC: example/shoppingcart/shoppingcart.proto:7:1: warning: Import google/api/http.proto but not used.
+[libprotobuf WARNING ../../../../../src/google/protobuf/compiler/java/java_file.cc:231] example/shoppingcart/shoppingcart.proto: The file's outer class name, "Shoppingcart", matches the name of one of the types declared inside it when case is ignored. This can cause compilation issues on Windows / MacOS. Please either rename the type or use the java_outer_classname option to specify a different outer class name for the .proto file to be safe.
 
-        File size         Ratio      Format      Name
-   --------------------   ------   -----------   -----------
-   2515048 ->    512832   20.39%   linux/amd64   shopping-cart
-
-Packed 1 file.
-Removing intermediate container 115e1425d413
- ---> 70852fddd98b
-Step 8/10 : FROM scratch
- ---> 
-Step 9/10 : COPY --from=cargo-build /home/rust/src/target/x86_64-unknown-linux-musl/release/shopping-cart     /usr/local/bin/
- ---> f7aea6e9f8ac
-Step 10/10 : CMD ["/usr/local/bin/shopping-cart"]
- ---> Running in 039b6e1759d9
-Removing intermediate container 039b6e1759d9
- ---> 26e0ce1ae31d
-Successfully built 26e0ce1ae31d
-Successfully tagged shopping-cart:latest
-[shopping-cart]# docker images | grep shopping-cart
-shopping-cart                               latest               26e0ce1ae31d        10 seconds ago      513kB
-No verbose info
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:resources (default-resources) @ shopping-cart ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 2 resources
+[INFO] Copying 2 resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.1:compile (default-compile) @ shopping-cart ---
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 4 source files to /home/sleipnir/development/workspace/pessoal/cloudstate-cli/cloudstate/shopping-cart/target/classes
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:testResources (default-testResources) @ shopping-cart ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory /home/sleipnir/development/workspace/pessoal/cloudstate-cli/cloudstate/shopping-cart/src/test/resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.1:testCompile (default-testCompile) @ shopping-cart ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO] 
+[INFO] --- maven-surefire-plugin:2.12.4:test (default-test) @ shopping-cart ---
+[INFO] No tests to run.
+[INFO] 
+[INFO] --- maven-jar-plugin:2.4:jar (default-jar) @ shopping-cart ---
+[INFO] Building jar: /home/sleipnir/development/workspace/pessoal/cloudstate-cli/cloudstate/shopping-cart/target/shopping-cart-1.0.1.jar
+[INFO] 
+[INFO] --- maven-install-plugin:2.4:install (default-install) @ shopping-cart ---
+[INFO] Installing /home/sleipnir/development/workspace/pessoal/cloudstate-cli/cloudstate/shopping-cart/target/shopping-cart-1.0.1.jar to /root/.m2/repository/com/example/shopping-cart/1.0.1/shopping-cart-1.0.1.jar
+[INFO] Installing /home/sleipnir/development/workspace/pessoal/cloudstate-cli/cloudstate/shopping-cart/pom.xml to /root/.m2/repository/com/example/shopping-cart/1.0.1/shopping-cart-1.0.1.pom
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  3.763 s
+[INFO] Finished at: 2019-10-31T18:49:45-03:00
+[INFO] ------------------------------------------------------------------------
+Compiling project...
+Project successfully compiled
 Ok(())
-[root@sleipnir shopping-cart]#
+
+[cloudstate]#
 ```
 
-### Deploy function:
+### Or Build and Deploy function:
 ```
+[loudstate]# cloudstate --build=. --tag=1.0.1 --push --deploy --namespace=cloudstate
+Application { name: "shopping-cart", tag: "1.0.1", home_dir: "/root/.cloudstate", work_dir: "/home/sleipnir/development/workspace/pessoal/cloudstate-cli/cloudstate/shopping-cart", user_dir: "/home/sleipnir/development/workspace/pessoal/cloudstate-cli/cloudstate/shopping-cart/.cloudstate", profile: "java", namespace: "cloudstate", repo: "docker.io/sleipnir/shopping-cart", repo_user: "sleipnir", repo_pass: "bsd*a211003", editor: "idea", data_store: "InMemory", port: 8088 }
+Building Project...
+[INFO] Scanning for projects...
+[WARNING] 
+[WARNING] Some problems were encountered while building the effective model for com.example:shopping-cart:jar:1.0.1
+[WARNING] 'build.plugins.plugin.version' for org.apache.maven.plugins:maven-compiler-plugin is missing. @ line 37, column 21
+[WARNING] 
+[WARNING] It is highly recommended to fix these problems because they threaten the stability of your build.
+[WARNING] 
+[WARNING] For this reason, future Maven versions might no longer support building such malformed projects.
+[WARNING] 
+[INFO] ------------------------------------------------------------------------
+[INFO] Detecting the operating system and CPU architecture
+[INFO] ------------------------------------------------------------------------
+[INFO] os.detected.name: linux
+[INFO] os.detected.arch: x86_64
+[INFO] os.detected.version: 3.10
+[INFO] os.detected.version.major: 3
+[INFO] os.detected.version.minor: 10
+[INFO] os.detected.release: centos
+[INFO] os.detected.release.version: 7
+[INFO] os.detected.release.like.centos: true
+[INFO] os.detected.release.like.rhel: true
+[INFO] os.detected.release.like.fedora: true
+[INFO] os.detected.classifier: linux-x86_64
+[INFO] 
+[INFO] ---------------------< com.example:shopping-cart >----------------------
+[INFO] Building shopping-cart 1.0.1
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- protobuf-maven-plugin:0.6.1:compile (default) @ shopping-cart ---
+[INFO] Compiling 2 proto file(s) to /home/sleipnir/development/workspace/pessoal/cloudstate-cli/cloudstate/shopping-cart/target/generated-sources/protobuf/java
+[WARNING] PROTOC: example/shoppingcart/shoppingcart.proto:7:1: warning: Import google/api/http.proto but not used.
+[libprotobuf WARNING ../../../../../src/google/protobuf/compiler/java/java_file.cc:231] example/shoppingcart/shoppingcart.proto: The file's outer class name, "Shoppingcart", matches the name of one of the types declared inside it when case is ignored. This can cause compilation issues on Windows / MacOS. Please either rename the type or use the java_outer_classname option to specify a different outer class name for the .proto file to be safe.
+
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:resources (default-resources) @ shopping-cart ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 2 resources
+[INFO] Copying 2 resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.1:compile (default-compile) @ shopping-cart ---
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 4 source files to /home/sleipnir/development/workspace/pessoal/cloudstate-cli/cloudstate/shopping-cart/target/classes
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:testResources (default-testResources) @ shopping-cart ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory /home/sleipnir/development/workspace/pessoal/cloudstate-cli/cloudstate/shopping-cart/src/test/resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.1:testCompile (default-testCompile) @ shopping-cart ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO] 
+[INFO] --- maven-surefire-plugin:2.12.4:test (default-test) @ shopping-cart ---
+[INFO] No tests to run.
+[INFO] 
+[INFO] --- maven-jar-plugin:2.4:jar (default-jar) @ shopping-cart ---
+[INFO] Building jar: /home/sleipnir/development/workspace/pessoal/cloudstate-cli/cloudstate/shopping-cart/target/shopping-cart-1.0.1.jar
+[INFO] 
+[INFO] --- maven-install-plugin:2.4:install (default-install) @ shopping-cart ---
+[INFO] Installing /home/sleipnir/development/workspace/pessoal/cloudstate-cli/cloudstate/shopping-cart/target/shopping-cart-1.0.1.jar to /root/.m2/repository/com/example/shopping-cart/1.0.1/shopping-cart-1.0.1.jar
+[INFO] Installing /home/sleipnir/development/workspace/pessoal/cloudstate-cli/cloudstate/shopping-cart/pom.xml to /root/.m2/repository/com/example/shopping-cart/1.0.1/shopping-cart-1.0.1.pom
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  3.179 s
+[INFO] Finished at: 2019-10-31T18:51:33-03:00
+[INFO] ------------------------------------------------------------------------
+Compiling project...
+Project successfully compiled
+Ok("/home/sleipnir/development/workspace/pessoal/cloudstate-cli/cloudstate/shopping-cart")
+Path -> /home/sleipnir/development/workspace/pessoal/cloudstate-cli/cloudstate/shopping-cart/.cloudstate/user.json
+Application { name: "shopping-cart", tag: "1.0.1", home_dir: "/root/.cloudstate", work_dir: "/home/sleipnir/development/workspace/pessoal/cloudstate-cli/cloudstate/shopping-cart", user_dir: "/home/sleipnir/development/workspace/pessoal/cloudstate-cli/cloudstate/shopping-cart/.cloudstate", profile: "java", namespace: "cloudstate", repo: "docker.io/sleipnir/shopping-cart", repo_user: "sleipnir", repo_pass: "bsd*a211003", editor: "idea", data_store: "InMemory", port: 8088 }
+[INFO] Scanning for projects...
+[WARNING] 
+[WARNING] Some problems were encountered while building the effective model for com.example:shopping-cart:jar:1.0.1
+[WARNING] 'build.plugins.plugin.version' for org.apache.maven.plugins:maven-compiler-plugin is missing. @ line 37, column 21
+[WARNING] 
+[WARNING] It is highly recommended to fix these problems because they threaten the stability of your build.
+[WARNING] 
+[WARNING] For this reason, future Maven versions might no longer support building such malformed projects.
+[WARNING] 
+[INFO] ------------------------------------------------------------------------
+[INFO] Detecting the operating system and CPU architecture
+[INFO] ------------------------------------------------------------------------
+[INFO] os.detected.name: linux
+[INFO] os.detected.arch: x86_64
+[INFO] os.detected.version: 3.10
+[INFO] os.detected.version.major: 3
+[INFO] os.detected.version.minor: 10
+[INFO] os.detected.release: centos
+[INFO] os.detected.release.version: 7
+[INFO] os.detected.release.like.centos: true
+[INFO] os.detected.release.like.rhel: true
+[INFO] os.detected.release.like.fedora: true
+[INFO] os.detected.classifier: linux-x86_64
+[INFO] 
+[INFO] ---------------------< com.example:shopping-cart >----------------------
+[INFO] Building shopping-cart 1.0.1
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- jib-maven-plugin:1.7.0:build (default-cli) @ shopping-cart ---
+[INFO] 
+[INFO] Containerizing application to sleipnir/shopping-cart, sleipnir/shopping-cart:1.0.1...
+[WARNING] Base image 'gcr.io/distroless/java:8' does not use a specific image digest - build may not be reproducible
+[INFO] Using base image with digest: sha256:a13ac1ce516ec5e49ae9dfd3b8183e9e8328180a65757d454e594a9ce6d1e35d
+[INFO] 
+[INFO] Container entrypoint set to [java, -XX:+UseG1GC, -XX:+UseStringDeduplication, -cp, /app/resources:/app/classes:/app/libs/*, com.example.Main]
+[INFO] 
+[INFO] Built and pushed image as sleipnir/shopping-cart, sleipnir/shopping-cart:1.0.1
+[INFO] Executing tasks:
+[INFO] [===========================   ] 90,0% complete
+[INFO] > launching layer pushers
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  9.165 s
+[INFO] Finished at: 2019-10-31T18:51:44-03:00
+[INFO] ------------------------------------------------------------------------
+Push container image...
+Pushed!
+Ok("/home/sleipnir/development/workspace/pessoal/cloudstate-cli/cloudstate/shopping-cart")
+Application { name: "shopping-cart", tag: "1.0.1", home_dir: "/root/.cloudstate", work_dir: "/home/sleipnir/development/workspace/pessoal/cloudstate-cli/cloudstate/shopping-cart", user_dir: "/home/sleipnir/development/workspace/pessoal/cloudstate-cli/cloudstate/shopping-cart/.cloudstate", profile: "java", namespace: "cloudstate", repo: "docker.io/sleipnir/shopping-cart", repo_user: "sleipnir", repo_pass: "bsd*a211003", editor: "idea", data_store: "InMemory", port: 8088 }
+Success on installing 'User Function' shopping-cart in namespace: cloudstate
+
+```
+
+### Checking deploy:
+```
+[cloudstate]# kubectl get po -n cloudstate
+NAME                                        READY   STATUS    RESTARTS   AGE
+cloudstate-operator-84b8848647-ds2h8        1/1     Running   0          26m
+shopping-cart-deployment-7657c848fc-tpngd   1/2     Running   0          16m
+
+[cloudstate]# kubectl logs -n cloudstate shopping-cart-deployment-7657c848fc-tpngd -c user-container
+2019-10-31 21:38:54.067 DEBUG io.cloudstate.javasupport.impl.AnySupport - Attempting to load com.google.protobuf.Message class com.example.shoppingcart.Shoppingcart$AddLineItem
+2019-10-31 21:38:54.072 DEBUG io.cloudstate.javasupport.impl.AnySupport - Attempting to load com.google.protobuf.Message class com.google.protobuf.Empty
+2019-10-31 21:38:54.074 DEBUG io.cloudstate.javasupport.impl.AnySupport - Attempting to load com.google.protobuf.Message class com.example.shoppingcart.Shoppingcart$RemoveLineItem
+2019-10-31 21:38:54.077 DEBUG io.cloudstate.javasupport.impl.AnySupport - Attempting to load com.google.protobuf.Message class com.example.shoppingcart.Shoppingcart$GetShoppingCart
+2019-10-31 21:38:54.080 DEBUG io.cloudstate.javasupport.impl.AnySupport - Attempting to load com.google.protobuf.Message class com.example.shoppingcart.Shoppingcart$Cart
+[INFO] [10/31/2019 21:38:56.977] [StatefulService-akka.actor.default-dispatcher-7] [akka.actor.ActorSystemImpl(StatefulService)] Received discovery call from sidecar [cloudstate-proxy-core 0.4.3] supporting CloudState 0.1
+..........
+
 ```
 
 ### Listing supported profiles:

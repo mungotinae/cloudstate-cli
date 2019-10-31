@@ -2,7 +2,7 @@ extern crate clap;
 
 use clap::ArgMatches;
 
-use std::env;
+use std::{env, fs};
 use std::fs::{File, create_dir_all};
 use std::io::Write;
 use std::path::Path;
@@ -10,6 +10,7 @@ use std::path::Path;
 use crate::commands::command;
 use crate::builders::Application;
 use crate::get_project_folder;
+use serde_json::ser::CharEscape;
 
 #[derive(Debug)]
 pub struct Resolver<'a> { pub args: ArgMatches<'a>, }
@@ -19,13 +20,13 @@ impl<'a> Resolver<'a> {
     pub fn matches(self) -> Result<(), String> {
         let _matches = self.args.clone();
 
+        if _matches.is_present("list-profiles") {
+            command::list_profiles();
+        }
+
         // handle matches
         if _matches.is_present("init") {
             command::init();
-        }
-
-        if _matches.is_present("list-profiles") {
-            command::list_profiles();
         }
 
         match _matches.value_of("create") {
@@ -42,8 +43,10 @@ impl<'a> Resolver<'a> {
 
                     let tag = _matches.value_of("tag");
                     let repo = _matches.value_of("repo");
-                    let datastore = _matches.value_of("datastore");
                     let editor = _matches.value_of("set-editor");
+                    let repo_user = _matches.value_of("set-user");
+                    let repo_pass = _matches.value_of("set-pass");
+                    let datastore = _matches.value_of("datastore");
 
                     application.name = project_name.to_string();
                     application.profile = profile.to_string();
@@ -57,6 +60,9 @@ impl<'a> Resolver<'a> {
                     } else {
                         format!("{}/{}", repo.unwrap(), project_name.clone())
                     };
+
+                    application.repo_user = repo_user.or_else(|| Option::from("")).unwrap().to_string();
+                    application.repo_pass = repo_pass.or_else(|| Option::from("")).unwrap().to_string();
 
                     // Create cloudstate project dir
                     let path = get_project_folder(&mut application, &env::current_dir().unwrap().to_str().unwrap().to_string());
@@ -81,37 +87,85 @@ impl<'a> Resolver<'a> {
             None => {}
         }
 
-        //docker build -t shopping-cart .
-        match _matches.value_of("build") {
-            Some(ref path) => {
-                // TODO: Validating other params
-                println!("Building user function project... ");
-                command::build(path);
-            }
-            None => {}
+        if _matches.is_present("build") {
+            <Resolver<'a>>::_build(&_matches)
         }
 
-        // Vary the output based on how many times the user used the "verbose" flag
-        // (i.e. 'myprog -v -v -v' or 'myprog -vvv' vs 'myprog -v'
-        match _matches.occurrences_of("v") {
-            0 => println!("No verbose info"),
-            1 => println!("Some verbose info"),
-            2 => println!("Tons of verbose info"),
-            3 | _ => println!("Don't be crazy"),
-        }
+        if _matches.is_present("push") {
+            println!("{:?}", env::current_dir());
+            let path = format!("{}/.cloudstate/user.json", env::current_dir().unwrap().to_str().unwrap());
+            println!("Path -> {}", path);
+            let app_settings = fs::read_to_string(path);
+            if app_settings.is_ok() {
+                let mut application: Application = serde_json::from_str(app_settings.unwrap().as_str()).unwrap();
+                println!("{:?}", application);
 
-        // You can handle information about subcommands by requesting their matches by name
-        // (as below), requesting just the name used, or both at the same time
-        if let Some(_matches) = _matches.subcommand_matches("profile") {
-            if _matches.is_present("name") {
-                println!("Printing debug info...");
+                // verify other options
+                let tag = _matches.value_of("tag");
+                if tag.is_some() {
+                    application.tag = tag.unwrap().to_string();
+                }
+
+                <Resolver<'a>>::_push(application);
+
             } else {
-                println!("Printing normally...");
+                println!("App settings not found!");
             }
+
+        }
+
+        if _matches.is_present("deploy") {
+            <Resolver<'a>>::_deploy(&_matches)
         }
 
         return Ok(());
     }
 
+    fn _build(_matches: &ArgMatches) -> () {
+        let build_path = _matches.value_of("build").unwrap();
+        env::set_current_dir(build_path);
+        println!("{:?}", env::current_dir());
+        let path = format!("{}/.cloudstate/user.json", env::current_dir().unwrap().to_str().unwrap());
+        println!("Path -> {}", path);
+        let app_settings = fs::read_to_string(path);
+        if app_settings.is_ok() {
+            let mut application: Application = serde_json::from_str(app_settings.unwrap().as_str()).unwrap();
+            println!("{:?}", application);
 
+            // verify other options
+            let tag = _matches.value_of("tag");
+            if tag.is_some() {
+                application.tag = tag.unwrap().to_string();
+            }
+
+            command::build(application.clone());
+
+        } else {
+            println!("App settings not found!");
+        }
+    }
+
+    fn _deploy(_matches: &ArgMatches) -> () {
+        println!("{:?}", env::current_dir());
+        let path = format!("{}/.cloudstate/user.json", env::current_dir().unwrap().to_str().unwrap());
+        let app_settings = fs::read_to_string(path);
+        if app_settings.is_ok() {
+            let mut application: Application = serde_json::from_str(app_settings.unwrap().as_str()).unwrap();
+            println!("{:?}", application);
+
+            // verify other options
+            let tag = _matches.value_of("tag");
+            if tag.is_some() {
+                application.tag = tag.unwrap().to_string();
+            }
+
+            command::deploy(application);
+        } else {
+            println!("App settings not found!");
+        }
+    }
+
+    fn _push(app: Application) -> () {
+        command::push(app);
+    }
 }
