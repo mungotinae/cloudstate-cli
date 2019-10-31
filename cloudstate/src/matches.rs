@@ -43,20 +43,20 @@ impl<'a> Resolver<'a> {
                     let tag = _matches.value_of("tag");
                     let repo = _matches.value_of("repo");
                     let datastore = _matches.value_of("datastore");
+                    let editor = _matches.value_of("set-editor");
 
                     application.name = project_name.to_string();
                     application.profile = profile.to_string();
-                    //application.repo = repo.or_else(|| Option::from("")).unwrap().to_string();
+                    application.tag = tag.or_else(|| Option::from("0.0.1")).unwrap().to_string();
+                    application.editor = editor.or_else(|| Option::from("vi")).unwrap().to_string();
+                    application.data_store = datastore.or_else(|| Option::from("InMemory"))
+                        .unwrap().to_string();
 
                     application.repo = if repo.or_else(|| Option::from("")).unwrap().is_empty() {
                         project_name.clone().to_string()
                     } else {
                         format!("{}/{}", repo.unwrap(), project_name.clone())
                     };
-
-                    application.tag = tag.or_else(|| Option::from("0.0.1")).unwrap().to_string();
-                    application.data_store = datastore.or_else(|| Option::from("InMemory"))
-                        .unwrap().to_string();
 
                     // Create cloudstate project dir
                     let path = get_project_folder(&mut application, &env::current_dir().unwrap().to_str().unwrap().to_string());

@@ -23,6 +23,7 @@ pub struct Application {
     pub profile: String,
     pub namespace: String,
     pub repo: String,
+    pub editor: String,
     pub data_store: String,
     pub port: u16,
 }
@@ -39,6 +40,7 @@ impl Default for Application {
             profile: String::from(""),
             namespace: String::from("cloudstate"),
             repo: "".to_string(),
+            editor: "vi".to_string(),
             data_store: String::from("InMemory"),
             port: 8088
         }

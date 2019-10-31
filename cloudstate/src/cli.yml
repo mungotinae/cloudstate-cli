@@ -26,6 +26,16 @@ args:
         help: Create a new user function project from template. Example --create=shopping-cart --profile=java --repo=cloudstate --tag=1.0.1
         takes_value: true
         requires: profile
+    - set-editor:
+          short: E
+          long: set-editor
+          takes_value: true
+          possible_values:
+              - vi
+              - nano
+              - code
+              - idea
+          help: Used in conjunction with 'create'. Set the default code editor. Default 'vi'.
     - profile:
         short: P
         long: profile
