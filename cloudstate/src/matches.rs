@@ -46,6 +46,14 @@ impl<'a> Resolver<'a> {
 
                     application.name = project_name.to_string();
                     application.profile = profile.to_string();
+                    //application.repo = repo.or_else(|| Option::from("")).unwrap().to_string();
+
+                    application.repo = if repo.or_else(|| Option::from("")).unwrap().is_empty() {
+                        project_name.clone().to_string()
+                    } else {
+                        format!("{}/{}", repo.unwrap(), project_name.clone())
+                    };
+
                     application.tag = tag.or_else(|| Option::from("0.0.1")).unwrap().to_string();
                     application.data_store = datastore.or_else(|| Option::from("InMemory"))
                         .unwrap().to_string();

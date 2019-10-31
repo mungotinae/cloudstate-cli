@@ -78,11 +78,7 @@ impl JavaBuilder {
         let deployment_path = Path::new(&app.work_dir).join("deployment.yml");
         let deployment_template_content = fs::read_to_string(deployment_path.clone()).unwrap();
 
-        let image_name = if app.repo.is_empty() {
-            app.name.to_string()
-        } else {
-            format!("{}/{}", app.repo, app.name)
-        };
+        let image_name = &app.repo;
 
         let deployment_name = deployment_template_content.replace("{application-name}", app.name.as_ref());
         let deployment_image = deployment_name.replace("{image-name}", image_name.as_str());
@@ -94,12 +90,6 @@ impl JavaBuilder {
     fn set_pom_vars(app: &&Application) {
         let pom_path = Path::new(&app.work_dir).join("pom.xml");
         let pom_template_content = fs::read_to_string(pom_path.clone()).unwrap();
-
-        /*let image_name = if app.repo.is_empty() {
-            &app.name
-        } else {
-            format!("{}/{}", &app.repo, &app.name).as_str()
-        };*/
 
         let name = format!("<artifactId>{}</artifactId>", app.name);
         let pom_name = pom_template_content.replace("<artifactId>{application-name}</artifactId>", name.as_ref());
