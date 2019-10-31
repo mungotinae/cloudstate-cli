@@ -18,28 +18,37 @@ Adriano Santos <sleipnir@bsd.com.br>
 CloudState CLI
 
 USAGE:
-    cloudstate [FLAGS] [OPTIONS]
+  cloudstate [FLAGS] [OPTIONS]
 
 FLAGS:
-        --build          Build project with specified idiom
-        --deploy         Deploy user function with CloudState sidecar in K8s environment
-    -h, --help           Prints help information
-    -i, --init           Initialize a CloudState k8s namespace/operator
-    -l, --list-idioms    List all idioms supported
-        --namespace      Set k8s namespace for user function
-        --publish        Publish container image in repository
-    -V, --version        Prints version information
+      --deploy           Deploy user function with CloudState sidecar in K8s environment
+  -h, --help             Prints help information
+  -i, --init             Initialize a CloudState k8s namespace/operator
+  -l, --list-profiles    List all profiles supported
+  -n, --namespace        Set k8s namespace for user function. Example cloudstate -n namespace
+      --push             Push container image in repository
+  -R, --run              Running user function & cloudstate proxy in Docker
+      --upgrade          Update CloudState CLI
+  -V, --version          Prints version information
 
 OPTIONS:
-    -c, --create <create>          Create a new user function project from profile. Example --create=shopping-cart
-    -d, --datastore <datastore>    Used in conjunction with 'create'. Enable CloudState Stateful stores. Example
-                                   --datastore=Cassandra. Valid values [Cassandra, Postgres or InMemory]
-    -I, --idiom <idiom>            Used in conjunction with 'create'. Set language profile for this project. Possible
-                                   values is [java, node, go, dotnet, rust, python, scala]
-    -r, --repo <repo>              Used in conjunction with 'create'. Set the docker repository. Used to create
-                                   container images. Example -r quay.io/myuser or --repo=sleipnir/test
-    -t, --tag <tag>                Used in conjunction with 'create' and/or 'build'. Set version of user function. Used
-                                   to create container images. Example -t 1.0.1 or --tag=0.1.0
+      --build <build>                  Build project with template specified. Requires path. Example cloudstate
+                                       --build=.
+  -B, --build-deploy <build-deploy>    Shortcut to build, push and deploy. Example cloudstate -B . --tag=1.0.1
+  -c, --create <create>                Create a new user function project from template. Example --create=shopping-
+                                       cart --profile=java --repo=cloudstate --tag=1.0.1
+  -d, --datastore <datastore>          Used in conjunction with 'create'. Enable CloudState Stateful stores. Example
+                                       --datastore=Cassandra. Valid values [Cassandra, Postgres or InMemory] [possible
+                                       values: InMemory, Cassandra, Postgres]
+      --group-id <group-id>            Used in conjunction with 'create'. Only for java/dotnet profiles. Set the name
+                                       of package or namespace
+  -P, --profile <profile>              Used in conjunction with 'create'. Set language template for this project.
+                                       Possible values is [java, node, go, dotnet, rust, python, scala] [possible
+                                       values: java, node, go, dotnet, rust, python, scala]
+  -r, --repo <repo>                    Used in conjunction with 'create'. Set the docker repository. Used to create
+                                       container images. Example -r quay.io/myuser or --repo=sleipnir/test
+  -t, --tag <tag>                      Used in conjunction with 'create' and/or 'build'. Set version of user function.
+                                       Used to create container images. Example -t 1.0.1 or --tag=0.1.0
 ```
 
 ### Initialize CloudState Operator:

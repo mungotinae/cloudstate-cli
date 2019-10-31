@@ -5,7 +5,15 @@ pub struct PythonBuilder;
 
 impl ProjectBuilder for PythonBuilder {
 
-    fn create(self, name: &str) {
+    fn pre_compile(&self, app: &Application) {
+        unimplemented!()
+    }
+
+    fn compile(&self, app: &Application) {
+        unimplemented!()
+    }
+
+    fn pos_compile(&self, app: &Application) {
         unimplemented!()
     }
 

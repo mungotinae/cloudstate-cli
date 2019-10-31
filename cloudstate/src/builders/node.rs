@@ -5,7 +5,15 @@ pub struct NodeBuilder;
 
 impl ProjectBuilder for NodeBuilder {
 
-    fn create(self, name: &str) {
+    fn pre_compile(&self, app: &Application) {
+        unimplemented!()
+    }
+
+    fn compile(&self, app: &Application) {
+        unimplemented!()
+    }
+
+    fn pos_compile(&self, app: &Application) {
         unimplemented!()
     }
 

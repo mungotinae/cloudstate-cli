@@ -1,5 +1,6 @@
 #[macro_use]
 extern crate clap;
+extern crate throw;
 extern crate cloudstate;
 
 use clap::App;
@@ -23,9 +24,7 @@ fn main() {
     };
 
     let res = match resolver.matches(){
-        Ok(res)  => {
-            Ok(res)
-        },
+        Ok(res)  => Ok(res),
         Err(e) => Err(e),
     };
 

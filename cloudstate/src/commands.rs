@@ -2,28 +2,18 @@ pub mod command {
 
     use std::fs;
     use std::path::Path;
-    use git2::Repository;
     use std::process::Command;
     use std::collections::HashMap;
-    use crate::builders::{
-        java::JavaBuilder,
-        node::NodeBuilder,
-        go::GoBuilder,
-        dotnet::DotNetBuilder,
-        rust::RustBuilder,
-        python::PythonBuilder,
-        scala::ScalaBuilder,
-        ProjectBuilder
-    };
+    use crate::builders::{java::JavaBuilder, node::NodeBuilder, go::GoBuilder, dotnet::DotNetBuilder, rust::RustBuilder, python::PythonBuilder, scala::ScalaBuilder, ProjectBuilder, Application};
+
+    use crate::{get_user_dir, get_templates};
 
     const CLOUD_STATE_NAMESPACE: &str = "cloudstate";
-    const CLOUD_STATE_LANGUAGE_TEMPLATES: &str = "https://github.com/sleipnir/cloudstate-templates.git";
     const CLOUD_STATE_OPERATOR_DEPLOYMENT: &str = "https://github.com/cloudstateio/cloudstate/releases/download/v0.4.3/cloudstate-0.4.3.yaml";
 
     pub fn init(){
         // First download templates
-        println!("Downloading languages templates...");
-        let home_dir = get_work_dir();
+        let home_dir = get_user_dir();
 
         if Path::new(home_dir.as_str()).exists() {
             fs::remove_dir_all(home_dir.clone());
@@ -41,25 +31,25 @@ pub mod command {
 
     }
 
-    pub fn create_project(name: &str, profile: &str) {
-        let home_dir = get_work_dir();
+    pub fn create_project(app: Application) {
+        let home_dir = get_user_dir();
 
-        if Path::new(home_dir.as_str()).exists() {
+        if !(Path::new(home_dir.as_str()).exists()) {
+            println!("You must first boot CloudState with cloudstate --init. See cloudstate --help for help");
+        } else {
 
-            match profile {
-                "java"   => JavaBuilder{}.create(name),
-                "node"   => NodeBuilder{}.create(name),
-                "go"     => GoBuilder{}.create(name),
-                "dotnet" => DotNetBuilder{}.create(name),
-                "rust"   => RustBuilder{}.create(name),
-                "python" => PythonBuilder{}.create(name),
-                "scala"  => ScalaBuilder{}.create(name),
+            match app.profile.as_str() {
+                "java"   => JavaBuilder{}.create(app),
+                "node"   => NodeBuilder{}.create(app),
+                "go"     => GoBuilder{}.create(app),
+                "dotnet" => DotNetBuilder{}.create(app),
+                "rust"   => RustBuilder{}.create(app),
+                "python" => PythonBuilder{}.create(app),
+                "scala"  => ScalaBuilder{}.create(app),
                 _        => println!("Invalid profile option")
             }
-        } else {
-            println!("You must first boot CloudState with cloudstate --init. See cloudstate --help for help")
-        }
 
+        }
     }
 
     pub fn list_profiles() {
@@ -78,19 +68,6 @@ pub mod command {
         }
     }
 
-    fn get_work_dir() -> String  {
-        dirs::home_dir().unwrap().to_str().unwrap().to_owned() + "/.cloudstate"
-    }
-
-    fn get_templates(home_dir: String) -> Repository {
-        let repo = match Repository::clone(CLOUD_STATE_LANGUAGE_TEMPLATES, home_dir) {
-            Ok(repo) => repo,
-            Err(e) => panic!("Failed to clone: {}", e),
-        };
-
-        repo
-    }
-
     fn resolve_dependencies(profile: &str) -> bool {
         //TODO: resolve dependencies her
         true
@@ -104,6 +81,8 @@ pub mod command {
             .arg(namespace)
             .spawn()
             .is_ok() {
+
+            println!("Success on create CloudState namespace");
             return Ok(());
         };
 
@@ -120,6 +99,8 @@ pub mod command {
             .arg(CLOUD_STATE_OPERATOR_DEPLOYMENT)
             .spawn()
             .is_ok() {
+
+            println!("Success on installing CloudState operator");
             return Ok(());
         };
 

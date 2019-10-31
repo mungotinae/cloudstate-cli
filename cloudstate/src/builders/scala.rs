@@ -5,11 +5,19 @@ pub struct ScalaBuilder;
 
 impl ProjectBuilder for ScalaBuilder {
 
-    fn create(self, name: &str) {
+    fn pre_compile(&self, app: &Application) {
         unimplemented!()
     }
 
-    fn build(self, path: &Path, app: Application) {
+    fn compile(&self, app: &Application) {
+        unimplemented!()
+    }
+
+    fn pos_compile(&self, app: &Application) {
+        unimplemented!()
+    }
+
+     fn build(self, path: &Path, app: Application) {
         unimplemented!()
     }
 }

@@ -1,12 +1,8 @@
 extern crate dirs;
 extern crate cargo_toml_builder;
 
-use std::process::Command;
-use std::fs::File;
-use std::io::prelude::*;
 use cargo_toml_builder::prelude::*;
 use std::path::Path;
-use std::{env, fs};
 use std::string::ToString;
 use crate::builders::{ProjectBuilder, Application};
 
@@ -102,11 +98,26 @@ CMD ["/usr/local/bin/myapp"]
 
 impl ProjectBuilder for RustBuilder {
 
-    fn create(self, name: &str) {
+    fn pre_compile(&self, app: &Application) {
+        unimplemented!()
+    }
+
+    fn compile(&self, app: &Application) {
+        unimplemented!()
+    }
+
+    fn pos_compile(&self, app: &Application) {
+        unimplemented!()
+    }
+
+    /*fn create(&self, app: Application) -> Result<(), throw::Error<&'static str>> {
+        println!("Downloading language template...");
+        let home_dir = get_user_dir();
+        *//*
         let status = Command::new("cargo")
             .arg("new")
             //.arg("--bin")
-            .arg(name)
+            .arg(app.name)
             .status();
 
         if status.is_ok() {
@@ -116,36 +127,37 @@ impl ProjectBuilder for RustBuilder {
 
             let dockerfile_contents = RustBuilder::get_dockerfile();
 
-            let dockerfile = dockerfile_contents.replace("myapp", name);
+            let dockerfile = dockerfile_contents.replace("myapp", app.name.as_ref());
 
-            let mut docker_file = File::create(name.to_owned() + "/" + "Dockerfile").unwrap();
+            let mut docker_file = File::create(app.name.to_owned() + "/" + "Dockerfile").unwrap();
             docker_file.write_all(dockerfile.as_ref());
 
             //TODO: Create deployment.yml
             println!("Creating deployment.yml");
-            let mut file = File::create(name.to_owned() + "/" + "deployment.yml");
+            let mut file = File::create(app.name.to_owned() + "/" + "deployment.yml");
 
             //TODO: Add CloudState Crate dependency
-            let cargo_contents = RustBuilder::get_cargo_toml(name, "0.0.1");
-            let mut cargo_file = File::create(name.to_owned() + "/Cargo.toml").unwrap();
+            let cargo_contents = RustBuilder::get_cargo_toml(app.name.to_owned().as_str(), "0.0.1");
+            let mut cargo_file = File::create(app.name.to_owned() + "/Cargo.toml").unwrap();
             cargo_file.write_all(cargo_contents.as_ref());
 
             //TODO: Create main.rs
             let main_rs_contents = RustBuilder::get_main();
-            let mut main_file = File::create(name.to_owned() + "/src/main.rs").unwrap();
+            let mut main_file = File::create(app.name.to_owned() + "/src/main.rs").unwrap();
             main_file.write_all(main_rs_contents.as_ref());
 
             println!("Project created!");
             Command::new("ls")
                 .arg("-ltr")
-                .arg(name)
+                .arg(app.name)
                 .spawn()
                 .expect("Error during create Rust project");
         } else {
             println!("Error on create Rust project")
-        }
+        }*//*
 
-    }
+        Ok(())
+    }*/
 
     fn build(self, path: &Path, app: Application) {
         unimplemented!()
