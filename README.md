@@ -1,7 +1,7 @@
 
-# CloudState CLI  
+# CloudState  
   
-CloudState is a specification, protocol, and reference implementation for providing distributed state management patterns suitable for Serverless computing. The current supported and envisioned patterns include:
+Is a specification, protocol, and reference implementation for providing distributed state management patterns suitable for Serverless computing. The current supported and envisioned patterns include:
 
 -   Event Sourcing
 -   Conflict-Free Replicated Data Types ([CRDTs](https://en.wikipedia.org/wiki/Conflict-free_replicated_data_type))
@@ -11,24 +11,25 @@ CloudState is a specification, protocol, and reference implementation for provid
 
 CloudState is polyglot, which means that services can be written in any language that supports gRPC, and with language specific libraries provided that allow idiomatic use of the patterns in each language. CloudState can be used either by itself, in combination with a Service Mesh, or it is in envisioned that it will be integrated with other Serverless technologies such as [Knative](https://knative.dev).
 
-Read more about the design, architecture, techniques, and technologies behind CloudState in [this section in the documentation](https://cloudstate.io/docs/).
+Read more about the design, architecture, techniques, and technologies behind CloudState in [the documentation](https://cloudstate.io/docs/).
 
-**CloudState CLI** is a lightweight, fast client that lets you go from zero to production with *Stateful Serveless* functions in minutes
+##**CloudState CLI** 
+Is a lightweight, fast client that lets you go from zero to production with *Stateful Serveless* functions in minutes.
   
 ## Index
- 1. [Prerequisites](##Prerequisites)
- 2. [Installation](##Install)
- 3. [Usage](##Usage)
- 4. [CloudState and CloudState CLI language support](##Languages)
+ 1. [Prerequisites](#Prerequisites)
+ 2. [Installation](#Install)
+ 3. [Usage](#Usage)
+ 4. [CloudState and CloudState CLI language support](#Languages)
 
-### Prerequisites
+## Prerequisites
   
-###Install:  
+##Install:  
 ```  
 [cloudstate]#  curl https://raw.githubusercontent.com/sleipnir/cloudstate-cli/master/bin/cloudstate-installer.sh | sh -  
 ```  
   
-### Usage:  
+## Usage:  
 ```  
 [cloudstate]# cloudstate --help  
 cloudstate 0.0.1  
@@ -41,9 +42,9 @@ FLAGS:
  --deploy           Deploy user function with CloudState sidecar in K8s environment -h, --help             Prints help information -i, --init             Initialize a CloudState k8s namespace/operator -l, --list-profiles    List all profiles supported -n, --namespace        Set k8s namespace for user function. Example cloudstate -n namespace --push             Push container image in repository -R, --run              Running user function & cloudstate proxy in Docker --upgrade          Update CloudState CLI -V, --version          Prints version information  
 OPTIONS:  
  --build <build>                  Build project with template specified. Requires path. Example cloudstate --build=. -B, --build-deploy <build-deploy>    Shortcut to build, push and deploy. Example cloudstate -B . --tag=1.0.1 -c, --create <create>                Create a new user function project from template. Example --create=shopping- cart --profile=java --repo=cloudstate --tag=1.0.1 -d, --datastore <datastore>          Used in conjunction with 'create'. Enable CloudState Stateful stores. Example --datastore=Cassandra. Valid values [Cassandra, Postgres or InMemory] [possible values: InMemory, Cassandra, Postgres] -P, --profile <profile>              Used in conjunction with 'create'. Set language template for this project. Possible values is [java, node, go, dotnet, rust, python, scala] [possible values: java, node, go, dotnet, rust, python, scala] -r, --repo <repo>                    Used in conjunction with 'create'. Set the docker repository. Used to create container images. Example -r quay.io/myuser or --repo=sleipnir/test -E, --set-editor <set-editor>        Used in conjunction with 'create'. Set the default code editor. Default 'vi'. [possible values: vi, nano, code, idea] --set-pass <set-pass>            Used in conjunction with 'repo'. Set the password for the target docker registry --set-user <set-user>            Used in conjunction with 'repo'. Set the username for the target docker registry -t, --tag <tag>                      Used in conjunction with 'create' and/or 'build'. Set version of user function. Used to create container images. Example -t 1.0.1 or --tag=0.1.0```  
-  
-### Initialize CloudState Operator:  
-```  
+ 
+# Initialize CloudState Operator:  
+
 [cloudstate]# cloudstate --init  
 Creating CloudState namespace...  
 namespace/cloudstate created  
@@ -56,10 +57,11 @@ clusterrole.rbac.authorization.k8s.io/cloudstate-operator-role unchanged
 role.rbac.authorization.k8s.io/cloudstate-operator-role created  
 clusterrolebinding.rbac.authorization.k8s.io/cloudstate-operator unchanged  
 rolebinding.rbac.authorization.k8s.io/cloudstate-operator created  
-deployment.apps/cloudstate-operator created  
+deployment.apps/cloudstate-operator created   
   
 [cloudstate]#  
 ```  
+
   
 ### Create User Function Project from specific profile:  
 ```  
@@ -88,9 +90,11 @@ drwxrwxr-x. 8 root root  168 Out 31 18:16 target
 Ok(())  
   
 [cloudstate]#  
-```  
+```
+
+### Build function:   
   
-### Build function: ```  
+```
 [shopping-cart]# cloudstate --build=.  
 Application { name: "shopping-cart", tag: "1.0.1", home_dir: "/root/.cloudstate", work_dir: "/home/sleipnir/development/workspace/pessoal/cloudstate-cli/cloudstate/shopping-cart", user_dir: "/home/sleipnir/development/workspace/pessoal/cloudstate-cli/cloudstate/shopping-cart/.cloudstate", profile: "java", namespace: "cloudstate", repo: "docker.io/sleipnir/shopping-cart", repo_user: "sleipnir", repo_pass: "bsd*a211003", editor: "idea", data_store: "InMemory", port: 8088 }  
 Building Project...  
@@ -294,4 +298,4 @@ Ok(())
 [cloudstate]#  
 ```
 
-###Languages
+## Languages
