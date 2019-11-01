@@ -42,10 +42,10 @@ impl<'a> Resolver<'a> {
                     }
 
                     let tag = _matches.value_of("tag");
-                    let repo = _matches.value_of("repo");
+                    let registry = _matches.value_of("registry");
                     let editor = _matches.value_of("set-editor");
-                    let repo_user = _matches.value_of("set-user");
-                    let repo_pass = _matches.value_of("set-pass");
+                    let registry_user = _matches.value_of("set-user");
+                    let registry_pass = _matches.value_of("set-pass");
                     let datastore = _matches.value_of("datastore");
 
                     application.name = project_name.to_string();
@@ -55,14 +55,14 @@ impl<'a> Resolver<'a> {
                     application.data_store = datastore.or_else(|| Option::from("InMemory"))
                         .unwrap().to_string();
 
-                    application.repo = if repo.or_else(|| Option::from("")).unwrap().is_empty() {
+                    application.registry = if registry.or_else(|| Option::from("")).unwrap().is_empty() {
                         project_name.clone().to_string()
                     } else {
-                        format!("{}/{}", repo.unwrap(), project_name.clone())
+                        format!("{}/{}", registry.unwrap(), project_name.clone())
                     };
 
-                    application.repo_user = repo_user.or_else(|| Option::from("")).unwrap().to_string();
-                    application.repo_pass = repo_pass.or_else(|| Option::from("")).unwrap().to_string();
+                    application.registry_user = registry_user.or_else(|| Option::from("")).unwrap().to_string();
+                    application.registry_pass = registry_pass.or_else(|| Option::from("")).unwrap().to_string();
 
                     // Create cloudstate project dir
                     let path = get_project_folder(&mut application, &env::current_dir().unwrap().to_str().unwrap().to_string());

@@ -5,7 +5,7 @@ about: CloudState CLI
 args:
     - upgrade:
         long: upgrade
-        help: Update CloudState CLI
+        help: Update CloudState CLI version
     - init:
         short: i
         long: init
@@ -15,11 +15,11 @@ args:
         long: tag
         takes_value: true
         help: Used in conjunction with 'create' and/or 'build'. Set version of user function. Used to create container images. Example -t 1.0.1 or --tag=0.1.0
-    - repo:
+    - registry:
         short: r
-        long: repo
+        long: registry
         takes_value: true
-        help: Used in conjunction with 'create'. Set the docker repository. Used to create container images. Example -r quay.io/myuser or --repo=sleipnir/test
+        help: Used in conjunction with 'create'. Set the docker repository. Used to create container images. Example -r quay.io/myuser or --registry=sleipnir/test
     - set-user:
         long: set-user
         takes_value: true

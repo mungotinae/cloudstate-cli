@@ -109,7 +109,7 @@ impl JavaBuilder {
         let deployment_path = Path::new(&app.work_dir).join("deployment.yml");
         let deployment_template_content = fs::read_to_string(deployment_path.clone()).unwrap();
 
-        let image_name = &app.repo;
+        let image_name = &app.registry;
 
         let deployment_name = deployment_template_content.replace("{application-name}", app.name.as_ref());
         let deployment_image = deployment_name.replace("{image-name}", image_name.as_str());
@@ -126,7 +126,7 @@ impl JavaBuilder {
         let pom_name = pom_template_content.replace("<artifactId>{application-name}</artifactId>", name.as_ref());
 
         let version = format!("<version>{}</version>", app.tag);
-        let repo_name = format!("<repo.name>{}</repo.name>", app.repo);
+        let repo_name = format!("<repo.name>{}</repo.name>", app.registry);
         let tag_version = format!("<tag.version>{}</tag.version>", app.tag);
 
         let repo = pom_name.replace("<repo.name>{repo}</repo.name>", repo_name.as_ref());
@@ -149,8 +149,8 @@ impl JavaBuilder {
 
         let push_status = Command::new("mvn")
             .arg("jib:build")
-            .arg(format!("-Djib.to.auth.username={}", &app.repo_user))
-            .arg(format!("-Djib.to.auth.password={}", &app.repo_pass))
+            .arg(format!("-Djib.to.auth.username={}", &app.registry_user))
+            .arg(format!("-Djib.to.auth.password={}", &app.registry_pass))
             .status();
         push_status
     }
