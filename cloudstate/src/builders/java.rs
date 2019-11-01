@@ -96,9 +96,9 @@ impl ProjectBuilder for JavaBuilder {
 
         if result.is_ok() {
             println!("Success on installing 'User Function' {} in namespace: {}", &app.name, &app.namespace);
+        } else {
+            panic!("Error on installing 'User Function' {} in namespace: {}", &app.name, &app.namespace);
         }
-
-        panic!("Error on installing 'User Function' {} in namespace: {}", &app.name, &app.namespace)
 
     }
 }

@@ -94,11 +94,9 @@ impl<'a> Resolver<'a> {
         if _matches.is_present("push") {
             println!("{:?}", env::current_dir());
             let path = format!("{}/.cloudstate/user.json", env::current_dir().unwrap().to_str().unwrap());
-            println!("Path -> {}", path);
             let app_settings = fs::read_to_string(path);
             if app_settings.is_ok() {
                 let mut application: Application = serde_json::from_str(app_settings.unwrap().as_str()).unwrap();
-                println!("{:?}", application);
 
                 // verify other options
                 let tag = _matches.value_of("tag");
@@ -126,11 +124,9 @@ impl<'a> Resolver<'a> {
         env::set_current_dir(build_path);
         println!("{:?}", env::current_dir());
         let path = format!("{}/.cloudstate/user.json", env::current_dir().unwrap().to_str().unwrap());
-        println!("Path -> {}", path);
         let app_settings = fs::read_to_string(path);
         if app_settings.is_ok() {
             let mut application: Application = serde_json::from_str(app_settings.unwrap().as_str()).unwrap();
-            println!("{:?}", application);
 
             // verify other options
             let tag = _matches.value_of("tag");
@@ -151,7 +147,6 @@ impl<'a> Resolver<'a> {
         let app_settings = fs::read_to_string(path);
         if app_settings.is_ok() {
             let mut application: Application = serde_json::from_str(app_settings.unwrap().as_str()).unwrap();
-            println!("{:?}", application);
 
             // verify other options
             let tag = _matches.value_of("tag");
