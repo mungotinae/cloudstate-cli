@@ -34,46 +34,46 @@ Is a lightweight, fast client that lets you go from zero to production with *Sta
 
 ```  
 [cloudstate]# cloudstate --help
-              cloudstate 0.0.1
-              Adriano Santos <sleipnir@bsd.com.br>
-              CloudState CLI
-              
-              USAGE:
-                  cloudstate [FLAGS] [OPTIONS]
-              
-              FLAGS:
-                      --deploy           Deploy user function with CloudState sidecar in K8s environment
-                  -h, --help             Prints help information
-                  -i, --init             Initialize a CloudState k8s namespace/operator
-                  -l, --list-profiles    List all profiles supported
-                  -n, --namespace        Set k8s namespace for user function. Example cloudstate -n namespace
-                      --push             Push container image in repository
-                  -R, --run              Running user function & cloudstate proxy in Docker
-                      --upgrade          Update CloudState CLI version
-                  -V, --version          Prints version information
-              
-              OPTIONS:
-                      --build <build>                  Build project with template specified. Requires path. Example cloudstate
-                                                       --build=.
-                  -B, --build-deploy <build-deploy>    Shortcut to build, push and deploy. Example cloudstate -B . --tag=1.0.1
-                  -c, --create <create>                Create a new user function project from template. Example --create=shopping-
-                                                       cart --profile=java --repo=cloudstate --tag=1.0.1
-                  -d, --datastore <datastore>          Used in conjunction with 'create'. Enable CloudState Stateful stores. Example
-                                                       --datastore=Cassandra. Valid values [Cassandra, Postgres or InMemory] [possible
-                                                       values: InMemory, Cassandra, Postgres]
-                  -P, --profile <profile>              Used in conjunction with 'create'. Set language template for this project.
-                                                       Possible values is [java, node, go, dotnet, rust, python, scala] [possible
-                                                       values: java, node, go, dotnet, rust, python, scala]
-                  -r, --registry <registry>            Used in conjunction with 'create'. Set the docker repository. Used to create
-                                                       container images. Example -r quay.io/myuser or --registry=sleipnir/test
-                  -E, --set-editor <set-editor>        Used in conjunction with 'create'. Set the default code editor. Default 'vi'.
-                                                       [possible values: vi, nano, code, idea]
-                      --set-pass <set-pass>            Used in conjunction with 'repo'. Set the password for the target docker
-                                                       registry
-                      --set-user <set-user>            Used in conjunction with 'repo'. Set the username for the target docker
-                                                       registry
-                  -t, --tag <tag>                      Used in conjunction with 'create' and/or 'build'. Set version of user function.
-                                                       Used to create container images. Example -t 1.0.1 or --tag=0.1.0
+cloudstate 0.0.1
+Adriano Santos <sleipnir@bsd.com.br>
+CloudState CLI
+
+USAGE:
+  cloudstate [FLAGS] [OPTIONS]
+
+FLAGS:
+      --deploy           Deploy user function with CloudState sidecar in K8s environment
+  -h, --help             Prints help information
+  -i, --init             Initialize a CloudState k8s namespace/operator
+  -l, --list-profiles    List all profiles supported
+  -n, --namespace        Set k8s namespace for user function. Example cloudstate -n namespace
+      --push             Push container image in repository
+  -R, --run              Running user function & cloudstate proxy in Docker
+      --upgrade          Update CloudState CLI version
+  -V, --version          Prints version information
+
+OPTIONS:
+      --build <build>                  Build project with template specified. Requires path. Example cloudstate
+                                       --build=.
+  -B, --build-deploy <build-deploy>    Shortcut to build, push and deploy. Example cloudstate -B . --tag=1.0.1
+  -c, --create <create>                Create a new user function project from template. Example --create=shopping-
+                                       cart --profile=java --repo=cloudstate --tag=1.0.1
+  -d, --datastore <datastore>          Used in conjunction with 'create'. Enable CloudState Stateful stores. Example
+                                       --datastore=Cassandra. Valid values [Cassandra, Postgres or InMemory] [possible
+                                       values: InMemory, Cassandra, Postgres]
+  -P, --profile <profile>              Used in conjunction with 'create'. Set language template for this project.
+                                       Possible values is [java, node, go, dotnet, rust, python, scala] [possible
+                                       values: java, node, go, dotnet, rust, python, scala]
+  -r, --registry <registry>            Used in conjunction with 'create'. Set the docker repository. Used to create
+                                       container images. Example -r quay.io/myuser or --registry=sleipnir/test
+  -E, --set-editor <set-editor>        Used in conjunction with 'create'. Set the default code editor. Default 'vi'.
+                                       [possible values: vi, nano, code, idea]
+      --set-pass <set-pass>            Used in conjunction with 'repo'. Set the password for the target docker
+                                       registry
+      --set-user <set-user>            Used in conjunction with 'repo'. Set the username for the target docker
+                                       registry
+  -t, --tag <tag>                      Used in conjunction with 'create' and/or 'build'. Set version of user function.
+                                       Used to create container images. Example -t 1.0.1 or --tag=0.1.0
 
 ```  
 <br/>
