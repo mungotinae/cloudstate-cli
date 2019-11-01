@@ -9,7 +9,7 @@ pub mod command {
     use crate::{get_user_dir, get_templates};
 
     const CLOUD_STATE_NAMESPACE: &str = "cloudstate";
-    const CLOUD_STATE_OPERATOR_DEPLOYMENT: &str = "https://github.com/cloudstateio/cloudstate/releases/download/v0.4.3/cloudstate-0.4.3.yaml";
+    const CLOUD_STATE_OPERATOR_DEPLOYMENT: &str = "https://raw.githubusercontent.com/cloudstateio/cloudstate/master/operator/cloudstate.yaml";
 
     pub fn init(){
         // First download templates
