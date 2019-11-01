@@ -112,7 +112,7 @@ deployment.apps/cloudstate-operator created
 ```  
 [cloudstate]# cloudstate --create=shopping-cart \
   --profile=java \
-  --repo=docker.io/sleipnir \
+  --registry=docker.io/sleipnir \
   --set-user=sleipnir \
   --set-pass=***** \
   --tag=1.0.1 \
