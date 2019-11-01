@@ -6,7 +6,7 @@ pub mod command {
     use std::collections::HashMap;
     use crate::builders::{java::JavaBuilder, node::NodeBuilder, go::GoBuilder, dotnet::DotNetBuilder, rust::RustBuilder, python::PythonBuilder, scala::ScalaBuilder, ProjectBuilder, Application};
 
-    use crate::{get_user_dir, get_templates};
+    use crate::{get_user_dir, get_templates, Emojis};
 
     const CLOUD_STATE_NAMESPACE: &str = "cloudstate";
     const CLOUD_STATE_OPERATOR_DEPLOYMENT: &str = "https://raw.githubusercontent.com/cloudstateio/cloudstate/master/operator/cloudstate.yaml";
@@ -114,7 +114,7 @@ pub mod command {
     }
 
     fn create_namespace(namespace: String) -> Result<(), String> {
-        println!("Creating CloudState namespace...");
+        println!("{} Creating CloudState namespace...", Emojis::default().winking());
         if let result = Command::new("kubectl")
             .arg("create")
             .arg("namespace")
@@ -122,15 +122,16 @@ pub mod command {
             .spawn()
             .is_ok() {
 
-            println!("Success on create CloudState namespace");
+            println!("{} Success on create CloudState namespace", Emojis::default().smiling());
             return Ok(());
         };
 
+        println!("{} Failure on create CloudState namespace", Emojis::default().screaming());
         return Err(String::from("Failure on create CloudState namespace"));
     }
 
     fn init_operator(namespace: String) -> Result<(), String> {
-        println!("Initializing CloudState operator...");
+        println!("{} Initializing CloudState operator...", Emojis::default().rocket());
         if let result = Command::new("kubectl")
             .arg("apply")
             .arg("-n")
@@ -140,10 +141,11 @@ pub mod command {
             .spawn()
             .is_ok() {
 
-            println!("Success on installing CloudState operator");
+            println!("{} Success on installing CloudState operator", Emojis::default().success());
             return Ok(());
         };
 
+        println!("{} Failure on installing CloudState operator", Emojis::default().crying());
         return Err(String::from("Failure on installing CloudState operator"))
     }
 }

@@ -41,24 +41,6 @@ impl ProjectBuilder for JavaBuilder {
 
     }
 
-    fn pos_compile(&self, app: &Application) {
-        env::set_current_dir(&app.work_dir);
-
-        println!("Project created!");
-        Command::new("ls")
-            .arg("-ltr")
-            .spawn()
-            .expect("Error during create Java project");
-
-        println!("Open editor!");
-        let cached = dirs::home_dir().unwrap();
-        Command::new(&app.editor)
-            .arg(".")
-            .status()
-            .expect("Error on open code editor");
-
-    }
-
     fn build(self, app: Application) {
         println!("Building Project...");
         env::set_current_dir(&app.work_dir);
