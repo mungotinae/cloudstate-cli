@@ -14,6 +14,7 @@ CloudState is polyglot, which means that services can be written in any language
 Read more about the design, architecture, techniques, and technologies behind CloudState in [the documentation](https://cloudstate.io/docs/).
 
 ##CloudState CLI 
+
 Is a *lightweight*, *fast* client that lets you go from zero to production with *Stateful Serveless* functions in minutes.
   
 ## Index
