@@ -1,7 +1,6 @@
 
 # CloudState CLI  
   
-
 CloudState is a specification, protocol, and reference implementation for providing distributed state management patterns suitable for Serverless computing. The current supported and envisioned patterns include:
 
 -   Event Sourcing
@@ -14,7 +13,6 @@ CloudState is polyglot, which means that services can be written in any language
 
 Read more about the design, architecture, techniques, and technologies behind CloudState in [this section in the documentation](https://cloudstate.io/docs/).
 
-> Disclaimer not ready for production
 **CloudState CLI** is a lightweight, fast client that lets you go from zero to production with *Stateful Serveless* functions in minutes
   
 ## Index
