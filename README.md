@@ -13,18 +13,26 @@ CloudState is polyglot, which means that services can be written in any language
 
 Read more about the design, architecture, techniques, and technologies behind CloudState in [the documentation](https://cloudstate.io/docs/).
 
-##**CloudState CLI** 
-Is a lightweight, fast client that lets you go from zero to production with *Stateful Serveless* functions in minutes.
+##CloudState CLI 
+Is a *lightweight*, *fast* client that lets you go from zero to production with *Stateful Serveless* functions in minutes.
   
 ## Index
  1. [Prerequisites](#Prerequisites)
- 2. [Installation](#Install)
+ 2. [Installation](#Installation)
  3. [Usage](#Usage)
  4. [CloudState and CloudState CLI language support](#Languages)
 
-## Prerequisites
+## Prerequisites:
+CloudState CLI relies on a number of command line tools such as:
+
+<br/>
+
+ * Curl
+ * [Docker](https://www.docker.com/)
+ * [Minikube](https://github.com/kubernetes/minikube) (for tests)
+ * Language specific build tools like [maven](https://maven.apache.org/) for Java, [Cargo](https://doc.rust-lang.org/cargo/) for Rust, etc..
   
-## Install:  
+## Installation:  
 ```  
 [cloudstate]#  curl https://raw.githubusercontent.com/sleipnir/cloudstate-cli/master/bin/cloudstate-installer.sh | sh -  
 ```  
