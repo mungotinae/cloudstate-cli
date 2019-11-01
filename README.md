@@ -24,7 +24,7 @@ Is a lightweight, fast client that lets you go from zero to production with *Sta
 
 ## Prerequisites
   
-##Install:  
+## Install:  
 ```  
 [cloudstate]#  curl https://raw.githubusercontent.com/sleipnir/cloudstate-cli/master/bin/cloudstate-installer.sh | sh -  
 ```  
@@ -62,10 +62,18 @@ deployment.apps/cloudstate-operator created
 [cloudstate]#  
 ```  
 
-  
-### Create User Function Project from specific profile:  
+<br/>
+ 
+**Create User Function Project from specific profile:**  
 ```  
-[cloudstate]# cloudstate --create=shopping-cart --profile=java --repo=docker.io/sleipnir --set-user=sleipnir --set-pass=***** --tag=1.0.1 --set-editor=idea  
+[cloudstate]# cloudstate --create=shopping-cart \
+  --profile=java \
+  --repo=docker.io/sleipnir \
+  --set-user=sleipnir \
+  --set-pass=***** \
+  --tag=1.0.1 \
+  --set-editor=idea  
+
 Creating user function project: "shopping-cart"  
 Using profile: "java"  
 Extracting profile template.... /root/.cloudstate/templates/java/java.tar.gz  
@@ -92,7 +100,9 @@ Ok(())
 [cloudstate]#  
 ```
 
-### Build function:   
+<br/>
+
+**Build function:**   
   
 ```
 [shopping-cart]# cloudstate --build=.  
@@ -156,8 +166,10 @@ Ok(())
   
 [cloudstate]#  
 ```  
-  
-### Or Build and Deploy function:  
+
+<br/>
+
+**Or Build and Deploy function:**  
 ```  
 [loudstate]# cloudstate --build=. --tag=1.0.1 --push --deploy --namespace=cloudstate  
 Application { name: "shopping-cart", tag: "1.0.1", home_dir: "/root/.cloudstate", work_dir: "/home/sleipnir/development/workspace/pessoal/cloudstate-cli/cloudstate/shopping-cart", user_dir: "/home/sleipnir/development/workspace/pessoal/cloudstate-cli/cloudstate/shopping-cart/.cloudstate", profile: "java", namespace: "cloudstate", repo: "docker.io/sleipnir/shopping-cart", repo_user: "sleipnir", repo_pass: "bsd*a211003", editor: "idea", data_store: "InMemory", port: 8088 }  
@@ -263,8 +275,9 @@ Application { name: "shopping-cart", tag: "1.0.1", home_dir: "/root/.cloudstate"
 Success on installing 'User Function' shopping-cart in namespace: cloudstate  
   
 ```  
-  
-### Checking deploy:  
+<br/>
+
+**Checking deploy:**  
 ```  
 [cloudstate]# kubectl get po -n cloudstate  
 NAME                                        READY   STATUS    RESTARTS   AGE  
@@ -281,8 +294,10 @@ shopping-cart-deployment-7657c848fc-tpngd   1/2     Running   0          16m
 ..........  
   
 ```  
-  
-### Listing supported profiles:  
+
+<br/>
+
+**Listing supported profiles:**  
 ```  
 [cloudstate]# cloudstate --list-profiles  
 [Template Name]:[Dependencies]:[Resolved]  
