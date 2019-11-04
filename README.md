@@ -346,16 +346,16 @@ shopping-cart-deployment-7657c848fc-tpngd   1/2     Running   0          16m
 **Listing supported profiles:**  
 ```  
 [cloudstate]# cloudstate --list-profiles  
-[Template Name]:[Dependencies]:[Resolved]  
-[go]:[go]:[true]  
-[java]:[java, [maven | sbt]]:[true]  
-[dotnet]:[dotnet]:[true]  
-[rust]:[rust, cargo]:[true]  
-[python]:[python, virtualenv]:[true]  
-[node]:[node]:[true]  
-[scala]:[java, scala, sbt]:[true]  
-No verbose info  
-Ok(())  
+Profile    | Dependencies         | Resolved  
+scala      | java, scala, sbt     | true      
+go         | go                   | true      
+java       | java, [maven | sbt]  | true      
+dotnet     | dotnet               | true      
+rust       | rust, cargo          | true      
+python     | python, virtualenv   | true      
+node       | node                 | true      
+Ok(())
+
 [cloudstate]#  
 ```
 
