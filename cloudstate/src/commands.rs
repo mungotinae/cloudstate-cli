@@ -102,9 +102,9 @@ pub mod command {
         profiles.insert("python", "python, virtualenv");
         profiles.insert("scala", "java, scala, sbt");
 
-        println!("{0: <10} | {1: <10} | {2: <10}", "Profile", "Dependencies", "Resolved");
+        println!("{0: <10} | {1: <20} | {2: <10}", "Profile", "Dependencies", "Resolved");
         for (profile, dependencies) in &profiles {
-            println!("{0: <10} | {1: <10} | {2: <10}", profile, dependencies, resolve_dependencies(profile));
+            println!("{0: <10} | {1: <20} | {2: <10}", profile, dependencies, resolve_dependencies(profile));
             //println!("[{}]:[{}]:[{}]", profile, dependencies, resolve_dependencies(profile));
         }
     }
