@@ -43,7 +43,7 @@ CloudState CLI relies on a number of command line tools such as:
 
 ```  
 [cloudstate]# cloudstate --help
-cloudstate 0.0.1
+cloudstate 0.1.1
 Adriano Santos <sleipnir@bsd.com.br>
 CloudState CLI
 
@@ -90,18 +90,20 @@ OPTIONS:
 **Initialize CloudState Operator:**  
 ```
 [cloudstate]# cloudstate --init  
-Creating CloudState namespace...  
-namespace/cloudstate created  
-Initializing CloudState operator...  
-customresourcedefinition.apiextensions.k8s.io/statefulservices.cloudstate.io unchanged  
-customresourcedefinition.apiextensions.k8s.io/journals.cloudstate.io unchanged  
-serviceaccount/cloudstate-operator created  
-configmap/cloudstate-operator-config created  
-clusterrole.rbac.authorization.k8s.io/cloudstate-operator-role unchanged  
-role.rbac.authorization.k8s.io/cloudstate-operator-role created  
-clusterrolebinding.rbac.authorization.k8s.io/cloudstate-operator unchanged  
-rolebinding.rbac.authorization.k8s.io/cloudstate-operator created  
-deployment.apps/cloudstate-operator created   
+😉 Creating CloudState namespace...
+😻 Success on create CloudState namespace
+🚀 Initializing CloudState operator...
+namespace/cloudstate created
+customresourcedefinition.apiextensions.k8s.io/statefulstores.cloudstate.io unchanged
+customresourcedefinition.apiextensions.k8s.io/statefulservices.cloudstate.io unchanged
+serviceaccount/cloudstate-operator created
+configmap/cloudstate-operator-config created
+role.rbac.authorization.k8s.io/cloudstate-operator-config-reader created
+rolebinding.rbac.authorization.k8s.io/cloudstate-operator-config-reader-binding created
+clusterrole.rbac.authorization.k8s.io/cloudstate-operator-role unchanged
+clusterrolebinding.rbac.authorization.k8s.io/cloudstate-operator unchanged
+🙌 Success on installing CloudState operator
+Ok(())   
   
 [cloudstate]#  
 ```
