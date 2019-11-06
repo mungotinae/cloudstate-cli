@@ -13,6 +13,7 @@ use std::fs::File;
 use std::io::Write;
 
 use crate::builders::{ProjectBuilder, Application};
+use crate::{set_deployment_vars, k8s_deploy};
 
 pub struct JavaBuilder;
 
@@ -22,7 +23,7 @@ impl ProjectBuilder for JavaBuilder {
         env::set_current_dir(&app.work_dir);
 
         // Find and replace occurrences of {docker-image} and {tag} in deployment.yml
-        JavaBuilder::set_deployment_vars(&app);
+        set_deployment_vars(&app);
 
         // Find and replace occurrences of {application-name}, {application-version} in pom.xml
         JavaBuilder::set_pom_vars(&app);
@@ -43,62 +44,27 @@ impl ProjectBuilder for JavaBuilder {
 
     fn build(self, app: Application) {
         println!("Building Project...");
-        env::set_current_dir(&app.work_dir);
-
-        let install_status = JavaBuilder::install();
-
-        println!("Compiling project...");
-        if install_status.is_ok() {
-            println!("Project successfully compiled");
-        };
-
+        self.compile(&app);
     }
 
     fn push(self, app: Application) {
         env::set_current_dir(&app.work_dir);
 
+        println!("Push container image...");
         let push_status = JavaBuilder::push(&app);
 
-        println!("Push container image...");
         if push_status.is_ok() {
             println!("Pushed!");
         };
     }
 
     fn deploy(self, app: Application) {
-        env::set_current_dir(&app.work_dir);
-
-        let result = Command::new("kubectl")
-            .arg("apply")
-            .arg("-n")
-            .arg(&app.namespace)
-            .arg("-f")
-            .arg("deployment.yml")
-            .spawn();
-
-        if result.is_ok() {
-            println!("Success on installing 'User Function' {} in namespace: {}", &app.name, &app.namespace);
-        } else {
-            panic!("Error on installing 'User Function' {} in namespace: {}", &app.name, &app.namespace);
-        }
-
+        k8s_deploy(&app)
     }
 }
 
 
 impl JavaBuilder {
-    fn set_deployment_vars(app: &&Application) {
-        let deployment_path = Path::new(&app.work_dir).join("deployment.yml");
-        let deployment_template_content = fs::read_to_string(deployment_path.clone()).unwrap();
-
-        let image_name = &app.registry;
-
-        let deployment_name = deployment_template_content.replace("{application-name}", app.name.as_ref());
-        let deployment_image = deployment_name.replace("{image-name}", image_name.as_str());
-        let deployment_content = deployment_image.replace("{tag}", app.tag.as_ref());
-        let mut deployment_file = File::create(deployment_path).unwrap();
-        deployment_file.write_all(deployment_content.as_ref());
-    }
 
     fn set_pom_vars(app: &&Application) {
         let pom_path = Path::new(&app.work_dir).join("pom.xml");

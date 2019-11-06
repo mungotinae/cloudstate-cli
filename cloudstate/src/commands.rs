@@ -119,7 +119,7 @@ pub mod command {
             .arg("create")
             .arg("namespace")
             .arg(namespace)
-            .spawn()
+            .status()
             .is_ok() {
 
             println!("{} Success on create CloudState namespace", Emojis::default().smiling());
@@ -138,7 +138,7 @@ pub mod command {
             .arg(namespace)
             .arg("-f")
             .arg(CLOUD_STATE_OPERATOR_DEPLOYMENT)
-            .spawn()
+            .status()
             .is_ok() {
 
             println!("{} Success on installing CloudState operator", Emojis::default().success());
