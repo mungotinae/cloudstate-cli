@@ -5,7 +5,7 @@ pub mod command {
     use std::process::Command;
     use std::collections::HashMap;
     use crate::builders::{java::JavaBuilder, node::NodeBuilder, go::GoBuilder, dotnet::DotNetBuilder, rust::RustBuilder, python::PythonBuilder, scala::ScalaBuilder, ProjectBuilder, Application};
-
+    use linked_hash_map::LinkedHashMap;
     use crate::{get_user_dir, get_templates, Emojis};
 
     const CLOUD_STATE_NAMESPACE: &str = "cloudstate";
@@ -93,18 +93,38 @@ pub mod command {
     }
 
     pub fn list_profiles() {
-        let mut profiles = HashMap::new();
+        let mut profiles = LinkedHashMap::new();
+        profiles.insert("dotnet", "dotnet");
+        profiles.insert("go", "go");
         profiles.insert("java", "java, [maven | sbt]");
         profiles.insert("node", "node");
-        profiles.insert("go", "go");
-        profiles.insert("dotnet", "dotnet");
-        profiles.insert("rust", "rust, cargo");
         profiles.insert("python", "python, virtualenv");
+        profiles.insert("rust", "rust, cargo");
         profiles.insert("scala", "java, scala, sbt");
 
-        println!("{0: <10} | {1: <20} | {2: <10}", "Profile", "Dependencies", "Resolved");
+        println!("{0: <10} | {1: <20} | {2: <10} | {3: <12} |", "Profile", "Dependencies", "Resolved", "Maturity Level");
         for (profile, dependencies) in &profiles {
-            println!("{0: <10} | {1: <20} | {2: <10}", profile, dependencies, resolve_dependencies(profile));
+            println!("{0: <10} | {1: <20} | {2: <10} | {3: <13} |", profile, dependencies, resolve_dependencies(profile), maturity_level(profile.clone()));
+        }
+
+        println!();
+        println!("Subtitle:");
+        println!("{} Stable for production usage", Emojis::default().stable());
+        println!("{} Unstable but usable", Emojis::default().unstable());
+        println!("{} Work in progress", Emojis::default().work_in_progress());
+        println!("{} Unknown", Emojis::default().unknown());
+    }
+
+    fn maturity_level(profile: &str) -> char {
+        match profile {
+            "java"   => Emojis::default().stable(),
+            "node"   => Emojis::default().stable(),
+            "scala"  => Emojis::default().work_in_progress(),
+            "go"     => Emojis::default().unstable(),
+            "dotnet" => Emojis::default().work_in_progress(),
+            "rust"   => Emojis::default().work_in_progress(),
+            "python" => Emojis::default().work_in_progress(),
+            _        => Emojis::default().unknown()
         }
     }
 

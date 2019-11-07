@@ -39,6 +39,14 @@ impl Emojis {
         '\u{1F609}'
     }
 
+    pub fn stable(self) -> char { '\u{1F44C}' }
+
+    pub fn unstable(self) -> char { '\u{1F44D}' }
+
+    pub fn work_in_progress(self) -> char {'\u{231B}' }
+
+    pub fn unknown(self) -> char { '\u{1F44E}' }
+
 
 }
 
