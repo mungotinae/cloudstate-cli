@@ -368,4 +368,12 @@ Ok(())
 [cloudstate]#  
 ```
 
+**Destroying CloudState Resources**
+```
+[cloudstate]# cloudstate --destroy
+😿 Destroying CloudState resources...
+💔 CloudState dead
+Ok(())
+```
+
 ## Languages
