@@ -26,6 +26,25 @@ pub mod command {
         }
     }
 
+    pub fn destroy() {
+        //kubectl delete all --all -n {namespace}
+        println!("{} Destroying CloudState resources", Emojis::default().crying());
+        let result = Command::new("kubectl")
+            .arg("delete")
+            .arg("all")
+            .arg("--all")
+            .arg(CLOUD_STATE_NAMESPACE)
+            .status();
+
+        if result.is_ok() {
+            println!("{} CloudState dead", Emojis::default().broken_heart());
+        } else {
+            println!("{} CloudState survivor", Emojis::default().stuck_out());
+        }
+
+
+    }
+
     pub fn build(app: Application) {
         // Retrive project configuration
         match app.profile.as_str() {

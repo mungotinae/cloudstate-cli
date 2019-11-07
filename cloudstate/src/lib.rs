@@ -47,6 +47,10 @@ impl Emojis {
 
     pub fn unknown(self) -> char { '\u{1F44E}' }
 
+    pub fn broken_heart(self) -> char { '\u{1F494}' }
+
+    pub fn stuck_out(self) -> char { '\u{1F61D}' }
+
 
 }
 

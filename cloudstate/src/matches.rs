@@ -29,6 +29,10 @@ impl<'a> Resolver<'a> {
             command::init();
         }
 
+        if _matches.is_present("destroy") {
+            command::destroy();
+        }
+
         match _matches.value_of("create") {
             Some(ref project_name) => {
 
