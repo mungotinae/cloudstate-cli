@@ -54,6 +54,8 @@ impl Default for Application {
 
 pub trait ProjectBuilder {
 
+    fn is_dependencies_ok(&self) -> bool;
+
     /// Build template file structure for profiles
     ///
     /// # Arguments

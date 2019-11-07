@@ -129,8 +129,16 @@ pub mod command {
     }
 
     fn resolve_dependencies(profile: &str) -> bool {
-        //TODO: resolve dependencies her
-        true
+        match profile {
+            "java"   => JavaBuilder{}.is_dependencies_ok(),
+            "node"   => NodeBuilder{}.is_dependencies_ok(),
+            "scala"  => ScalaBuilder{}.is_dependencies_ok(),
+            "go"     => GoBuilder{}.is_dependencies_ok(),
+            "dotnet" => DotNetBuilder{}.is_dependencies_ok(),
+            "rust"   => RustBuilder{}.is_dependencies_ok(),
+            "python" => PythonBuilder{}.is_dependencies_ok(),
+            _        => false
+        }
     }
 
     fn create_namespace(namespace: String) -> Result<(), String> {

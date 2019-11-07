@@ -3,13 +3,21 @@ use crate::k8s_deploy;
 
 use std::path::Path;
 use std::{env, fs};
-use std::process::Command;
+use std::process::{Command, Stdio};
 use std::fs::File;
 use std::io::Write;
 
 pub struct GoBuilder;
 
 impl ProjectBuilder for GoBuilder {
+
+    fn is_dependencies_ok(&self) -> bool {
+        Command::new("which")
+            .arg("go")
+            .stdout(Stdio::null())
+            .status()
+            .is_ok()
+    }
 
     fn pre_compile(&self, app: &Application) {
         env::set_current_dir(&app.work_dir);

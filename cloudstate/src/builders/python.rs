@@ -5,6 +5,10 @@ pub struct PythonBuilder;
 
 impl ProjectBuilder for PythonBuilder {
 
+    fn is_dependencies_ok(&self) -> bool {
+        true
+    }
+
     fn pre_compile(&self, app: &Application) {
         unimplemented!()
     }

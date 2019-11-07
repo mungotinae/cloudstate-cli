@@ -9,7 +9,7 @@ use std::{env, fs};
 use crate::{set_deployment_vars, k8s_deploy};
 use std::fs::File;
 use std::io::Write;
-use std::process::Command;
+use std::process::{Command, Stdio};
 
 pub struct RustBuilder;
 
@@ -34,6 +34,14 @@ impl RustBuilder {
 }
 
 impl ProjectBuilder for RustBuilder {
+
+    fn is_dependencies_ok(&self) -> bool {
+        Command::new("which")
+            .arg("cargo")
+            .stdout(Stdio::null())
+            .status()
+            .is_ok()
+    }
 
     fn pre_compile(&self, app: &Application) {
         env::set_current_dir(&app.work_dir);

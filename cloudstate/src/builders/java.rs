@@ -5,7 +5,7 @@ extern crate cargo_toml_builder;
 extern crate throw;
 
 use std::path::Path;
-use std::process::{Command, ExitStatus};
+use std::process::{Command, ExitStatus, Stdio};
 use std::string::ToString;
 
 use std::{env, fs, io};
@@ -18,6 +18,25 @@ use crate::{set_deployment_vars, k8s_deploy};
 pub struct JavaBuilder;
 
 impl ProjectBuilder for JavaBuilder {
+
+    fn is_dependencies_ok(&self) -> bool {
+
+        let java_result = Command::new("which")
+            .arg("java")
+            .stdout(Stdio::null())
+            .status().is_ok();
+
+        if java_result {
+            Command::new("which")
+                .arg("mvn")
+                .stdout(Stdio::null())
+                .status()
+                .is_ok()
+        } else {
+            false
+        }
+
+    }
 
     fn pre_compile(&self, app: &Application) {
         env::set_current_dir(&app.work_dir);

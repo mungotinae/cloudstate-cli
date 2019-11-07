@@ -5,6 +5,10 @@ pub struct ScalaBuilder;
 
 impl ProjectBuilder for ScalaBuilder {
 
+    fn is_dependencies_ok(&self) -> bool {
+        false
+    }
+
     fn pre_compile(&self, app: &Application) {
         unimplemented!()
     }
