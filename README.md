@@ -48,41 +48,43 @@ Adriano Santos <sleipnir@bsd.com.br>
 CloudState CLI
 
 USAGE:
-  cloudstate [FLAGS] [OPTIONS]
+    cloudstate [FLAGS] [OPTIONS]
 
 FLAGS:
-      --deploy           Deploy user function with CloudState sidecar in K8s environment
-  -h, --help             Prints help information
-  -i, --init             Initialize a CloudState k8s namespace/operator
-  -l, --list-profiles    List all profiles supported
-  -n, --namespace        Set k8s namespace for user function. Example cloudstate -n namespace
-      --push             Push container image in repository
-  -R, --run              Running user function & cloudstate proxy in Docker
-      --upgrade          Update CloudState CLI version
-  -V, --version          Prints version information
+        --check            Test dependencies
+        --deploy           Deploy user function with CloudState sidecar in K8s environment
+    -D, --destroy          Destroy CloudState namespace and others resources
+    -h, --help             Prints help information
+    -i, --init             Initialize a CloudState k8s namespace/operator
+    -l, --list-profiles    List all profiles supported
+    -n, --namespace        Set k8s namespace for user function. Example cloudstate -n namespace
+        --push             Push container image in repository
+    -R, --run              Running user function & cloudstate proxy in Docker
+        --upgrade          Update CloudState CLI version
+    -V, --version          Prints version information
 
 OPTIONS:
-      --build <build>                  Build project with template specified. Requires path. Example cloudstate
-                                       --build=.
-  -B, --build-deploy <build-deploy>    Shortcut to build, push and deploy. Example cloudstate -B . --tag=1.0.1
-  -c, --create <create>                Create a new user function project from template. Example --create=shopping-
-                                       cart --profile=java --repo=cloudstate --tag=1.0.1
-  -d, --datastore <datastore>          Used in conjunction with 'create'. Enable CloudState Stateful stores. Example
-                                       --datastore=Cassandra. Valid values [Cassandra, Postgres or InMemory] [possible
-                                       values: InMemory, Cassandra, Postgres]
-  -P, --profile <profile>              Used in conjunction with 'create'. Set language template for this project.
-                                       Possible values is [java, node, go, dotnet, rust, python, scala] [possible
-                                       values: java, node, go, dotnet, rust, python, scala]
-  -r, --registry <registry>            Used in conjunction with 'create'. Set the docker repository. Used to create
-                                       container images. Example -r quay.io/myuser or --registry=sleipnir/test
-  -E, --set-editor <set-editor>        Used in conjunction with 'create'. Set the default code editor. Default 'vi'.
-                                       [possible values: vi, nano, code, idea]
-      --set-pass <set-pass>            Used in conjunction with 'repo'. Set the password for the target docker
-                                       registry
-      --set-user <set-user>            Used in conjunction with 'repo'. Set the username for the target docker
-                                       registry
-  -t, --tag <tag>                      Used in conjunction with 'create' and/or 'build'. Set version of user function.
-                                       Used to create container images. Example -t 1.0.1 or --tag=0.1.0
+        --build <build>                  Build project with template specified. Requires path. Example cloudstate
+                                         --build=.
+    -B, --build-deploy <build-deploy>    Shortcut to build, push and deploy. Example cloudstate -B . --tag=1.0.1
+    -c, --create <create>                Create a new user function project from template. Example --create=shopping-
+                                         cart --profile=java --repo=cloudstate --tag=1.0.1
+    -d, --datastore <datastore>          Used in conjunction with 'create'. Enable CloudState Stateful stores. Example
+                                         --datastore=Cassandra. Valid values [Cassandra, Postgres or InMemory] [possible
+                                         values: InMemory, Cassandra, Postgres]
+    -P, --profile <profile>              Used in conjunction with 'create'. Set language template for this project.
+                                         Possible values is [java, node, go, dotnet, rust, python, scala] [possible
+                                         values: java, node, go, dotnet, rust, python, scala]
+    -r, --registry <registry>            Used in conjunction with 'create'. Set the docker repository. Used to create
+                                         container images. Example -r quay.io/myuser or --registry=sleipnir/test
+    -E, --set-editor <set-editor>        Used in conjunction with 'create'. Set the default code editor. Default 'vi'.
+                                         [possible values: vi, nano, code, idea]
+        --set-pass <set-pass>            Used in conjunction with 'repo'. Set the password for the target docker
+                                         registry
+        --set-user <set-user>            Used in conjunction with 'repo'. Set the username for the target docker
+                                         registry
+    -t, --tag <tag>                      Used in conjunction with 'create' and/or 'build'. Set version of user function.
+                                         Used to create container images. Example -t 1.0.1 or --tag=0.1.0
 
 ```  
 <br/>
@@ -345,16 +347,23 @@ shopping-cart-deployment-7657c848fc-tpngd   1/2     Running   0          16m
 
 **Listing supported profiles:**  
 ```  
-[cloudstate]# cloudstate --list-profiles  
-Profile    | Dependencies         | Resolved  
-scala      | java, scala, sbt     | true      
-go         | go                   | true      
-java       | java, [maven | sbt]  | true      
-dotnet     | dotnet               | true      
-rust       | rust, cargo          | true      
-python     | python, virtualenv   | true      
-node       | node                 | true      
+[cloudstate]# cloudstate --list-profiles
+Profile    | Dependencies         | Resolved   | Maturity Level |
+dotnet     | dotnet               | true       | ⌛             |
+go         | go                   | true       | 👍             |
+java       | java, [maven | sbt]  | true       | 👌             |
+node       | node                 | true       | 👌             |
+python     | python, virtualenv   | true       | ⌛             |
+rust       | rust, cargo          | true       | ⌛             |
+scala      | java, scala, sbt     | true       | ⌛             |
+
+Subtitle:
+👌 Stable for production usage
+👍 Unstable but usable
+⌛ Work in progress
+👎 Unknown
 Ok(())
+
 
 [cloudstate]#  
 ```
