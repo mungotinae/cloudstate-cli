@@ -17,7 +17,7 @@ impl RustBuilder {
     fn get_cargo_toml(name: &str, version: &str) -> String {
         let log_dep = Dependency::version("log", "0.4.8");
         let log_rs_dep = Dependency::version("log4rs", "0.8.3");
-        let cloud_state_dep = Dependency::tag("cloudstate", "https://github.com/sleipnir/cloudstate-rust", "0.1.1");
+        let cloud_state_dep = Dependency::tag("cloudstate", "https://github.com/sleipnir/cloudstate-rust", "0.1.4");
         //let cloud_state_dep = Dependency::version("cloudstate", "0.0.1");
 
         let dependencies = vec![log_dep, log_rs_dep, cloud_state_dep];
