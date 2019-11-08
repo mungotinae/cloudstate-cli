@@ -28,7 +28,7 @@ pub mod command {
 
     pub fn destroy() {
         //kubectl delete all --all -n {namespace}
-        println!("{} Destroying CloudState resources", Emojis::default().crying());
+        println!("{} Destroying CloudState resources", Emojis::default().fire());
         let result = Command::new("kubectl")
             .arg("delete")
             .arg("all")
@@ -38,6 +38,7 @@ pub mod command {
             .status();
 
         if result.is_ok() {
+            println!("{} Deleted all resources", Emojis::default().crying());
             println!("{} CloudState dead", Emojis::default().broken_heart());
         } else {
             println!("{} CloudState survivor", Emojis::default().stuck_out());

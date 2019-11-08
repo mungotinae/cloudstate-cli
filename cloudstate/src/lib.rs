@@ -27,6 +27,10 @@ impl Emojis {
         '\u{1F63F}'
     }
 
+    pub fn fire(self) -> char {
+        '\u{1F525}'
+    }
+
     pub fn smiling(self) -> char {
         '\u{1F63B}'
     }
