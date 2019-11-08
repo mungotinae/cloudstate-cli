@@ -1,5 +1,5 @@
 use crate::builders::{ProjectBuilder, Application};
-use crate::k8s_deploy;
+use crate::{k8s_deploy, set_deployment_vars};
 
 use std::path::Path;
 use std::{env, fs};
@@ -21,6 +21,9 @@ impl ProjectBuilder for GoBuilder {
 
     fn pre_compile(&self, app: &Application) {
         env::set_current_dir(&app.work_dir);
+
+        // Find and replace occurrences of {docker-image} and {tag} in deployment.yml
+        set_deployment_vars(&app);
 
         // set dockerfile
         let docker_path = Path::new(&app.work_dir).join("Dockerfile");
