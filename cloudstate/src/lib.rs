@@ -96,7 +96,8 @@ pub fn k8s_deploy(app: &Application) -> () {
         .arg(&app.namespace)
         .arg("-f")
         .arg("deployment.yml")
-        .spawn();
+        .status();
+
     if result.is_ok() {
         println!("Success on installing 'User Function' {} in namespace: {}", &app.name, &app.namespace);
     } else {
