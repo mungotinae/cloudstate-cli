@@ -39,7 +39,18 @@ pub mod command {
 
         if result.is_ok() {
             println!("{} Deleted all resources", Emojis::default().crying());
-            println!("{} CloudState dead", Emojis::default().broken_heart());
+            let destroy_result = Command::new("kubectl")
+                .arg("delete")
+                .arg("namespace")
+                .arg(CLOUD_STATE_NAMESPACE)
+                .status();
+
+            if destroy_result.is_ok() {
+                println!("{} CloudState dead", Emojis::default().broken_heart());
+            } else {
+                println!("{} CloudState survivor", Emojis::default().stuck_out());
+            }
+
         } else {
             println!("{} CloudState survivor", Emojis::default().stuck_out());
         }
