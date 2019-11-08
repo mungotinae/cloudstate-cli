@@ -371,7 +371,12 @@ Ok(())
 **Destroying CloudState Resources**
 ```
 [cloudstate]# cloudstate --destroy
-😿 Destroying CloudState resources...
+🔥 Destroying CloudState resources
+pod "cloudstate-operator-6579fb749c-rwnkf" deleted
+deployment.apps "cloudstate-operator" deleted
+replicaset.apps "cloudstate-operator-6579fb749c" deleted
+😿 Deleted all resources
+namespace "cloudstate" deleted
 💔 CloudState dead
 Ok(())
 ```
