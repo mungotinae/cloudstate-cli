@@ -4,7 +4,7 @@ use std::path::Path;
 use std::{fs, env};
 use std::fs::File;
 use std::io::Write;
-use std::process::Command;
+use std::process::{Command, Stdio};
 
 pub mod commands;
 pub mod matches;
@@ -55,6 +55,16 @@ impl Emojis {
 
     pub fn stuck_out(self) -> char { '\u{1F61D}' }
 
+    pub fn bomb(self) -> char { '\u{1F4A3}' }
+
+    pub fn warning(self) -> char { '\u{26A0}'}
+
+    pub fn sunglasses(self) -> char { '\u{1F60E}' }
+
+    pub fn ok(self) -> char { '\u{2714}' }
+
+    pub fn nok(self) -> char { '\u{2716}' }
+
 
 }
 
@@ -86,6 +96,15 @@ pub fn set_deployment_vars(app: &&Application) {
     let deployment_content = deployment_image.replace("{tag}", app.tag.as_ref());
     let mut deployment_file = File::create(deployment_path).unwrap();
     deployment_file.write_all(deployment_content.as_ref());
+}
+
+pub fn check_command(name: &str) -> Option<i32> {
+    Command::new("which")
+        .arg(name)
+        .stdout(Stdio::null())
+        .stderr(Stdio::null())
+        .status().unwrap()
+        .code()
 }
 
 pub fn k8s_deploy(app: &Application) -> () {

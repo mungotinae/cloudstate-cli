@@ -15,7 +15,7 @@ Read more about the design, architecture, techniques, and technologies behind Cl
 
 **CloudState CLI** 
 
-Is a *lightweight*, *fast* client that lets you go from zero to production with *Stateful Serveless* functions in minutes.
+Is a *lightweight*, *fast*, and fun client that lets you go from zero to production with *Stateful Serveless* functions in minutes.
   
 ## Index
  1. [Prerequisites](#Prerequisites)
@@ -87,6 +87,26 @@ OPTIONS:
                                          Used to create container images. Example -t 1.0.1 or --tag=0.1.0
 
 ```  
+<br/>
+
+**Check System Dependencies**
+```
+[cloudstate]# cloudstate --check
+✔ Dependency Docker     Checked !
+✔ Dependency Kubectl    Checked !
+✔ Dependency Minikube   Checked !
+✔ Dependency Dotnet     Checked !
+✔ Dependency Go         Checked !
+✔ Dependency Java       Checked !
+✔ Dependency Mvn        Checked !
+✔ Dependency Npm        Checked !
+✔ Dependency Python     Checked !
+✔ Dependency Cargo      Checked !
+✖ Dependency Sbt not found in system path. If you use Scala please proceed to install it.
+Ok(())
+
+[cloudstate]#  
+```
 <br/>
 
 **Initialize CloudState Operator:**  
@@ -372,13 +392,18 @@ Ok(())
 ```
 [cloudstate]# cloudstate --destroy
 🔥 Destroying CloudState resources
-pod "cloudstate-operator-6579fb749c-rwnkf" deleted
+pod "cloudstate-operator-6579fb749c-d4fhs" deleted
+pod "shopping-cart-deployment-668686cbd7-8kzqj" deleted
+service "shopping-cart" deleted
 deployment.apps "cloudstate-operator" deleted
+deployment.apps "shopping-cart-deployment" deleted
 replicaset.apps "cloudstate-operator-6579fb749c" deleted
+replicaset.apps "shopping-cart-deployment-668686cbd7" deleted
 😿 Deleted all resources
 namespace "cloudstate" deleted
 💔 CloudState dead
 Ok(())
+
 ```
 
 ## Languages

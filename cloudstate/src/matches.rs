@@ -33,6 +33,10 @@ impl<'a> Resolver<'a> {
             command::destroy();
         }
 
+        if _matches.is_present("check") {
+            command::check();
+        }
+
         match _matches.value_of("create") {
             Some(ref project_name) => {
 

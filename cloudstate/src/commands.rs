@@ -1,15 +1,47 @@
 pub mod command {
+    extern crate inflector;
 
     use std::fs;
     use std::path::Path;
     use std::process::Command;
-    use std::collections::HashMap;
     use crate::builders::{java::JavaBuilder, node::NodeBuilder, go::GoBuilder, dotnet::DotNetBuilder, rust::RustBuilder, python::PythonBuilder, scala::ScalaBuilder, ProjectBuilder, Application};
     use linked_hash_map::LinkedHashMap;
-    use crate::{get_user_dir, get_templates, Emojis};
+    use inflector::Inflector;
+    use crate::{get_user_dir, get_templates, Emojis, check_command};
 
     const CLOUD_STATE_NAMESPACE: &str = "cloudstate";
     const CLOUD_STATE_OPERATOR_DEPLOYMENT: &str = "https://raw.githubusercontent.com/cloudstateio/cloudstate/master/operator/cloudstate.yaml";
+
+    pub fn check() {
+
+        let mut commands = LinkedHashMap::new();
+
+        commands.insert("docker", format!("{} Docker not found in system path", Emojis::default().bomb() ));
+        commands.insert("kubectl", format!("{} Kubectl not found in system path", Emojis::default().bomb() ));
+        commands.insert("minikube", format!("{} Minikube not found in system path", Emojis::default().bomb() ));
+
+        commands.insert("dotnet", "Dependency .NET not found in system path. If you use dotnet please proceed to install it.".parse().unwrap());
+        commands.insert("go", "Dependency GO not found in system path. If you use GO please proceed to install it.".parse().unwrap());
+        commands.insert("java", "Dependency Java not found in system path. If you use Java please proceed to install it.".parse().unwrap());
+        commands.insert("mvn", "Dependency Java not found in system path. If you use Java please proceed to install it.".parse().unwrap());
+
+        commands.insert("npm", "Dependency NPM not found in system path. If you use NodeJS please proceed to install it.".parse().unwrap());
+        commands.insert("python", "Dependency Python not found in system path. If you use Python please proceed to install it.".parse().unwrap());
+        commands.insert("cargo", "Dependency Rust not found in system path. If you use Rust please proceed to install it.".parse().unwrap());
+        commands.insert("sbt", "Dependency Sbt not found in system path. If you use Scala please proceed to install it.".parse().unwrap());
+
+        for (command, expect) in &commands {
+            let result = check_command(&command);
+
+            if result.unwrap() == 0 {
+                println!("{0: <1} Dependency {1: <10} Checked !", Emojis::default().ok(), command.to_title_case())
+            } else {
+                println!("{} {}", Emojis::default().nok(), expect);
+            }
+        }
+
+
+    }
 
     pub fn init(){
         // First download templates
@@ -54,7 +86,6 @@ pub mod command {
         } else {
             println!("{} CloudState survivor", Emojis::default().stuck_out());
         }
-
 
     }
 

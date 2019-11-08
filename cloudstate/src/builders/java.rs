@@ -6,7 +6,6 @@ extern crate throw;
 
 use std::path::Path;
 use std::process::{Command, ExitStatus, Stdio};
-use std::string::ToString;
 
 use std::{env, fs, io};
 use std::fs::File;
