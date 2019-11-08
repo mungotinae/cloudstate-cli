@@ -33,6 +33,7 @@ pub mod command {
             .arg("delete")
             .arg("all")
             .arg("--all")
+            .arg("-n")
             .arg(CLOUD_STATE_NAMESPACE)
             .status();
 
