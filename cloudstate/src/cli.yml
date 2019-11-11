@@ -9,95 +9,115 @@ args:
   - upgrade:
       long: upgrade
       help: Update CloudState CLI version
-  - init:
-      short: i
-      long: init
-      help: Initialize a CloudState k8s namespace/operator
-  - destroy:
-      short: D
-      long: destroy
-      help: Destroy CloudState namespace and others resources
-  - tag:
-      short: t
-      long: tag
-      takes_value: true
-      help: Used in conjunction with 'create' and/or 'build'. Set version of user function. Used to create container images. Example -t 1.0.1 or --tag=0.1.0
-  - registry:
-      short: r
-      long: registry
-      takes_value: true
-      help: Used in conjunction with 'create'. Set the docker repository. Used to create container images. Example -r quay.io/myuser or --registry=sleipnir/test
-  - set-user:
-      long: set-user
-      takes_value: true
-      help: Used in conjunction with 'repo'. Set the username for the target docker registry
-  - set-pass:
-      long: set-pass
-      takes_value: true
-      help: Used in conjunction with 'repo'. Set the password for the target docker registry
-  - create:
-      short: c
-      long: create
-      help: Create a new user function project from template. Example --create=shopping-cart --profile=java --repo=cloudstate --tag=1.0.1
-      takes_value: true
-      requires: profile
-  - set-editor:
-      short: E
-      long: set-editor
-      takes_value: true
-      possible_values:
-        - vi
-        - nano
-        - code
-        - idea
-      help: Used in conjunction with 'create'. Set the default code editor. Default 'vi'.
-  - profile:
-      short: P
-      long: profile
-      takes_value: true
-      possible_values:
-        - java
-        - node
-        - go
-        - dotnet
-        - rust
-        - python
-        - scala
-      help: Used in conjunction with 'create'. Set language template for this project. Possible values is [java, node, go, dotnet, rust, python, scala]
-  - datastore:
-      short: d
-      long: datastore
-      takes_value: true
-      possible_values:
-        - InMemory
-        - Cassandra
-        - Postgres
-      help: Used in conjunction with 'create'. Enable CloudState Stateful stores. Example --datastore=Cassandra. Valid values [Cassandra, Postgres or InMemory]
   - list-profiles:
       short: l
       long: list-profiles
       help: List all profiles supported
+subcommands:
+  - init:
+      version: "0.1.1"
+      author: Adriano Santos <sleipnir@bsd.com.br>
+      about: Initialize a CloudState k8s namespace/operator
+  - destroy:
+      version: "0.1.1"
+      author: Adriano Santos <sleipnir@bsd.com.br>
+      about: Destroy CloudState namespace and others resources
+  - create:
+      version: "0.1.1"
+      author: Adriano Santos <sleipnir@bsd.com.br>
+      about: Create a new user function project from template. Example --create=shopping-cart --profile=java --registry=cloudstate --tag=1.0.1
+      args:
+        - name:
+            short: N
+            long: name
+            takes_value: true
+            help: Set the name of project
+        - profile:
+            short: P
+            long: profile
+            takes_value: true
+            possible_values:
+              - java
+              - node
+              - go
+              - dotnet
+              - rust
+              - python
+              - scala
+            help: Used in conjunction with 'create'. Set language template for this project. Possible values is [java, node, go, dotnet, rust, python, scala]
+        - tag:
+            short: t
+            long: tag
+            takes_value: true
+            help: Used in conjunction with 'create' and/or 'build'. Set version of user function. Used to create container images. Example -t 1.0.1 or --tag=0.1.0
+        - registry:
+            short: r
+            long: registry
+            takes_value: true
+            help: Used in conjunction with 'create'. Set the docker repository. Used to create container images. Example -r quay.io/myuser or --registry=sleipnir/test
+        - set-user:
+            long: set-user
+            takes_value: true
+            help: Used in conjunction with 'repo'. Set the username for the target docker registry
+        - set-pass:
+            long: set-pass
+            takes_value: true
+            help: Used in conjunction with 'repo'. Set the password for the target docker registry
+        - set-editor:
+            short: E
+            long: set-editor
+            takes_value: true
+            possible_values:
+              - vi
+              - nano
+              - code
+              - idea
+            help: Used in conjunction with 'create'. Set the default code editor. Default 'vi'.
+        - datastore:
+            short: d
+            long: datastore
+            takes_value: true
+            possible_values:
+              - InMemory
+              - Cassandra
+              - Postgres
+            help: Used in conjunction with 'create'. Enable CloudState Stateful stores. Example --datastore=Cassandra. Valid values [Cassandra, Postgres or InMemory]
   - build:
-      long: build
-      takes_value: true
-      help: Build project with template specified. Requires path. Example cloudstate --build=.
-  - run:
-      short: R
-      long: run
-      help: Running user function & cloudstate proxy in Docker
-  - build-deploy:
-      short: B
-      long: build-deploy
-      takes_value: true
-      help: Shortcut to build, push and deploy. Example cloudstate -B . --tag=1.0.1
-  - push:
-      long: push
-      help: Push container image in repository
+      version: "0.1.1"
+      author: Adriano Santos <sleipnir@bsd.com.br>
+      about: Build project with template specified. Requires path. Example cloudstate --build=.
+      args:
+        - tag:
+            short: t
+            long: tag
+            takes_value: true
+            help: Used in conjunction with 'create' and/or 'build'. Set version of user function. Used to create container images. Example -t 1.0.1 or --tag=0.1.0
+        - push:
+            long: push
+            help: Push container image in repository
+        - datastore:
+            short: d
+            long: datastore
+            takes_value: true
+            possible_values:
+              - InMemory
+              - Cassandra
+              - Postgres
+            help: Used in conjunction with 'create'. Enable CloudState Stateful stores. Example --datastore=Cassandra. Valid values [Cassandra, Postgres or InMemory]
   - deploy:
-      long: deploy
-      help: Deploy user function with CloudState sidecar in K8s environment
-      requires: namespace
-  - namespace:
-      short: n
-      long: namespace
-      help: Set k8s namespace for user function. Example cloudstate -n namespace
+      version: "0.1.1"
+      author: Adriano Santos <sleipnir@bsd.com.br>
+      about: Deploy user function with CloudState sidecar in K8s environment
+      args:
+        - namespace:
+            short: n
+            long: namespace
+            help: Set k8s namespace for user function. Example cloudstate -n namespace
+  - run:
+      version: "0.1.1"
+      author: Adriano Santos <sleipnir@bsd.com.br>
+      about: Running user function & cloudstate proxy in Docker
+  - build-deploy:
+      version: "0.1.1"
+      author: Adriano Santos <sleipnir@bsd.com.br>
+      about: Shortcut to build, push and deploy. Example cloudstate -B . --tag=1.0.1
