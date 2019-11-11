@@ -20,41 +20,46 @@ impl<'a> Resolver<'a> {
     pub fn matches(self) -> Result<(), String> {
         let _matches = self.args.clone();
 
+        // handle matches
         if _matches.is_present("list-profiles") {
             command::list_profiles();
-        }
-
-        // handle matches
-        if _matches.is_present("init") {
-            command::init();
-        }
-
-        if _matches.is_present("destroy") {
-            command::destroy();
         }
 
         if _matches.is_present("check") {
             command::check();
         }
 
-        match _matches.value_of("create") {
-            Some(ref project_name) => {
+        // handle sub commands matches
+        if let Some(init_matches) =_matches.subcommand_matches("init") {
+            command::init();
+        }
 
-                let mut application = Application::default();
+        if let Some(destroy_matches) =_matches.subcommand_matches("destroy") {
+            command::destroy();
+        }
+
+        // Matches create
+        if let Some(create_matches) =_matches.subcommand_matches("create") {
+
+            let mut application = Application::default();
+
+            if create_matches.is_present("name") {
+
+                let project_name = create_matches.value_of("name").unwrap();
 
                 println!("Creating user function project: {:?}", project_name);
-                if let Some(ref profile) = _matches.value_of("profile") {
+                if let Some(ref profile) = create_matches.value_of("profile") {
                     let supported = ["java", "node", "go", "dotnet", "rust", "python", "scala"];
                     if !supported.contains(profile) {
                         return Err(String::from("Invalid Template name!"));
                     }
 
-                    let tag = _matches.value_of("tag");
-                    let registry = _matches.value_of("registry");
-                    let editor = _matches.value_of("set-editor");
-                    let registry_user = _matches.value_of("set-user");
-                    let registry_pass = _matches.value_of("set-pass");
-                    let datastore = _matches.value_of("datastore");
+                    let tag = create_matches.value_of("tag");
+                    let registry = create_matches.value_of("registry");
+                    let editor = create_matches.value_of("set-editor");
+                    let registry_user = create_matches.value_of("set-user");
+                    let registry_pass = create_matches.value_of("set-pass");
+                    let datastore = create_matches.value_of("datastore");
 
                     application.name = project_name.to_string();
                     application.profile = profile.to_string();
@@ -89,38 +94,18 @@ impl<'a> Resolver<'a> {
 
                     println!("Using profile: {:?}", profile);
                     command::create_project(application);
-
+                } else {
+                    println!("Name option is mandatory");
                 }
             }
-            None => {}
         }
 
-        if _matches.is_present("build") {
-            <Resolver<'a>>::_build(&_matches)
+        // Matches build
+        if let Some(build_matches) =_matches.subcommand_matches("build") {
+            <Resolver<'a>>::_build(&build_matches)
         }
 
-        if _matches.is_present("push") {
-            println!("{:?}", env::current_dir());
-            let path = format!("{}/.cloudstate/user.json", env::current_dir().unwrap().to_str().unwrap());
-            let app_settings = fs::read_to_string(path);
-            if app_settings.is_ok() {
-                let mut application: Application = serde_json::from_str(app_settings.unwrap().as_str()).unwrap();
-
-                // verify other options
-                let tag = _matches.value_of("tag");
-                if tag.is_some() {
-                    application.tag = tag.unwrap().to_string();
-                }
-
-                <Resolver<'a>>::_push(application);
-
-            } else {
-                println!("App settings not found!");
-            }
-
-        }
-
-        if _matches.is_present("deploy") {
+        if let Some(build_matches) =_matches.subcommand_matches("build") {
             <Resolver<'a>>::_deploy(&_matches)
         }
 
@@ -143,6 +128,28 @@ impl<'a> Resolver<'a> {
             }
 
             command::build(application.clone());
+
+            // Matches push
+            if _matches.is_present("push") {
+                println!("{:?}", env::current_dir());
+                let path = format!("{}/.cloudstate/user.json", env::current_dir().unwrap().to_str().unwrap());
+                let app_settings = fs::read_to_string(path);
+                if app_settings.is_ok() {
+                    let mut application: Application = serde_json::from_str(app_settings.unwrap().as_str()).unwrap();
+
+                    // verify other options
+                    let tag = _matches.value_of("tag");
+                    if tag.is_some() {
+                        application.tag = tag.unwrap().to_string();
+                    }
+
+                    <Resolver<'a>>::_push(application);
+
+                } else {
+                    println!("App settings not found!");
+                }
+
+            }
 
         } else {
             println!("App settings not found!");
