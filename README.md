@@ -43,48 +43,54 @@ CloudState CLI relies on a number of command line tools such as:
 
 ```  
 [cloudstate]# cloudstate --help
-cloudstate 0.1.1
+Cloudstate 0.2.4
 Adriano Santos <sleipnir@bsd.com.br>
 CloudState CLI
 
 USAGE:
-    cloudstate [FLAGS] [OPTIONS]
+ cloudstate [FLAGS] [SUBCOMMAND]
 
 FLAGS:
-        --check            Test dependencies
-        --deploy           Deploy user function with CloudState sidecar in K8s environment
-    -D, --destroy          Destroy CloudState namespace and others resources
-    -h, --help             Prints help information
-    -i, --init             Initialize a CloudState k8s namespace/operator
-    -l, --list-profiles    List all profiles supported
-    -n, --namespace        Set k8s namespace for user function. Example cloudstate -n namespace
-        --push             Push container image in repository
-    -R, --run              Running user function & cloudstate proxy in Docker
-        --upgrade          Update CloudState CLI version
-    -V, --version          Prints version information
+     --check            Test dependencies
+ -h, --help             Prints help information
+ -l, --list-profiles    List all profiles supported
+     --upgrade          Update CloudState CLI version
+ -V, --version          Prints version information
+
+SUBCOMMANDS:
+ build        Build project with template specified. Requires path. Example. cloudstate build --path=.
+ create       Create a new user function project from template. Example. cloudstate create --name=shopping-cart
+              --profile=java --registry=docker.io --tag=1.0.1
+ deploy       Deploy user function with CloudState sidecar in K8s environment
+ destroy      Destroy CloudState namespace and others resources
+ help         Prints this message or the help of the given subcommand(s)
+ init         Initialize a CloudState k8s namespace/operator
+ logs         Show application logs
+ provision    Shortcut to build, push and deploy. Example. cloudstate provision -p . -t 1.0.1 -n production
+ run          Running user function & cloudstate proxy in Docker
+
+```  
+<br/>
+
+**Or in Specific Command**
+```  
+[cloudstate]# cloudstate build --help
+cloudstate-build 0.2.4
+Adriano Santos <sleipnir@bsd.com.br>
+Build project with template specified. Requires path. Example cloudstate --path=.
+
+USAGE:
+  cloudstate build [FLAGS] [OPTIONS]
+
+FLAGS:
+  -h, --help       Prints help information
+      --push       Push container image in repository
+  -V, --version    Prints version information
 
 OPTIONS:
-        --build <build>                  Build project with template specified. Requires path. Example cloudstate
-                                         --build=.
-    -B, --build-deploy <build-deploy>    Shortcut to build, push and deploy. Example cloudstate -B . --tag=1.0.1
-    -c, --create <create>                Create a new user function project from template. Example --create=shopping-
-                                         cart --profile=java --repo=cloudstate --tag=1.0.1
-    -d, --datastore <datastore>          Used in conjunction with 'create'. Enable CloudState Stateful stores. Example
-                                         --datastore=Cassandra. Valid values [Cassandra, Postgres or InMemory] [possible
-                                         values: InMemory, Cassandra, Postgres]
-    -P, --profile <profile>              Used in conjunction with 'create'. Set language template for this project.
-                                         Possible values is [java, node, go, dotnet, rust, python, scala] [possible
-                                         values: java, node, go, dotnet, rust, python, scala]
-    -r, --registry <registry>            Used in conjunction with 'create'. Set the docker repository. Used to create
-                                         container images. Example -r quay.io/myuser or --registry=sleipnir/test
-    -E, --set-editor <set-editor>        Used in conjunction with 'create'. Set the default code editor. Default 'vi'.
-                                         [possible values: vi, nano, code, idea]
-        --set-pass <set-pass>            Used in conjunction with 'repo'. Set the password for the target docker
-                                         registry
-        --set-user <set-user>            Used in conjunction with 'repo'. Set the username for the target docker
-                                         registry
-    -t, --tag <tag>                      Used in conjunction with 'create' and/or 'build'. Set version of user function.
-                                         Used to create container images. Example -t 1.0.1 or --tag=0.1.0
+      --path <path>    Set the path of build
+  -t, --tag <tag>      Used in conjunction with 'create' and/or 'build'. Set version of user function. Used to create
+                       container images. Example -t 1.0.1 or --tag=0.1.0
 
 ```  
 <br/>
@@ -92,16 +98,16 @@ OPTIONS:
 **Check System Dependencies**
 ```
 [cloudstate]# cloudstate --check
-✔ Dependency Docker     Checked !
-✔ Dependency Kubectl    Checked !
-✔ Dependency Minikube   Checked !
-✔ Dependency Dotnet     Checked !
-✔ Dependency Go         Checked !
-✔ Dependency Java       Checked !
-✔ Dependency Mvn        Checked !
-✔ Dependency Npm        Checked !
-✔ Dependency Python     Checked !
-✔ Dependency Cargo      Checked !
+✔ Dependency Docker     OK!
+✔ Dependency Kubectl    OK!
+✔ Dependency Minikube   OK!
+✔ Dependency Dotnet     OK!
+✔ Dependency Go         OK!
+✔ Dependency Java       OK!
+✔ Dependency Mvn        OK!
+✔ Dependency Npm        OK!
+✔ Dependency Python     OK!
+✔ Dependency Cargo      OK!
 ✖ Dependency Sbt not found in system path. If you use Scala please proceed to install it.
 Ok(())
 
@@ -111,7 +117,7 @@ Ok(())
 
 **Initialize CloudState Operator:**  
 ```
-[cloudstate]# cloudstate --init  
+[cloudstate]# cloudstate init  
 😉 Creating CloudState namespace...
 😻 Success on create CloudState namespace
 🚀 Initializing CloudState operator...
@@ -134,7 +140,8 @@ Ok(())
  
 **Create User Function Project from specific profile:**  
 ```  
-[cloudstate]# cloudstate --create=shopping-cart \
+[cloudstate]# cloudstate create \
+  --name=shopping-cart \
   --profile=java \
   --registry=docker.io/sleipnir \
   --set-user=sleipnir \
@@ -173,7 +180,7 @@ Ok(())
 **Build function:**   
   
 ```
-[shopping-cart]# cloudstate --build=.  
+[shopping-cart]# cloudstate build -p .  
 Application { name: "shopping-cart", tag: "1.0.1", home_dir: "/root/.cloudstate", work_dir: "/home/sleipnir/development/workspace/pessoal/cloudstate-cli/cloudstate/shopping-cart", user_dir: "/home/sleipnir/development/workspace/pessoal/cloudstate-cli/cloudstate/shopping-cart/.cloudstate", profile: "java", namespace: "cloudstate", repo: "docker.io/sleipnir/shopping-cart", repo_user: "sleipnir", repo_pass: "bsd*a211003", editor: "idea", data_store: "InMemory", port: 8088 }  
 Building Project...  
 [INFO] Scanning for projects...  
@@ -239,7 +246,12 @@ Ok(())
 
 **Or Build and Deploy function:**  
 ```  
-[loudstate]# cloudstate --build=. --tag=1.0.1 --push --deploy --namespace=cloudstate  
+[cloudstate]# cloudstate build \
+  --path=shopping-cart \
+  --tag=1.0.1 \
+  --push && \
+  cloudstate deploy --namespace=cloudstate  
+
 Application { name: "shopping-cart", tag: "1.0.1", home_dir: "/root/.cloudstate", work_dir: "/home/sleipnir/development/workspace/pessoal/cloudstate-cli/cloudstate/shopping-cart", user_dir: "/home/sleipnir/development/workspace/pessoal/cloudstate-cli/cloudstate/shopping-cart/.cloudstate", profile: "java", namespace: "cloudstate", repo: "docker.io/sleipnir/shopping-cart", repo_user: "sleipnir", repo_pass: "bsd*a211003", editor: "idea", data_store: "InMemory", port: 8088 }  
 Building Project...  
 [INFO] Scanning for projects...  
@@ -384,13 +396,12 @@ Subtitle:
 👎 Unknown
 Ok(())
 
-
 [cloudstate]#  
 ```
 
 **Destroying CloudState Resources**
 ```
-[cloudstate]# cloudstate --destroy
+[cloudstate]# cloudstate destroy
 🔥 Destroying CloudState resources
 pod "cloudstate-operator-6579fb749c-d4fhs" deleted
 pod "shopping-cart-deployment-668686cbd7-8kzqj" deleted
