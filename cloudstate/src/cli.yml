@@ -1,5 +1,5 @@
 name: cloudstate
-version: "0.2.0"
+version: "0.2.4"
 author: Adriano Santos <sleipnir@bsd.com.br>
 about: CloudState CLI
 args:
@@ -15,17 +15,17 @@ args:
       help: List all profiles supported
 subcommands:
   - init:
-      version: "0.2.0"
+      version: "0.2.4"
       author: Adriano Santos <sleipnir@bsd.com.br>
       about: Initialize a CloudState k8s namespace/operator
   - destroy:
-      version: "0.2.0"
+      version: "0.2.4"
       author: Adriano Santos <sleipnir@bsd.com.br>
       about: Destroy CloudState namespace and others resources
   - create:
-      version: "0.2.0"
+      version: "0.2.4"
       author: Adriano Santos <sleipnir@bsd.com.br>
-      about: Create a new user function project from template. Example --create=shopping-cart --profile=java --registry=cloudstate --tag=1.0.1
+      about: Create a new user function project from template. Example. cloudstate create --name=shopping-cart --profile=java --registry=docker.io --tag=1.0.1
       args:
         - name:
             short: N
@@ -49,12 +49,12 @@ subcommands:
             short: t
             long: tag
             takes_value: true
-            help: Used in conjunction with 'create' and/or 'build'. Set version of user function. Used to create container images. Example -t 1.0.1 or --tag=0.1.0
+            help: Used in conjunction with 'create' and/or 'build'. Set version of user function. Used to create container images. Example. -t 1.0.1 or --tag=0.1.0
         - registry:
             short: r
             long: registry
             takes_value: true
-            help: Used in conjunction with 'create'. Set the docker repository. Used to create container images. Example -r quay.io/myuser or --registry=sleipnir/test
+            help: Used in conjunction with 'create'. Set the docker repository. Used to create container images. Example. -r quay.io/myuser or --registry=docker.io/sleipnir
         - set-user:
             long: set-user
             takes_value: true
@@ -81,17 +81,21 @@ subcommands:
               - InMemory
               - Cassandra
               - Postgres
-            help: Used in conjunction with 'create'. Enable CloudState Stateful stores. Example --datastore=Cassandra. Valid values [Cassandra, Postgres or InMemory]
+            help: Used in conjunction with 'create'. Enable CloudState Stateful stores. Example. --datastore=Cassandra. Valid values [Cassandra, Postgres or InMemory]
   - build:
-      version: "0.2.0"
+      version: "0.2.4"
       author: Adriano Santos <sleipnir@bsd.com.br>
-      about: Build project with template specified. Requires path. Example cloudstate --build=.
+      about: Build project with template specified. Requires path. Example. cloudstate build --path=.
       args:
         - tag:
             short: t
             long: tag
             takes_value: true
-            help: Used in conjunction with 'create' and/or 'build'. Set version of user function. Used to create container images. Example -t 1.0.1 or --tag=0.1.0
+            help: Used in conjunction with 'create' and/or 'build'. Set version of user function. Used to create container images. Example. -t 1.0.1 or --tag=0.1.0
+        - path:
+            long: path
+            takes_value: true
+            help: Set the path of build
         - push:
             long: push
             help: Push container image in repository
@@ -103,21 +107,34 @@ subcommands:
               - InMemory
               - Cassandra
               - Postgres
-            help: Used in conjunction with 'create'. Enable CloudState Stateful stores. Example --datastore=Cassandra. Valid values [Cassandra, Postgres or InMemory]
+            help: Used in conjunction with 'create'. Enable CloudState Stateful stores. Example. --datastore=Cassandra. Valid values [Cassandra, Postgres or InMemory]
   - deploy:
-      version: "0.2.0"
+      version: "0.2.4"
       author: Adriano Santos <sleipnir@bsd.com.br>
       about: Deploy user function with CloudState sidecar in K8s environment
       args:
         - namespace:
             short: n
             long: namespace
-            help: Set k8s namespace for user function. Example cloudstate -n namespace
+            help: Set k8s namespace for user function. Example. cloudstate deploy -n <namespace>
   - run:
-      version: "0.2.0"
+      version: "0.2.4"
       author: Adriano Santos <sleipnir@bsd.com.br>
       about: Running user function & cloudstate proxy in Docker
-  - build-deploy:
-      version: "0.2.0"
+  - provision:
+      version: "0.2.4"
       author: Adriano Santos <sleipnir@bsd.com.br>
-      about: Shortcut to build, push and deploy. Example cloudstate -B . --tag=1.0.1
+      about: Shortcut to build, push and deploy. Example. cloudstate provision -p . -t 1.0.1 -n production
+  - logs:
+      version: "0.2.4"
+      author: Adriano Santos <sleipnir@bsd.com.br>
+      about: Show application logs
+      args:
+        - name:
+            short: N
+            long: name
+            help: Name of application
+        - tail:
+            short: T
+            long: tail
+            help: Tail logs
