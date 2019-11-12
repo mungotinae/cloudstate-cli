@@ -102,59 +102,67 @@ impl<'a> Resolver<'a> {
 
         // Matches build
         if let Some(build_matches) =_matches.subcommand_matches("build") {
-            <Resolver<'a>>::_build(&build_matches)
-        }
+            println!("Building...");
 
-        if let Some(build_matches) =_matches.subcommand_matches("build") {
-            <Resolver<'a>>::_deploy(&_matches)
-        }
+            if build_matches.is_present("path") {
 
-        return Ok(());
-    }
+                let build_path = build_matches.value_of("path").unwrap_or(".");
+                println!("Build path: {:?}", build_path);
 
-    fn _build(_matches: &ArgMatches) -> () {
-        let build_path = _matches.value_of("build").unwrap();
-        env::set_current_dir(build_path);
-        println!("{:?}", env::current_dir());
-        let path = format!("{}/.cloudstate/user.json", env::current_dir().unwrap().to_str().unwrap());
-        let app_settings = fs::read_to_string(path);
-        if app_settings.is_ok() {
-            let mut application: Application = serde_json::from_str(app_settings.unwrap().as_str()).unwrap();
-
-            // verify other options
-            let tag = _matches.value_of("tag");
-            if tag.is_some() {
-                application.tag = tag.unwrap().to_string();
-            }
-
-            command::build(application.clone());
-
-            // Matches push
-            if _matches.is_present("push") {
+                env::set_current_dir(build_path);
                 println!("{:?}", env::current_dir());
+
                 let path = format!("{}/.cloudstate/user.json", env::current_dir().unwrap().to_str().unwrap());
                 let app_settings = fs::read_to_string(path);
                 if app_settings.is_ok() {
                     let mut application: Application = serde_json::from_str(app_settings.unwrap().as_str()).unwrap();
 
                     // verify other options
-                    let tag = _matches.value_of("tag");
+                    let tag = build_matches.value_of("tag");
                     if tag.is_some() {
                         application.tag = tag.unwrap().to_string();
                     }
 
-                    <Resolver<'a>>::_push(application);
+                    command::build(application.clone());
+
+                    // Matches push
+                    if build_matches.is_present("push") {
+                        println!("{:?}", env::current_dir());
+                        let path = format!("{}/.cloudstate/user.json", env::current_dir().unwrap().to_str().unwrap());
+                        let app_settings = fs::read_to_string(path);
+                        if app_settings.is_ok() {
+                            let mut application: Application = serde_json::from_str(app_settings.unwrap().as_str()).unwrap();
+
+                            // verify other options
+                            let tag = build_matches.value_of("tag");
+                            if tag.is_some() {
+                                application.tag = tag.unwrap().to_string();
+                            }
+
+                            <Resolver<'a>>::_push(application);
+
+                        } else {
+                            println!("App settings not found!");
+                        }
+
+                    }
 
                 } else {
                     println!("App settings not found!");
                 }
-
+            } else {
+                println!("Path not captured!")
             }
 
-        } else {
-            println!("App settings not found!");
         }
+
+        if let Some(build_matches) =_matches.subcommand_matches("deploy") {
+            <Resolver<'a>>::_deploy(&_matches)
+        }
+
+        return Ok(());
     }
+
 
     fn _deploy(_matches: &ArgMatches) -> () {
         println!("{:?}", env::current_dir());

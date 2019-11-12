@@ -34,7 +34,7 @@ pub mod command {
             let result = check_command(&command);
 
             if result.unwrap() == 0 {
-                println!("{0: <1} Dependency {1: <10} Checked !", Emojis::default().ok(), command.to_title_case())
+                println!("{0: <1} Dependency {1: <10} OK!", Emojis::default().ok(), command.to_title_case())
             } else {
                 println!("{} {}", Emojis::default().nok(), expect);
             }
