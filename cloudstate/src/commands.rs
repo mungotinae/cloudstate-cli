@@ -16,30 +16,19 @@ pub mod command {
     pub fn logs(args: &ArgMatches) {
         let application = args.value_of("name").unwrap();
 
-        if args.is_present("namespace") {
-            let namespace = args.value_of("namespace").unwrap();
+        let space = match args.value_of("namespace") {
+            Some(namespace) => args.value_of("namespace").unwrap_or(CLOUD_STATE_NAMESPACE),
+            _ => CLOUD_STATE_NAMESPACE
+        };
 
-            log_container(
-                application,
-                namespace,
-                args.is_present("tail"),
-                args.is_present("all"),
-                args.is_present("since"),
-                args.value_of("since").unwrap_or("1m")
-            );
-
-        } else {
-
-            log_container(
-                application,
-                CLOUD_STATE_NAMESPACE,
-                args.is_present("tail"),
-                args.is_present("all"),
-                args.is_present("since"),
-                args.value_of("since").unwrap_or("1m")
-            );
-
-        }
+        log_container(
+            application,
+            space,
+            args.is_present("tail"),
+            args.is_present("all"),
+            args.is_present("since"),
+            args.value_of("since").unwrap_or("1m")
+        );
 
     }
 
