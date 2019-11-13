@@ -29,6 +29,10 @@ impl<'a> Resolver<'a> {
             command::check();
         }
 
+        if let Some(logs_matches) = _matches.subcommand_matches("logs") {
+            command::logs(logs_matches);
+        }
+
         // handle sub commands matches
         if let Some(init_matches) =_matches.subcommand_matches("init") {
             command::init();

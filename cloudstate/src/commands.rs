@@ -8,9 +8,40 @@ pub mod command {
     use linked_hash_map::LinkedHashMap;
     use inflector::Inflector;
     use crate::{get_user_dir, get_templates, Emojis, check_command};
+    use clap::ArgMatches;
 
     const CLOUD_STATE_NAMESPACE: &str = "cloudstate";
     const CLOUD_STATE_OPERATOR_DEPLOYMENT: &str = "https://raw.githubusercontent.com/cloudstateio/cloudstate/master/operator/cloudstate.yaml";
+
+    pub fn logs(args: &ArgMatches) {
+        let application = args.value_of("name").unwrap();
+
+        if args.is_present("namespace") {
+            let namespace = args.value_of("namespace").unwrap();
+
+            log_container(
+                application,
+                namespace,
+                args.is_present("tail"),
+                args.is_present("all"),
+                args.is_present("since"),
+                args.value_of("since").unwrap_or("1m")
+            );
+
+        } else {
+
+            log_container(
+                application,
+                CLOUD_STATE_NAMESPACE,
+                args.is_present("tail"),
+                args.is_present("all"),
+                args.is_present("since"),
+                args.value_of("since").unwrap_or("1m")
+            );
+
+        }
+
+    }
 
     pub fn check() {
 
@@ -176,6 +207,33 @@ pub mod command {
         println!("{} Unstable but usable", Emojis::default().unstable());
         println!("{} Work in progress", Emojis::default().work_in_progress());
         println!("{} Unknown", Emojis::default().unknown());
+    }
+
+    fn log_container(application: &str, namespace: &str, tail: bool, all_containers: bool, have_since: bool, since: &str) {
+        let mut log = Command::new("kubectl");
+        log.arg("logs");
+        log.arg("-n");
+        log.arg(namespace);
+        log.arg("-l");
+        log.arg(format!("user-container={}", application));
+
+        if tail {
+            log.arg("-f");
+        }
+
+        if all_containers {
+            println!("Get logs for {} and Sidecar containers", application);
+            log.arg("--all-containers");
+        } else {
+            println!("Get logs for {} container", application);
+            log.arg("-c").arg("user-container");
+        }
+
+        if have_since {
+            log.arg("--since").arg(since);
+        }
+
+        log.status();
     }
 
     fn maturity_level(profile: &str) -> char {

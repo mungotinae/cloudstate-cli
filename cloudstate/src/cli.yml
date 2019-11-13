@@ -1,5 +1,5 @@
 name: cloudstate
-version: "0.2.4"
+version: "0.2.5"
 author: Adriano Santos <sleipnir@bsd.com.br>
 about: CloudState CLI
 args:
@@ -15,15 +15,15 @@ args:
       help: List all profiles supported
 subcommands:
   - init:
-      version: "0.2.4"
+      version: "0.2.5"
       author: Adriano Santos <sleipnir@bsd.com.br>
       about: Initialize a CloudState k8s namespace/operator
   - destroy:
-      version: "0.2.4"
+      version: "0.2.5"
       author: Adriano Santos <sleipnir@bsd.com.br>
       about: Destroy CloudState namespace and others resources
   - create:
-      version: "0.2.4"
+      version: "0.2.5"
       author: Adriano Santos <sleipnir@bsd.com.br>
       about: Create a new user function project from template. Example. cloudstate create --name=shopping-cart --profile=java --registry=docker.io --tag=1.0.1
       args:
@@ -83,7 +83,7 @@ subcommands:
               - Postgres
             help: Used in conjunction with 'create'. Enable CloudState Stateful stores. Example. --datastore=Cassandra. Valid values [Cassandra, Postgres or InMemory]
   - build:
-      version: "0.2.4"
+      version: "0.2.5"
       author: Adriano Santos <sleipnir@bsd.com.br>
       about: Build project with template specified. Requires path. Example. cloudstate build --path=.
       args:
@@ -109,7 +109,7 @@ subcommands:
               - Postgres
             help: Used in conjunction with 'create'. Enable CloudState Stateful stores. Example. --datastore=Cassandra. Valid values [Cassandra, Postgres or InMemory]
   - deploy:
-      version: "0.2.4"
+      version: "0.2.5"
       author: Adriano Santos <sleipnir@bsd.com.br>
       about: Deploy user function with CloudState sidecar in K8s environment
       args:
@@ -118,15 +118,15 @@ subcommands:
             long: namespace
             help: Set k8s namespace for user function. Example. cloudstate deploy -n <namespace>
   - run:
-      version: "0.2.4"
+      version: "0.2.5"
       author: Adriano Santos <sleipnir@bsd.com.br>
       about: Running user function & cloudstate proxy in Docker
   - provision:
-      version: "0.2.4"
+      version: "0.2.5"
       author: Adriano Santos <sleipnir@bsd.com.br>
       about: Shortcut to build, push and deploy. Example. cloudstate provision -p . -t 1.0.1 -n production
   - logs:
-      version: "0.2.4"
+      version: "0.2.5"
       author: Adriano Santos <sleipnir@bsd.com.br>
       about: Show application logs
       args:
@@ -134,7 +134,20 @@ subcommands:
             short: N
             long: name
             help: Name of application
+            takes_value: true
+        - namespace:
+            short: n
+            long: namespace
+            help: Set k8s namespace for user function.
+            takes_value: true
         - tail:
             short: T
             long: tail
             help: Tail logs
+        - all:
+            long: all
+            help: Show user-container and sidecar logs
+        - since:
+            long: since
+            help: Filter
+            takes_value: true
