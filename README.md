@@ -377,6 +377,27 @@ shopping-cart-deployment-7657c848fc-tpngd   1/2     Running   0          16m
 
 <br/>
 
+**Or use CLI logs command**
+```
+[sleipnir@sleipnir shopping-cart]# cloudstate logs --name=shopping-cart 
+Get logs for shopping-cart
+Ok(())
+2019/11/13 19:51:02.928093 Received discovery call from sidecar [cloudstate-proxy-core we2154d9a] supporting Cloudstate 0.1
+2019/11/13 19:51:02.928179 Responding with: service_name:"shopping-cart" service_version:"0.1.0" service_runtime:"go1.13 linux/amd64" support_library_name:"cloudstate-go-support" support_library_version:"0.1.0" 
+2019-11-13 19:51:09.389 INFO akka.management.cluster.bootstrap.internal.BootstrapCoordinator - Initiating new cluster, self-joining [akka://cloudstate-proxy@172.17.0.3:2552]. Other nodes are expected to locate this cluster via continued contact-point probing.
+2019-11-13 19:51:09.390 INFO akka.remote.RemoteActorRefProvider$RemoteDeadLetterActorRef - Message [akka.management.cluster.bootstrap.internal.BootstrapCoordinator$Protocol$BootstrappingCompleted$] from Actor[akka://cloudstate-proxy/system/bootstrapCoordinator#1451520250] to Actor[akka://cloudstate-proxy/deadLetters] was not delivered. [1] dead letters encountered. If this is not an expected behavior, then [Actor[akka://cloudstate-proxy/deadLetters]] may have terminated unexpectedly, This logging can be turned off or adjusted with configuration settings 'akka.log-dead-letters' and 'akka.log-dead-letters-during-shutdown'.
+2019-11-13 19:51:09.394 INFO akka.cluster.Cluster(akka://cloudstate-proxy) - Cluster Node [akka://cloudstate-proxy@172.17.0.3:2552] - Node [akka://cloudstate-proxy@172.17.0.3:2552] is JOINING itself (with roles [dc-default]) and forming new cluster
+2019-11-13 19:51:09.394 INFO akka.cluster.Cluster(akka://cloudstate-proxy) - Cluster Node [akka://cloudstate-proxy@172.17.0.3:2552] - is the new leader among reachable nodes (more leaders may exist)
+2019-11-13 19:51:09.398 INFO akka.cluster.Cluster(akka://cloudstate-proxy) - Cluster Node [akka://cloudstate-proxy@172.17.0.3:2552] - Leader is moving node [akka://cloudstate-proxy@172.17.0.3:2552] to [Up]
+2019-11-13 19:51:09.404 INFO akka.actor.EmptyLocalActorRef - Message [akka.cluster.sharding.ShardCoordinator$Internal$Register] from Actor[akka://cloudstate-proxy/system/sharding/ShoppingCart#1132162436] to Actor[akka://cloudstate-proxy/system/sharding/ShoppingCartCoordinator/singleton/coordinator] was not delivered. [2] dead letters encountered. If this is not an expected behavior, then [Actor[akka://cloudstate-proxy/system/sharding/ShoppingCartCoordinator/singleton/coordinator]] may have terminated unexpectedly, This logging can be turned off or adjusted with configuration settings 'akka.log-dead-letters' and 'akka.log-dead-letters-during-shutdown'.
+2019-11-13 19:51:09.411 INFO akka.cluster.singleton.ClusterSingletonManager - Singleton manager starting singleton actor [akka://cloudstate-proxy/system/sharding/ShoppingCartCoordinator/singleton]
+2019-11-13 19:51:09.412 INFO akka.cluster.singleton.ClusterSingletonManager - ClusterSingletonManager state change [Start -> Oldest]
+2019-11-13 19:51:09.418 INFO akka.cluster.sharding.DDataShardCoordinator - ShardCoordinator was moved to the active state State(Map())
+2019-11-13 19:51:09.434 INFO io.cloudstate.proxy.EntityDiscoveryManager - CloudState proxy online at /0.0.0.0:8013
+```
+
+<br/>
+
 **Listing supported profiles:**  
 ```  
 [cloudstate]# cloudstate --list-profiles
