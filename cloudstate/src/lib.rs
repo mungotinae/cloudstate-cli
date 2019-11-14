@@ -79,6 +79,8 @@ impl Emojis {
 
     pub fn frame_picture(self) -> char { '\u{1F5BC}' }
 
+    pub fn keyboard(self) -> char { '\u{2328}' }
+
 
 }
 

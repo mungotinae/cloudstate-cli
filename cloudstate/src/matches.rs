@@ -23,16 +23,13 @@ impl<'a> Resolver<'a> {
     pub fn matches(&mut self) -> Result<(), String> {
         let _matches = self.args.clone();
 
-        match _matches.subcommand() {
-            ("completions", Some(sub_matches)) => {
-                let shell = sub_matches.value_of("shell").unwrap();
-                self.app.gen_completions_to(
-                    "cloudstate",
-                    shell.parse().unwrap(),
+        if let Some(completions) = _matches.subcommand_matches("completions") {
+            let shell = completions.value_of("shell").unwrap();
+            self.app.gen_completions_to(
+                "cloudstate",
+                shell.parse().unwrap(),
                 &mut io::stdout()
-                );
-            },
-            (_, _) => unimplemented!(), // for brevity
+            );
         }
 
         // handle matches

@@ -12,6 +12,7 @@ use std::fs::File;
 use tar::Archive;
 use flate2::read::GzDecoder;
 use std::process::Command;
+use crate::Emojis;
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct Application {
@@ -100,13 +101,12 @@ pub trait ProjectBuilder {
     fn pos_compile(&self, app: &Application) {
         env::set_current_dir(&app.work_dir);
 
-        println!("Project created!");
+        println!("{} Project created!", Emojis::default().stuck_out());
         Command::new("ls")
             .arg("-ltr")
-            .spawn()
-            .expect("Error during create Java project");
+            .status();
 
-        println!("Open editor!");
+        println!("{} Open editor!", Emojis::default().keyboard());
         let cached = dirs::home_dir().unwrap();
         Command::new(&app.editor)
             .arg(".")

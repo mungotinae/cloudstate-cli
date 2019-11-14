@@ -54,6 +54,7 @@ impl ProjectBuilder for GoBuilder {
         println!("{} Building Project...", Emojis::default().worker());
         env::set_current_dir(&app.work_dir);
 
+        println!("{} Compiling project...", Emojis::default().coffee());
         let status = Command::new("docker")
             .arg("build")
             .arg("-t")
