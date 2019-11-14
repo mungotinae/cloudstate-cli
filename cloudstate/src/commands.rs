@@ -13,6 +13,24 @@ pub mod command {
     const CLOUD_STATE_NAMESPACE: &str = "cloudstate";
     const CLOUD_STATE_OPERATOR_DEPLOYMENT: &str = "https://raw.githubusercontent.com/cloudstateio/cloudstate/master/operator/cloudstate.yaml";
 
+    pub fn upgrade() {
+        let status = self_update::backends::github::Update::configure()
+            .repo_owner("sleipnir")
+            .repo_name("cloudstate-cli")
+            .bin_name("cloudstate")
+            .show_download_progress(true)
+            .current_version(env!("CARGO_PKG_VERSION"))
+            .build().unwrap()
+            .update().unwrap();
+
+        println!("Update status: `{}`!", status.version());
+    }
+
+    pub fn scale(args: &ArgMatches) {
+        //kubectl scale --replicas=3 deployment/shopping-cart
+
+    }
+
     pub fn logs(args: &ArgMatches) {
         let application = args.value_of("name").unwrap();
 
@@ -211,10 +229,10 @@ pub mod command {
         }
 
         if all_containers {
-            println!("Get logs for {} and Sidecar containers", application);
+            println!("{} Get logs for {} and Sidecar containers", Emojis::default().magnifying_glass(), application);
             log.arg("--all-containers");
         } else {
-            println!("Get logs for {} container", application);
+            println!("{} Get logs for {} container", Emojis::default().magnifying_glass(), application);
             log.arg("-c").arg("user-container");
         }
 

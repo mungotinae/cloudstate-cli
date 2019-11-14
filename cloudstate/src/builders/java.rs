@@ -2,7 +2,6 @@ extern crate dirs;
 extern crate tar;
 extern crate flate2;
 extern crate cargo_toml_builder;
-extern crate throw;
 
 use std::path::Path;
 use std::process::{Command, ExitStatus, Stdio};
@@ -12,7 +11,7 @@ use std::fs::File;
 use std::io::Write;
 
 use crate::builders::{ProjectBuilder, Application};
-use crate::{set_deployment_vars, k8s_deploy};
+use crate::{set_deployment_vars, k8s_deploy, Emojis};
 
 pub struct JavaBuilder;
 
@@ -50,29 +49,29 @@ impl ProjectBuilder for JavaBuilder {
     fn compile(&self, app: &Application) {
         env::set_current_dir(&app.work_dir);
 
-        println!("Downloading and install dependencies...");
+        println!("{} Downloading and install dependencies...", Emojis::default().floppy_disk());
+        println!("{} Compiling project...", Emojis::default().coffee());
         let install_status = JavaBuilder::install();
 
-        println!("Compiling project...");
         if install_status.is_ok() {
-            println!("Project successfully compiled")
+            println!("{} Image created successfully!", Emojis::default().frame_picture())
         };
 
     }
 
     fn build(self, app: Application) {
-        println!("Building Project...");
+        println!("{} Building Project...", Emojis::default().worker());
         self.compile(&app);
     }
 
     fn push(self, app: Application) {
         env::set_current_dir(&app.work_dir);
 
-        println!("Push container image...");
+        println!("{} Push container image...", Emojis::default().rocket());
         let push_status = JavaBuilder::push(&app);
 
         if push_status.is_ok() {
-            println!("Pushed!");
+            println!("{} Pushed!", Emojis::default().moon());
         };
     }
 

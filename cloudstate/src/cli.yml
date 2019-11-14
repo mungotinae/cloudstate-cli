@@ -14,17 +14,23 @@ args:
       long: list-profiles
       help: List all profiles supported
 subcommands:
+  - completions:
+      about: Generates completion scripts for your shell
+      settings:
+        - hidden: true
+      args:
+        - shell:
+            possible_values:
+              - bash
+              - zsh
+              - fish
+            help: The shell to generate the script for
+            takes_value: true
   - init:
-      version: "0.2.5"
-      author: Adriano Santos <sleipnir@bsd.com.br>
       about: Initialize a CloudState k8s namespace/operator
   - destroy:
-      version: "0.2.5"
-      author: Adriano Santos <sleipnir@bsd.com.br>
       about: Destroy CloudState namespace and others resources
   - create:
-      version: "0.2.5"
-      author: Adriano Santos <sleipnir@bsd.com.br>
       about: Create a new user function project from template. Example. cloudstate create --name=shopping-cart --profile=java --registry=docker.io --tag=1.0.1
       args:
         - name:
@@ -83,8 +89,6 @@ subcommands:
               - Postgres
             help: Used in conjunction with 'create'. Enable CloudState Stateful stores. Example. --datastore=Cassandra. Valid values [Cassandra, Postgres or InMemory]
   - build:
-      version: "0.2.5"
-      author: Adriano Santos <sleipnir@bsd.com.br>
       about: Build project with template specified. Requires path. Example. cloudstate build --path=.
       args:
         - tag:
@@ -109,8 +113,6 @@ subcommands:
               - Postgres
             help: Used in conjunction with 'create'. Enable CloudState Stateful stores. Example. --datastore=Cassandra. Valid values [Cassandra, Postgres or InMemory]
   - deploy:
-      version: "0.2.5"
-      author: Adriano Santos <sleipnir@bsd.com.br>
       about: Deploy user function with CloudState sidecar in K8s environment
       args:
         - namespace:
@@ -118,16 +120,21 @@ subcommands:
             long: namespace
             help: Set k8s namespace for user function. Example. cloudstate deploy -n <namespace>
   - run:
-      version: "0.2.5"
-      author: Adriano Santos <sleipnir@bsd.com.br>
       about: Running user function & cloudstate proxy in Docker
+  - scale:
+      about: Scale a user function
+      args:
+        - name:
+            short: N
+            long: name
+            help: Name of application user function
+        - replicas:
+            short: r
+            long: replicas
+            help: Set number of replicas for scaling
   - provision:
-      version: "0.2.5"
-      author: Adriano Santos <sleipnir@bsd.com.br>
       about: Shortcut to build, push and deploy. Example. cloudstate provision -p . -t 1.0.1 -n production
   - logs:
-      version: "0.2.5"
-      author: Adriano Santos <sleipnir@bsd.com.br>
       about: Show application logs
       args:
         - name:

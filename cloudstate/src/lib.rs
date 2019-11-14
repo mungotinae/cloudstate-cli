@@ -65,6 +65,20 @@ impl Emojis {
 
     pub fn nok(self) -> char { '\u{2716}' }
 
+    pub fn coffee(self) -> char { '\u{2615}' }
+
+    pub fn magnifying_glass(self) -> char { '\u{1F50D}' }
+
+    pub fn building(self) -> char { '\u{1F3E2}' }
+
+    pub fn worker(self) -> char { '\u{1F477}' }
+
+    pub fn floppy_disk(self) -> char { '\u{1F4BE}' }
+
+    pub fn moon(self) -> char { '\u{1F31B}' }
+
+    pub fn frame_picture(self) -> char { '\u{1F5BC}' }
+
 
 }
 

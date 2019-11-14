@@ -108,5 +108,10 @@ curl -vvv -H 'Cache-Control: no-cache' --url https://raw.githubusercontent.com/s
 mv /tmp/cloudstate /usr/local/bin
 chmod +x /usr/local/bin/cloudstate
 
-echo "Install Finish"
+# Install completions
+cloudstate completions bash >> /etc/bash_completion.d/cloudstate.bash-completion
+sed -i '$ d' /etc/bash_completion.d/cloudstate.bash-completion
+source /etc/bash_completion.d/cloudstate.bash-completion
+
+echo "Install Finish $(cloudstate --version) "
 exit 0

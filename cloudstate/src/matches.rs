@@ -2,7 +2,7 @@ extern crate clap;
 
 use clap::ArgMatches;
 
-use std::{env, fs};
+use std::{env, fs, io};
 use std::fs::{File, create_dir_all};
 use std::io::Write;
 use std::path::Path;
@@ -11,14 +11,29 @@ use crate::commands::command;
 use crate::builders::Application;
 use crate::get_project_folder;
 use serde_json::ser::CharEscape;
+use self::clap::App;
 
-#[derive(Debug)]
-pub struct Resolver<'a> { pub args: ArgMatches<'a>, }
+pub struct Resolver<'a> {
+    pub app: App<'a, 'a>,
+    pub args: ArgMatches<'a>,
+}
 
 impl<'a> Resolver<'a> {
 
-    pub fn matches(self) -> Result<(), String> {
+    pub fn matches(&mut self) -> Result<(), String> {
         let _matches = self.args.clone();
+
+        match _matches.subcommand() {
+            ("completions", Some(sub_matches)) => {
+                let shell = sub_matches.value_of("shell").unwrap();
+                self.app.gen_completions_to(
+                    "cloudstate",
+                    shell.parse().unwrap(),
+                &mut io::stdout()
+                );
+            },
+            (_, _) => unimplemented!(), // for brevity
+        }
 
         // handle matches
         if _matches.is_present("list-profiles") {
@@ -29,11 +44,19 @@ impl<'a> Resolver<'a> {
             command::check();
         }
 
+        if _matches.is_present("upgrade") {
+            command::upgrade();
+        }
+
+        // handle sub commands matches
+        if let Some(scale_matches) = _matches.subcommand_matches("scale") {
+            command::scale(scale_matches);
+        }
+
         if let Some(logs_matches) = _matches.subcommand_matches("logs") {
             command::logs(logs_matches);
         }
 
-        // handle sub commands matches
         if let Some(init_matches) =_matches.subcommand_matches("init") {
             command::init();
         }

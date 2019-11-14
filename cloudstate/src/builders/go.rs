@@ -1,5 +1,5 @@
 use crate::builders::{ProjectBuilder, Application};
-use crate::{k8s_deploy, set_deployment_vars};
+use crate::{k8s_deploy, set_deployment_vars, Emojis};
 
 use std::path::Path;
 use std::{env, fs};
@@ -38,19 +38,20 @@ impl ProjectBuilder for GoBuilder {
     fn compile(&self, app: &Application) {
         env::set_current_dir(&app.work_dir);
 
-        println!("Downloading and install dependencies...");
+        println!("{} Downloading and install dependencies...", Emojis::default().floppy_disk());
+        println!("{} Compiling project...", Emojis::default().coffee());
         let status = Command::new("go")
             .arg("build")
             .arg(".")
             .status();
 
         if status.is_ok() {
-            println!("Project successfully compiled");
-
+            println!("{} Project successfully compiled", Emojis::default().ok())
         }
     }
 
     fn build(self, app: Application) {
+        println!("{} Building Project...", Emojis::default().worker());
         env::set_current_dir(&app.work_dir);
 
         let status = Command::new("docker")
@@ -61,7 +62,7 @@ impl ProjectBuilder for GoBuilder {
             .status();
 
         if status.is_ok() {
-            println!("Image created successfully!")
+            println!("{} Image created successfully!", Emojis::default().frame_picture())
         }
 
     }
@@ -69,14 +70,14 @@ impl ProjectBuilder for GoBuilder {
     fn push(self, app: Application) {
         env::set_current_dir(&app.work_dir);
 
-        println!("Push container image...");
+        println!("{} Push container image...", Emojis::default().rocket());
         let status = Command::new("docker")
             .arg("push")
             .arg(format!("{}:{}", app.registry, app.tag))
             .status();
 
         if status.is_ok() {
-            println!("Pushed!");
+            println!("{} Pushed!", Emojis::default().moon());
         }
     }
 
