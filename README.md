@@ -15,7 +15,12 @@ Read more about the design, architecture, techniques, and technologies behind Cl
 
 **CloudState CLI** 
 
-Is a *lightweight*, *fast*, and fun client that lets you go from zero to production with *Stateful Serveless* functions in minutes.
+Is a *lightweight*, *fast*, and fun client that lets you go from zero to production with Cloudstate *Stateful Serveless* functions in minutes. Cloudstate CLI provides:
+
+-   Simple command API.
+-   Autocomplete support.
+-   Whole life cycle for creating and running your CLI managed Serveless Function.
+-   Uncoupled. At any point in your project you can stop using the CLI and use other tools like 'kubectl'.
   
 ## Index
  1. [Prerequisites](#Prerequisites)
