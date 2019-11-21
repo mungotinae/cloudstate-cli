@@ -51,7 +51,8 @@ EOF
 
 main() {
     echo "$(pwd)"
-    cd ../cloudstate
+    ls -ltr
+    cd cloudstate
     install_c_toolchain
     install_rustup
     install_standard_crates
