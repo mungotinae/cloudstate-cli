@@ -422,3 +422,6 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+# Building side effects
+/osxcross/
