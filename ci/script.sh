@@ -26,12 +26,15 @@ run_test_suite() {
         export RUST_TEST_THREADS=1
     fi
 
+    echo "$(pwd)"
+    ls -ltr
+    cd cloudstate
     cargo build --target $TARGET --verbose
     cargo run --target $TARGET
     cargo test --target $TARGET
 
     # sanity check the file type
-    file target/$TARGET/debug/hello
+    file target/$TARGET/debug/cloudstate
 }
 
 main() {
