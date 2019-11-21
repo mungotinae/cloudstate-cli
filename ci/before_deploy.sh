@@ -39,6 +39,10 @@ mk_deb() {
 }
 
 main() {
+    echo "$(pwd)"
+    ls -ltr
+    cd cloudstate
+    
     mk_artifacts
     mk_tarball
 
