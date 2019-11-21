@@ -50,6 +50,7 @@ EOF
 }
 
 main() {
+    cd cloudstate
     install_c_toolchain
     install_rustup
     install_standard_crates
