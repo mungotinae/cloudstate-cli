@@ -15,7 +15,7 @@ host() {
 
 gcc_prefix() {
     case "$TARGET" in
-        aarch64-unknown-linux-gnu)
+        arch64-unknown-linux-gnu)
             echo aarch64-linux-gnu-
             ;;
         arm*-gnueabihf)
