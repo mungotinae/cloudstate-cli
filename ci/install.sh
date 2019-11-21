@@ -50,6 +50,7 @@ EOF
 }
 
 main() {
+    echo "$(pwd)"
     cd ../cloudstate
     install_c_toolchain
     install_rustup
