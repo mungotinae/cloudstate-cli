@@ -42,31 +42,31 @@ main() {
     echo "$(pwd)"
     ls -ltr
     cd cloudstate
-    
+
     mk_artifacts
     mk_tarball
 
-    if [ $TRAVIS_OS_NAME = linux ]; then
-        if [ ! -z $MAKE_DEB ]; then
-            dtd=$(mktempd)
-            mkdir -p $dtd/debian/usr/bin
-
-            mk_deb
-
-            mkdir -p $dtd/debian/DEBIAN
-            cat >$dtd/debian/DEBIAN/control <<EOF
-Package: $PROJECT_NAME
-Version: ${TRAVIS_TAG#v}
-Architecture: $(architecture $TARGET)
-Maintainer: $DEB_MAINTAINER
-Description: $DEB_DESCRIPTION
-EOF
-
-            fakeroot dpkg-deb --build $dtd/debian
-            mv $dtd/debian.deb $PROJECT_NAME-$TRAVIS_TAG-$TARGET.deb
-            rm -r $dtd
-        fi
-    fi
+#    if [ $TRAVIS_OS_NAME = linux ]; then
+#        if [ ! -z $MAKE_DEB ]; then
+#            dtd=$(mktempd)
+#            mkdir -p $dtd/debian/usr/bin
+#
+#            mk_deb
+#
+#            mkdir -p $dtd/debian/DEBIAN
+#            cat >$dtd/debian/DEBIAN/control <<EOF
+#Package: $PROJECT_NAME
+#Version: ${TRAVIS_TAG#v}
+#Architecture: $(architecture $TARGET)
+#Maintainer: $DEB_MAINTAINER
+#Description: $DEB_DESCRIPTION
+#EOF
+#
+#            fakeroot dpkg-deb --build $dtd/debian
+#            mv $dtd/debian.deb $PROJECT_NAME-$TRAVIS_TAG-$TARGET.deb
+#            rm -r $dtd
+#        fi
+#    fi
 }
 
 main
