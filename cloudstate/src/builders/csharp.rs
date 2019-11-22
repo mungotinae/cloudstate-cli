@@ -2,9 +2,9 @@ use crate::builders::{ProjectBuilder, Application};
 use std::path::Path;
 use std::process::{Command, Stdio};
 
-pub struct DotNetBuilder;
+pub struct CSharpBuilder;
 
-impl ProjectBuilder for DotNetBuilder {
+impl ProjectBuilder for CSharpBuilder {
 
     fn is_dependencies_ok(&self) -> bool {
         Command::new("which")

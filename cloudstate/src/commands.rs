@@ -4,7 +4,7 @@ pub mod command {
     use std::fs;
     use std::path::Path;
     use std::process::Command;
-    use crate::builders::{java::JavaBuilder, node::NodeBuilder, go::GoBuilder, dotnet::DotNetBuilder, rust::RustBuilder, python::PythonBuilder, scala::ScalaBuilder, ProjectBuilder, Application};
+    use crate::builders::{java::JavaBuilder, node::NodeBuilder, go::GoBuilder, csharp::CSharpBuilder, rust::RustBuilder, python::PythonBuilder, scala::ScalaBuilder, ProjectBuilder, Application};
     use linked_hash_map::LinkedHashMap;
     use inflector::Inflector;
     use crate::{get_user_dir, get_templates, Emojis, check_command};
@@ -58,7 +58,7 @@ pub mod command {
         commands.insert("kubectl", format!("{} Kubectl not found in system path", Emojis::default().bomb() ));
         commands.insert("minikube", format!("{} Minikube not found in system path", Emojis::default().bomb() ));
 
-        commands.insert("dotnet", "Dependency .NET not found in system path. If you use dotnet please proceed to install it.".parse().unwrap());
+        commands.insert("dotnet", "Dependency .NET not found in system path. If you use csharp please proceed to install it.".parse().unwrap());
         commands.insert("go", "Dependency GO not found in system path. If you use GO please proceed to install it.".parse().unwrap());
         commands.insert("java", "Dependency Java not found in system path. If you use Java please proceed to install it.".parse().unwrap());
         commands.insert("mvn", "Dependency Java not found in system path. If you use Java please proceed to install it.".parse().unwrap());
@@ -133,7 +133,7 @@ pub mod command {
             "java"   => JavaBuilder{}.build(app),
             "node"   => NodeBuilder{}.build(app),
             "go"     => GoBuilder{}.build(app),
-            "dotnet" => DotNetBuilder{}.build(app),
+            "csharp" => CSharpBuilder {}.build(app),
             "rust"   => RustBuilder{}.build(app),
             "python" => PythonBuilder{}.build(app),
             "scala"  => ScalaBuilder{}.build(app),
@@ -148,7 +148,7 @@ pub mod command {
             "java"   => JavaBuilder{}.push(app),
             "node"   => NodeBuilder{}.push(app),
             "go"     => GoBuilder{}.push(app),
-            "dotnet" => DotNetBuilder{}.push(app),
+            "csharp" => CSharpBuilder {}.push(app),
             "rust"   => RustBuilder{}.push(app),
             "python" => PythonBuilder{}.push(app),
             "scala"  => ScalaBuilder{}.push(app),
@@ -163,7 +163,7 @@ pub mod command {
             "java"   => JavaBuilder{}.deploy(app),
             "node"   => NodeBuilder{}.deploy(app),
             "go"     => GoBuilder{}.deploy(app),
-            "dotnet" => DotNetBuilder{}.deploy(app),
+            "csharp" => CSharpBuilder {}.deploy(app),
             "rust"   => RustBuilder{}.deploy(app),
             "python" => PythonBuilder{}.deploy(app),
             "scala"  => ScalaBuilder{}.deploy(app),
@@ -183,7 +183,7 @@ pub mod command {
                 "java"   => JavaBuilder{}.create(app),
                 "node"   => NodeBuilder{}.create(app),
                 "go"     => GoBuilder{}.create(app),
-                "dotnet" => DotNetBuilder{}.create(app),
+                "csharp" => CSharpBuilder {}.create(app),
                 "rust"   => RustBuilder{}.create(app),
                 "python" => PythonBuilder{}.create(app),
                 "scala"  => ScalaBuilder{}.create(app),
@@ -195,7 +195,7 @@ pub mod command {
 
     pub fn list_profiles() {
         let mut profiles = LinkedHashMap::new();
-        profiles.insert("dotnet", "dotnet");
+        profiles.insert("cshar", "dotnet");
         profiles.insert("go", "go");
         profiles.insert("java", "java, [maven | sbt]");
         profiles.insert("node", "node");
@@ -249,7 +249,7 @@ pub mod command {
             "node"   => Emojis::default().stable(),
             "scala"  => Emojis::default().work_in_progress(),
             "go"     => Emojis::default().unstable(),
-            "dotnet" => Emojis::default().work_in_progress(),
+            "csharp" => Emojis::default().work_in_progress(),
             "rust"   => Emojis::default().work_in_progress(),
             "python" => Emojis::default().work_in_progress(),
             _        => Emojis::default().unknown()
@@ -262,7 +262,7 @@ pub mod command {
             "node"   => NodeBuilder{}.is_dependencies_ok(),
             "scala"  => ScalaBuilder{}.is_dependencies_ok(),
             "go"     => GoBuilder{}.is_dependencies_ok(),
-            "dotnet" => DotNetBuilder{}.is_dependencies_ok(),
+            "csharp" => CSharpBuilder {}.is_dependencies_ok(),
             "rust"   => RustBuilder{}.is_dependencies_ok(),
             "python" => PythonBuilder{}.is_dependencies_ok(),
             _        => false
