@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/sleipnir/cloudstate-cli.svg?branch=master)](https://travis-ci.org/sleipnir/cloudstate-cli)
+[![Build Status](https://travis-ci.com/sleipnir/cloudstate-cli.svg?branch=master)](https://travis-ci.com/sleipnir/cloudstate-cli)
 
 # CloudState  
   
