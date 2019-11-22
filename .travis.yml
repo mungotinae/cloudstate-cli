@@ -1,236 +1,40 @@
 language: rust
 cache: cargo
-
 env:
   global:
-    # This will be part of the release tarball
-    # TODO change the project name
-    - PROJECT_NAME=cloudstate-cli
-    # TODO comment out this variable if you don't want to build .deb packages on all the targets.
-    - MAKE_DEB=yes
-    # TODO update these two variables. They are part of the .deb package metadata
-    - DEB_MAINTAINER="Adriano Santos <sleipnir@bsd.com.br>"
-    - DEB_DESCRIPTION="Is a lightweight, fast, and fun client that lets you go from zero to production with Cloudstate Stateful Serveless functions in minutes"
-
-# AFAICT There are a few ways to set up the build jobs. This one is not the DRYest but I feel is the
-# easiest to reason about.
-# TODO Feel free to remove the channels/targets you don't need
-# NOTE Make *sure* you don't remove a reference (&foo) if you are going to dereference it (*foo)
+  - PROJECT_NAME=cloudstate-cli
+  - MAKE_DEB=yes
+  - DEB_MAINTAINER="Adriano Santos <sleipnir@bsd.com.br>"
+  - DEB_DESCRIPTION="Is a lightweight, fast, and fun client that lets you go from
+    zero to production with Cloudstate Stateful Serveless functions in minutes"
 matrix:
   include:
-    # Stable channel
-#    - os: linux
-#      rust: stable
-#      env: TARGET=aarch64-unknown-linux-gnu
-      # need Trusty because the glibc in Precise is too old and doesn't support 64-bit arm
-#      dist: trusty
-#      sudo: required
-      # Extra packages only for this job
-#      addons:
-#        apt:
-#          packages: &aarch64_unknown_linux_gnu
-            # Transparent emulation
-#            - qemu-user-static
-#            - binfmt-support
-#    - os: linux
-#      rust: stable
-#      env: TARGET=armv7-unknown-linux-gnueabihf
-      # sudo is needed for binfmt_misc, which is needed for transparent user qemu emulation
-#      sudo: required
-#      addons:
-#        apt:
-#          packages: &armv7_unknown_linux_gnueabihf
-            # Cross compiler and cross compiled C libraries
-#            - gcc-arm-linux-gnueabihf
-#            - libc6-armhf-cross
-#            - libc6-dev-armhf-cross
-            # Transparent emulation
-#            - qemu-user-static
-#            - binfmt-support
-#    - os: osx
-#      rust: stable
-#      env: TARGET=i686-apple-darwin
-#    - os: linux
-#      rust: stable
-#      env: TARGET=i686-unknown-linux-gnu
-#      addons:
-#        apt:
-#          packages: &i686_unknown_linux_gnu
-            # Cross compiler and cross compiled C libraries
-#            - gcc-multilib
-#    - os: linux
-#      rust: stable
-#      env: TARGET=i686-unknown-linux-musl
-#      dist: trusty
-#      sudo: required
-#      addons:
-#        apt:
-#          packages: &musl_packages
-#          - musl
-#          - musl-dev
-#          - musl-tools
-#    - os: osx
-#      rust: stable
-#      env: TARGET=x86_64-apple-darwin
-#    - os: linux
-#      rust: stable
-#      env: TARGET=x86_64-unknown-linux-gnu
-#    - os: linux
-#      rust: stable
-#      env: TARGET=x86_64-unknown-linux-musl
-#      dist: trusty
-#      sudo: required
-#      addons:
-#        apt:
-#          packages: *musl_packages
-    # Beta channel
-#    - os: linux
-#      rust: beta
-#      env: TARGET=aarch64-unknown-linux-gnu
-#      dist: trusty
-#      sudo: required
-#      addons:
-#        apt:
-#          packages: *aarch64_unknown_linux_gnu
-#    - os: linux
-#      rust: beta
-#      env: TARGET=armv7-unknown-linux-gnueabihf
-#      sudo: required
-#      addons:
-#        apt:
-          # Use the same packages the stable version uses
-#          packages: *armv7_unknown_linux_gnueabihf
-#    - os: osx
-#      rust: beta
-#      env: TARGET=i686-apple-darwin
-#    - os: linux
-#      rust: beta
-#      env: TARGET=i686-unknown-linux-gnu
-#      addons:
-#        apt:
-#          packages: *i686_unknown_linux_gnu
-#    - os: linux
-#      rust: beta
-#      env: TARGET=i686-unknown-linux-musl
-#      dist: trusty
-#      sudo: required
-#      addons:
-#        apt:
-#          packages: *musl_packages
-#    - os: osx
-#      rust: beta
-#      env: TARGET=x86_64-apple-darwin
-#    - os: linux
-#      rust: beta
-#      env: TARGET=x86_64-unknown-linux-gnu
-#    - os: linux
-#      rust: beta
-#      env: TARGET=x86_64-unknown-linux-musl
-#      dist: trusty
-#      sudo: required
-#      addons:
-#        apt:
-#          packages: *musl_packages
-
-    # Nightly channel
-#    - os: linux
-#      rust: nightly
-#      env: TARGET=aarch64-unknown-linux-gnu
-#      dist: trusty
-#      sudo: required
-#      addons:
-#        apt:
-#          packages: *aarch64_unknown_linux_gnu
-#    - os: linux
-#      rust: nightly
-#      env: TARGET=armv7-unknown-linux-gnueabihf
-#      sudo: required
-#      addons:
-#        apt:
-          # Use the same packages the stable version uses
-#          packages: *armv7_unknown_linux_gnueabihf
-#    - os: osx
-#      rust: nightly
-#      env: TARGET=i686-apple-darwin
-#    - os: linux
-#      rust: nightly
-#      env: TARGET=i686-unknown-linux-gnu
-#      addons:
-#        apt:
-#          packages: *i686_unknown_linux_gnu
-#    - os: linux
-#      rust: nightly
-#      env: TARGET=i686-unknown-linux-musl
-#      dist: trusty
-#      sudo: required
-#      addons:
-#        apt:
-#          packages: *musl_packages
-    - os: osx
-      rust: nightly
-      env: TARGET=x86_64-apple-darwin
-    - os: linux
-      rust: nightly
-      env: TARGET=x86_64-unknown-linux-gnu
-#    - os: linux
-#      rust: nightly
-#      env: TARGET=x86_64-unknown-linux-musl
-#      dist: trusty
-#      sudo: required
-#      addons:
-#        apt:
-#          packages: *musl_packages
-  allow_failures:
-    # TODO You might need to allow failures for some target on some channel for some reason. Below
-    # there's one (commented out) example of how to do that. Just change the OS, channel and TARGET
-    # as needed.
-    # - os: linux
-    #   rust: stable
-    #   env: TARGET=x86_64-unknown-linux-gnu
-
+  - os: osx
+    rust: nightly
+    env: TARGET=x86_64-apple-darwin
+  - os: linux
+    rust: nightly
+    env: TARGET=x86_64-unknown-linux-gnu
+  allow_failures: 
 before_install:
-  - export PATH="$PATH:$HOME/.cargo/bin"
-
+- export PATH="$PATH:$HOME/.cargo/bin"
 install:
-  - bash ci/install.sh
-
+- bash ci/install.sh
 script:
-  - bash ci/script.sh
-
+- bash ci/script.sh
 before_deploy:
-  - bash ci/before_deploy.sh
-
+- bash ci/before_deploy.sh
 deploy:
   provider: releases
-  # TODO Regenerate this api_key for your project, this one won't work for you. Here's how:
-  # - Go to 'https://github.com/settings/tokens/new' and generate a Token with only the
-  # `public_repo` scope enabled
-  # - Call `travis encrypt $github_token` where $github_token is the token you got in the previous
-  # step and `travis` is the official Travis CI gem (see https://rubygems.org/gems/travis/)
-  # - Enter the "encrypted value" below
   api_key:
-    #Github token: 528643270ad473450d37ffbf7f7a9006893a7683
-    secure: q3cRBCvmttfzXnhmqLr4QD1XFUdBQ+PhBcsPinjSsv2UlWZjUewnFF1N6CpwyqU/ujQEjT6yZyXBpIFPbezwNkFW5XKMZlCChu0CjMFzlVmbgQnEbs28/V5if+0JlnZpStabwc9WRpZo/5EQSADSbJ8wYUkoEfAV7hvoEb0TLIs/hPLSOjRJXlTbLJW7MYXCkgnKv28fU03ZVuhssmdstr0ACoP/Vmv50nU7hewQ3YOwVornwjHKxvi3QcZRG9mqFL6VNibAal1M201Gkn32+Du6c9CUZkksKNJhSvcZGuP22iBoV4gfxTnJDRfublNB1YKlz4oZnHsURj2tAEO//+k7XlLfrhYTC9fuseBgis+GJzSLt6AvWvcyg6fCvoPq3cmqprLjCYWDT5mSLkZIm0gJ9Ul/n9jPf3ujjGtENRMzZIcHVnOOhB/jHkNRom9lGlOXfxNJZhbJsznlGik9dOgQ9893Z4G0r08zo7ORP51c4fYjMeKZ/iNMgaJ8Xh4dSTrZechTQIibQ/uo4dnS8Lto2mwgiXls4cVYxpO7YBuaLdadp78t0MLL4dX2+s8jJXG5r5OM7gH3p+K/KysmJm6bdSJUghzuAdnmoH10fOSKYzFjXqARDX1M6a4l71RcnBUkQdRO1v4WxOY6eyYouLiPmN1Mlrh/Vh6N7xs9mzQ=
-  file_glob: true
-  file: ${PROJECT_NAME}-${TRAVIS_TAG}-${TARGET}.*
-  # don't delete the artifacts from previous phases
-  skip_cleanup: true
-  # deploy when a new tag is pushed
+    secure: g8Gf7FCLRpXSWMGPx5/Pjyozr6hAQA5IhGSIvCIVYTO6TYbjemby8Xuixo8dJXYFxqrET4SVzQVtzg6YX+i46aiB22OX0MhF3HI+2zrtMYDeBECT2ShBmtcgOWF1L0vyKho7wQdzAPkw6V+qzupWtfs12KSLM2wgRT2bv+cnMo3CYYW+V7gWmCMzBmvkmDQgmDOdRvY4Ve8ivLPeZN5klbbGBPfniqebJeTNu8huqkCbabXscRdusSoS4QUouXZXfluHD6rMNP0kykEfHcg8xZNnX6zXhXfbRAYxvLzenXrbbg+HICBEiRaAZ8Woybl25sjIfT72qdW1ImHYvnNfLeja8amw/K5kb/FTXFQp/ocCYgaCffIxLWAt8mIrJeSz+mDDtOqKMomvdQ+jP65VXwBYuZyPBTiwNvfh5+kHesTFkwY8ORemGofXAwQfa1GZqTY5QCqpap7dEsLrdbwEcjSwvmxowLpZIE3sAyW+Z0p2LWyqPEbSV3YU/weTlp6TIi+Qs7hGVzy/TSguWie8ewiH+RRNs+oTNkc/z+fbu/SC8ckk1uMjCDhY05pugMkboVBhFvTPdEmNQSJZ36f4BvCIpsXTUPensY3kFDwHCdlGvRydKHog3pO2+0eFIoOGUF7BxAlA+9OvOyozeuU7ZnY1yFVrygJbxlrSHY0uhDI=
+  file: ".travis.yml"
   on:
-    # channel to use to produce the release artifacts
-    # NOTE make sure you only release *once* per target
-    # TODO you may want to pick a different channel
-    condition: $TRAVIS_RUST_VERSION = nightly
-    tags: true
-
+    repo: sleipnir/cloudstate-cli
 branches:
   only:
-    # Pushes and PR to the master branch
-    - master
-    # IMPORTANT Ruby regex to match tags. Required, or travis won't trigger deploys when a new tag
-    # is pushed. This regex matches semantic versions like v1.2.3-rc4+2016.02.22
-    - /\d+\.\d+\.\d+.*$/
-
+  - master
+  - "/\\d+\\.\\d+\\.\\d+.*$/"
 notifications:
   email:
     on_success: never
