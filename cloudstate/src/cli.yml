@@ -50,7 +50,22 @@ subcommands:
               - rust
               - python
               - scala
-            help: Used in conjunction with 'create'. Set language template for this project. Possible values is [java, node, go, dotnet, rust, python, scala]
+            help: Used in conjunction with 'create'. Set language template for this project. Possible values is [java, node, go, csharp, rust, python, scala]
+        - pattern:
+            long: pattern
+            takes_value: true
+            possible_values:
+              # Event Sourced
+              - EVS
+              # CRDT
+              - CRDT
+              # KVS
+              - KVS
+              # CQRS
+              - CQRS
+              # P2P
+              - P2P
+            help: Set the template pattern for beginning. Default is Event Sourced in Shopping Cart Example. Possible values is [EVS, CRDT, KVS, CQRS, P2P]
         - tag:
             short: t
             long: tag

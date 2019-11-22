@@ -195,7 +195,7 @@ pub mod command {
 
     pub fn list_profiles() {
         let mut profiles = LinkedHashMap::new();
-        profiles.insert("cshar", "dotnet");
+        profiles.insert("csharp", "dotnet");
         profiles.insert("go", "go");
         profiles.insert("java", "java, [maven | sbt]");
         profiles.insert("node", "node");

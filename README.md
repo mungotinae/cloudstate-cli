@@ -408,7 +408,7 @@ Ok(())
 ```  
 [cloudstate]# cloudstate --list-profiles
 Profile    | Dependencies         | Resolved   | Maturity Level |
-dotnet     | dotnet               | true       | ⌛             |
+csharp     | dotnet               | true       | ⌛             |
 go         | go                   | true       | 👍             |
 java       | java, [maven | sbt]  | true       | 👌             |
 node       | node                 | true       | 👌             |
