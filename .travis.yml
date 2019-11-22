@@ -33,10 +33,10 @@ deploy:
   on:
     repo: sleipnir/cloudstate-cli
     tags: true
-branches:
-  only:
-  - master
-  - /\d+\.\d+\.\d+.*$/
+#branches:
+#  only:
+#  - master
+#  - /\d+\.\d+\.\d+.*$/
 notifications:
   email:
     on_success: never
