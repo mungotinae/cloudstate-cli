@@ -16,11 +16,15 @@ mk_tarball() {
 
     # TODO update this part to copy the artifacts that make sense for your project
     # NOTE All Cargo build artifacts will be under the 'target/$TARGET/{debug,release}'
+    ls -ltr
+    ls target/$TARGET
+    ls target/$TARGET/release
     cp target/$TARGET/release/cloudstate $td
 
     pushd $td
 
     # release tarball will look like 'rust-everywhere-v1.2.3-x86_64-unknown-linux-gnu.tar.gz'
+    ls -ltr $out_dir
     tar czf $out_dir/${PROJECT_NAME}-${TRAVIS_TAG}-${TARGET}.tar.gz *
 
     popd
