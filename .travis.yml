@@ -26,18 +26,15 @@ before_deploy:
 - bash ci/before_deploy.sh
 deploy:
   provider: releases
-  github_token: $GITHUB_TOKEN
-  #api_key:
-  #  secure: $github_token
-    #secure: g8Gf7FCLRpXSWMGPx5/Pjyozr6hAQA5IhGSIvCIVYTO6TYbjemby8Xuixo8dJXYFxqrET4SVzQVtzg6YX+i46aiB22OX0MhF3HI+2zrtMYDeBECT2ShBmtcgOWF1L0vyKho7wQdzAPkw6V+qzupWtfs12KSLM2wgRT2bv+cnMo3CYYW+V7gWmCMzBmvkmDQgmDOdRvY4Ve8ivLPeZN5klbbGBPfniqebJeTNu8huqkCbabXscRdusSoS4QUouXZXfluHD6rMNP0kykEfHcg8xZNnX6zXhXfbRAYxvLzenXrbbg+HICBEiRaAZ8Woybl25sjIfT72qdW1ImHYvnNfLeja8amw/K5kb/FTXFQp/ocCYgaCffIxLWAt8mIrJeSz+mDDtOqKMomvdQ+jP65VXwBYuZyPBTiwNvfh5+kHesTFkwY8ORemGofXAwQfa1GZqTY5QCqpap7dEsLrdbwEcjSwvmxowLpZIE3sAyW+Z0p2LWyqPEbSV3YU/weTlp6TIi+Qs7hGVzy/TSguWie8ewiH+RRNs+oTNkc/z+fbu/SC8ckk1uMjCDhY05pugMkboVBhFvTPdEmNQSJZ36f4BvCIpsXTUPensY3kFDwHCdlGvRydKHog3pO2+0eFIoOGUF7BxAlA+9OvOyozeuU7ZnY1yFVrygJbxlrSHY0uhDI=
-  file: ".travis.yml"
+  api_key:
+    secure: eEiz++F6jCFrBN3KEkWzguXwATqiyQzXNhf39ibgKzmWuWFvckG29X7O+uRaivwUUFmb2Ah3wDUsqzoG841wrzKllJYVrz6k8wP04M1+1Jz4E3RMfGfj9XYS+wLv3/K9Djhfvnl7+MHTi2F5BZhjarDtJ9Fdltv4undDYW8IyTqJ4oFshbY33ZibynDQEbpdxXKzIoUE8tqb7pvc8XCk0cnOsYoUiauVevwI4arygFX0/J+UWVS1hnK+2kRsJN4p0/iv3vOTLy9IeCBBMfpIeiQzukgfRZknraz74Ni/zDVsasabI+/ktGwgxNh1vuYdfxTZHvu9pVb/Pn6G1V2IIU2oA0yxzXGcOfYCQrCVAQnIqiGdiI1mzz1CS8W0NDOsWRj4olLLn+IJvHjyyf8qALYTmQTxxvw/HVvA5J4pzCVu00VmxLGvNnTK+P2lawBZzoVx8xOS+UOqGtKujvTFY+BpaGBd7O/UGU8xYlwLGka7dKAZHNICLH84QyNlbzJ/JTumeXnsc6E9UNYM2PVZt6HXVkb6opp9HFbm7kq2tdUQ91kOglh7LF2n9cmtblEYbofTepvEeZs5S6XWGPHBxcbbHkSEjbJcVJFp63Og2qVkLRDdVKoq7i50cI4mZfQ+I3d0o5UoCMpv9aCaTNj4NW3sOFR+H5DNaP6GtTZDxc0=
+  file: "${PROJECT_NAME}-${TRAVIS_TAG}-${TARGET}.*"
   on:
     repo: sleipnir/cloudstate-cli
-    tags: true
 branches:
   only:
   - master
-  - /\d+\.\d+\.\d+.*$/
+  - "/\\d+\\.\\d+\\.\\d+.*$/"
 notifications:
   email:
     on_success: never
