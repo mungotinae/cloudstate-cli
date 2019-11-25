@@ -98,7 +98,7 @@ if [[ $(which curl) && $(curl --version) ]]; then
 fi
 
 # Download binary
-touch /tmp/cloudstate
+touch /tmp/cloudstate.tar.gz
 #curl -vvv -H 'Cache-Control: no-cache' --url https://raw.githubusercontent.com/sleipnir/cloudstate-cli/master/bin/linux-x86/cloudstate --output /tmp/cloudstate
 curl -vvv -H 'Cache-Control: no-cache' --url $RELEASE_URL --output /tmp/cloudstate.tar.gz
 
