@@ -11,8 +11,9 @@ mk_artifacts() {
 
 mk_tarball() {
     # create a "staging" directory
+    local home=$(pwd)
     local td=$(mktempd)
-    local out_dir=$(pwd)
+    local out_dir=$(home)/target/$TARGET/release
 
     # TODO update this part to copy the artifacts that make sense for your project
     # NOTE All Cargo build artifacts will be under the 'target/$TARGET/{debug,release}'
@@ -25,7 +26,13 @@ mk_tarball() {
 
     # release tarball will look like 'rust-everywhere-v1.2.3-x86_64-unknown-linux-gnu.tar.gz'
     ls -ltr $out_dir
-    tar czf $out_dir/${PROJECT_NAME}-${TRAVIS_TAG}-${TARGET}.tar.gz *
+    tar vczf $out_dir/${PROJECT_NAME}-${TRAVIS_TAG}-${TARGET}.tar.gz *
+
+    echo "Listing tarball"
+    ls -ltr $out_dir
+    tar -t $out_dir/${PROJECT_NAME}-${TRAVIS_TAG}-${TARGET}.tar.gz
+
+    cp $out_dir/${PROJECT_NAME}-${TRAVIS_TAG}-${TARGET}.tar.gz $home
 
     popd
     rm -r $td
