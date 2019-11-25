@@ -31,10 +31,11 @@ deploy:
   file: "${PROJECT_NAME}-${TRAVIS_TAG}-${TARGET}.*"
   on:
     repo: sleipnir/cloudstate-cli
-branches:
-  only:
-  - master
-  - "/\\d+\\.\\d+\\.\\d+.*$/"
+    tags: true
+#branches:
+#  only:
+#  - master
+#  - "/\\d+\\.\\d+\\.\\d+.*$/"
 notifications:
   email:
     on_success: never
