@@ -1,9 +1,4 @@
 #!/bin/bash
-VERSION=0.3.26
-DARWIN_RELEASE_URL=https://github.com/sleipnir/cloudstate-cli/releases/download/$VERSION/cloudstate-cli-$VERSION-x86_64-apple-darwin.tar.gz
-LINUX_RELEASE_URL=https://github.com/sleipnir/cloudstate-cli/releases/download/$VERSION/cloudstate-cli-$VERSION-x86_64-unknown-linux-gnu.tar.gz
-
-RELEASE_URL=$LINUX_RELEASE_URL
 
 if [ $HOME ]; then
   HOME_DIR=$HOME
@@ -31,7 +26,11 @@ if [[ "$OSTYPE" == "linux-gnu" ]]; then
 elif [[ "$OSTYPE" == "darwin"* ]]; then
   # Mac OSX
   if [ $( command -v brew ) ]; then
-    RELEASE_URL=$DARWIN_RELEASE_URL
+    RELEASE_CMD=$(curl -vvv -H 'Cache-Control: no-cache' -s https://api.github.com/repos/sleipnir/cloudstate-cli/releases/latest \
+  | grep browser_download_url \
+  | grep apple-darwin.tar.gz \
+  | cut -d '"' -f 4 \
+  | wget -qi -)
 
     BREW_PREFIX=$( brew --prefix )
     BASH_COMPLETION_DIR=$BREW_PREFIX/etc/bash_completion.d
@@ -98,14 +97,26 @@ if [[ $(which curl) && $(curl --version) ]]; then
 fi
 
 # Download binary
-touch /tmp/cloudstate.tar.gz
-#curl -vvv -H 'Cache-Control: no-cache' --url https://raw.githubusercontent.com/sleipnir/cloudstate-cli/master/bin/linux-x86/cloudstate --output /tmp/cloudstate
-curl -vvv -H 'Cache-Control: no-cache' --url $RELEASE_URL --output /tmp/cloudstate.tar.gz
+if [[ "$OSTYPE" == "linux-gnu" ]]; then
+  curl -vvv -H 'Cache-Control: no-cache' -s https://api.github.com/repos/sleipnir/cloudstate-cli/releases/latest \
+  | grep browser_download_url \
+  | grep unknown-linux-gnu.tar.gz \
+  | cut -d '"' -f 4 \
+  | wget -qi -
 
-tar -zxvf /tmp/cloudstate.tar.gz --directory /usr/local/bin
-#mv /tmp/cloudstate /usr/local/bin
+elif [[ "$OSTYPE" == "darwin"* ]]; then
+  # Mac OSX
+  curl -vvv -H 'Cache-Control: no-cache' -s https://api.github.com/repos/sleipnir/cloudstate-cli/releases/latest \
+  | grep browser_download_url \
+  | grep apple-darwin.tar.gz \
+  | cut -d '"' -f 4 \
+  | wget -qi -
+
+fi
+
+tar -zxvf cloudstate*.tar.gz --directory /usr/local/bin
 chmod +x /usr/local/bin/cloudstate
-#rm -rf /tmp/cloudstate.tar.gz
+rm -rf cloudstate*.tar.gz
 
 # Install completions
 cloudstate completions bash >> $BASH_COMPLETION_DIR/cloudstate.bash-completion
