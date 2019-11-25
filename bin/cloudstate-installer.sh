@@ -105,7 +105,7 @@ curl -vvv -H 'Cache-Control: no-cache' --url $RELEASE_URL --output /tmp/cloudsta
 tar -zxvf /tmp/cloudstate.tar.gz --directory /usr/local/bin
 #mv /tmp/cloudstate /usr/local/bin
 chmod +x /usr/local/bin/cloudstate
-rm -rf /tmp/cloudstate.tar.gz
+#rm -rf /tmp/cloudstate.tar.gz
 
 # Install completions
 cloudstate completions bash >> $BASH_COMPLETION_DIR/cloudstate.bash-completion
