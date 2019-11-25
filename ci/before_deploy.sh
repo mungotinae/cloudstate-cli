@@ -13,7 +13,7 @@ mk_tarball() {
     # create a "staging" directory
     local home=$(pwd)
     local td=$(mktempd)
-    local out_dir=$(home)/target/$TARGET/release
+    local out_dir=$home/target/$TARGET/release
 
     # TODO update this part to copy the artifacts that make sense for your project
     # NOTE All Cargo build artifacts will be under the 'target/$TARGET/{debug,release}'
