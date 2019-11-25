@@ -30,7 +30,6 @@ mk_tarball() {
 
     echo "Listing tarball"
     ls -ltr $out_dir
-    tar -t $out_dir/${PROJECT_NAME}-${TRAVIS_TAG}-${TARGET}.tar.gz
 
     cp $out_dir/${PROJECT_NAME}-${TRAVIS_TAG}-${TARGET}.tar.gz $home
 
