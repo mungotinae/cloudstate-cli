@@ -1,12 +1,29 @@
 #!/bin/bash
 HOME_DIR=$( getent passwd "$USER" | cut -d: -f6 )
 
+# Bash completion
+INSTALL_COMPLETIONS=1
+BASH_COMPLETION_DIR=/etc/bash_completion.d
+skip_bash_completion() {
+  INSTALL_COMPLETIONS=0
+  if [ ! -z $1 ]; then
+    echo $1
+  fi
+}
+
 #TODO: Extract function
 echo $OSTYPE
-#if [[ "$OSTYPE" == "linux-gnu" ]]; then
-#        # ...
-#elif [[ "$OSTYPE" == "darwin"* ]]; then
-#        # Mac OSX
+if [[ "$OSTYPE" == "linux-gnu" ]]; then
+: #        # ...
+elif [[ "$OSTYPE" == "darwin"* ]]; then
+  # Mac OSX
+  if [ $( command -v brew ) ]; then
+    BREW_PREFIX=$( brew --prefix )
+    BASH_COMPLETION_DIR=$BREW_PREFIX/etc/bash_completion.d
+    if [[ ! -d "$BASH_COMPLETION_DIR" ]]; then
+      skip_bash_completion "Could not determine the path to bash_completion.d.  Skipping install of completion tools"
+    fi
+  fi
 #elif [[ "$OSTYPE" == "cygwin" ]]; then
 #        # POSIX compatibility layer and Linux environment emulation for Windows
 #elif [[ "$OSTYPE" == "msys" ]]; then
@@ -15,9 +32,9 @@ echo $OSTYPE
 #        # I'm not sure this can happen.
 #elif [[ "$OSTYPE" == "freebsd"* ]]; then
 #        # ...
-#else
-#        # Unknown.
-#fi
+else
+: #       # Unknown.
+fi
 
 mkdir -p $HOME_DIR/.cloudstate
 
@@ -109,9 +126,9 @@ mv /tmp/cloudstate /usr/local/bin
 chmod +x /usr/local/bin/cloudstate
 
 # Install completions
-cloudstate completions bash >> /etc/bash_completion.d/cloudstate.bash-completion
-sed -i '$ d' /etc/bash_completion.d/cloudstate.bash-completion
-source /etc/bash_completion.d/cloudstate.bash-completion
+cloudstate completions bash >> $BASH_COMPLETION_DIR/cloudstate.bash-completion
+sed -i '$ d' $BASH_COMPLETION_DIR/cloudstate.bash-completion
+source $BASH_COMPLETION_DIR/cloudstate.bash-completion
 
 echo "Install Finish $(cloudstate --version) "
 exit 0
