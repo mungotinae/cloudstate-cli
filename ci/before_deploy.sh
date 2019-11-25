@@ -43,7 +43,7 @@ mk_deb() {
 }
 
 main() {
-    echo "$(pwd)"
+    echo "Workspace: $(pwd)"
     ls -ltr
     cd cloudstate
 
