@@ -30,7 +30,7 @@ deploy:
   draft: false
   api_key:
     secure: eEiz++F6jCFrBN3KEkWzguXwATqiyQzXNhf39ibgKzmWuWFvckG29X7O+uRaivwUUFmb2Ah3wDUsqzoG841wrzKllJYVrz6k8wP04M1+1Jz4E3RMfGfj9XYS+wLv3/K9Djhfvnl7+MHTi2F5BZhjarDtJ9Fdltv4undDYW8IyTqJ4oFshbY33ZibynDQEbpdxXKzIoUE8tqb7pvc8XCk0cnOsYoUiauVevwI4arygFX0/J+UWVS1hnK+2kRsJN4p0/iv3vOTLy9IeCBBMfpIeiQzukgfRZknraz74Ni/zDVsasabI+/ktGwgxNh1vuYdfxTZHvu9pVb/Pn6G1V2IIU2oA0yxzXGcOfYCQrCVAQnIqiGdiI1mzz1CS8W0NDOsWRj4olLLn+IJvHjyyf8qALYTmQTxxvw/HVvA5J4pzCVu00VmxLGvNnTK+P2lawBZzoVx8xOS+UOqGtKujvTFY+BpaGBd7O/UGU8xYlwLGka7dKAZHNICLH84QyNlbzJ/JTumeXnsc6E9UNYM2PVZt6HXVkb6opp9HFbm7kq2tdUQ91kOglh7LF2n9cmtblEYbofTepvEeZs5S6XWGPHBxcbbHkSEjbJcVJFp63Og2qVkLRDdVKoq7i50cI4mZfQ+I3d0o5UoCMpv9aCaTNj4NW3sOFR+H5DNaP6GtTZDxc0=
-  file: "${PROJECT_NAME}-${TRAVIS_TAG}-${TARGET}.*"
+  file: "${PROJECT_NAME}-${TRAVIS_TAG}-${TARGET}.tar.gz"
   on:
     repo: sleipnir/cloudstate-cli
     tags: true
