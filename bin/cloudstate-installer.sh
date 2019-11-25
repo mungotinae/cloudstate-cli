@@ -1,5 +1,13 @@
 #!/bin/bash
-HOME_DIR=$( getent passwd "$USER" | cut -d: -f6 )
+
+if [ $HOME ]; then
+  HOME_DIR=$HOME
+elif [ $( command -v getent ) ]; then
+  HOME_DIR=$( getent passwd "$USER" | cut -d: -f6 )
+else
+  echo "Could not determine path to user's home directory"
+  exit 1
+fi
 
 # Bash completion
 INSTALL_COMPLETIONS=1
@@ -36,7 +44,10 @@ else
 : #       # Unknown.
 fi
 
-mkdir -p $HOME_DIR/.cloudstate
+CLOUDSTATE_CONF=$HOME_DIR/.cloudstate
+if [ ! -d "$CLOUDSTATE_CONF" ]; then
+    mkdir -p "$CLOUDSTATE_CONF"
+fi
 
 #TODO: Extract function
 # Verify Docker
