@@ -32,6 +32,7 @@ mk_tarball() {
     ls -ltr $out_dir
 
     cd $home && cd ..
+    echo "Local> $(pwd)"
     cp $out_dir/${PROJECT_NAME}-${TRAVIS_TAG}-${TARGET}.tar.gz .
 
     popd
