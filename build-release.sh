@@ -16,8 +16,6 @@
 
 set -euo pipefail
 
-cd cloudstate
-
 case `uname -s` in
     Linux)
         echo "Building static binaries using ekidd/rust-musl-builder"
