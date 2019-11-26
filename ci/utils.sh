@@ -1,3 +1,6 @@
+OPENSSL_DIR=/usr/lib/x86_64-linux-gnu
+export OPENSSL_DIR
+
 mktempd() {
     echo $(mktemp -d 2>/dev/null || mktemp -d -t tmp)
 }
