@@ -11,7 +11,7 @@ install_c_toolchain() {
                  gcc-aarch64-linux-gnu libc6-arm64-cross libc6-dev-arm64-cross pkg-config libssl-dev
             ;;
         x86_64-unknown-linux-musl)
-            sudo apt-get update && apt-get install -y --no-install-recommends \
+            sudo apt-get update && sudo apt-get install -y --no-install-recommends \
                  pkg-config libssl-dev
             ;;
         *)
