@@ -12,8 +12,8 @@ install_c_toolchain() {
             ;;
         x86_64-unknown-linux-musl)
             sudo apt-get update && sudo apt-get install -y --no-install-recommends \
-                 pkg-config libssl-dev 
-                 #&& \
+                 pkg-config libssl-dev && \
+                 sudo pkg-config --libs openssl
             # sudo touch .env && sudo echo "export OPENSSL_DIR=/usr/lib/x86_64-linux-gnu" >> .env && sudo source .env && \
             # sudo echo "$OPENSSL_DIR" 
             ;;
