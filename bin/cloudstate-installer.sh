@@ -1,4 +1,5 @@
 #!/bin/bash
+RELEASE_URL=https://api.github.com/repos/sleipnir/cloudstate-cli/releases/latest
 
 if [ $HOME ]; then
   HOME_DIR=$HOME
@@ -26,12 +27,6 @@ if [[ "$OSTYPE" == "linux-gnu" ]]; then
 elif [[ "$OSTYPE" == "darwin"* ]]; then
   # Mac OSX
   if [ $( command -v brew ) ]; then
-    RELEASE_CMD=$(curl -vvv -H 'Cache-Control: no-cache' -s https://api.github.com/repos/sleipnir/cloudstate-cli/releases/latest \
-  | grep browser_download_url \
-  | grep apple-darwin.tar.gz \
-  | cut -d '"' -f 4 \
-  | wget -qi -)
-
     BREW_PREFIX=$( brew --prefix )
     BASH_COMPLETION_DIR=$BREW_PREFIX/etc/bash_completion.d
     if [[ ! -d "$BASH_COMPLETION_DIR" ]]; then
@@ -59,8 +54,7 @@ fi
 #TODO: Extract function
 # Verify Docker
 if [[ $(which docker) && $(docker --version) ]]; then
-    echo "Update docker"
-    # command
+:    #        # ...
   else
     echo "Install docker"
     # command
@@ -69,8 +63,7 @@ fi
 #TODO: Extract function
 # Verify Kubectl
 if [[ $(which kubectl) && $(kubectl version) ]]; then
-    echo "Update kubectl"
-    # command
+:    #        # ...
   else
     echo "Install kubectl"
     # command
@@ -79,8 +72,7 @@ fi
 #TODO: Extract function
 # Verify Minikube
 if [[ $(which minikube) && $(minikube status) ]]; then
-    echo "Update minikube"
-    # command
+:    #        # ...
   else
     echo "Install minikube"
     # command
@@ -89,16 +81,16 @@ fi
 #TODO: Extract function
 # Verify Curl
 if [[ $(which curl) && $(curl --version) ]]; then
-    echo "Update curl"
-    # command
+:    #        # ...
   else
     echo "Install curl"
     # command
 fi
 
 # Download binary
+echo "Donwloading binaries..."
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
-  curl -vvv -H 'Cache-Control: no-cache' -s https://api.github.com/repos/sleipnir/cloudstate-cli/releases/latest \
+  curl -H 'Cache-Control: no-cache' -s $RELEASE_URL \
   | grep browser_download_url \
   | grep linux.tar.gz \
   | cut -d '"' -f 4 \
@@ -106,7 +98,7 @@ if [[ "$OSTYPE" == "linux-gnu" ]]; then
 
 elif [[ "$OSTYPE" == "darwin"* ]]; then
   # Mac OSX
-  curl -vvv -H 'Cache-Control: no-cache' -s https://api.github.com/repos/sleipnir/cloudstate-cli/releases/latest \
+  curl -H 'Cache-Control: no-cache' -s $RELEASE_URL \
   | grep browser_download_url \
   | grep osx.tar.gz \
   | cut -d '"' -f 4 \
@@ -119,9 +111,15 @@ chmod +x /usr/local/bin/cloudstate
 rm -rf cloudstate*.tar.gz
 
 # Install completions
+echo "Installing completions..."
 cloudstate completions bash >> $BASH_COMPLETION_DIR/cloudstate.bash-completion
 sed -i '$ d' $BASH_COMPLETION_DIR/cloudstate.bash-completion
 source $BASH_COMPLETION_DIR/cloudstate.bash-completion
 
+# Check dependencies
+echo "Checking dependencies...."
+cloudstate --check
+
 echo "Install Finish $(cloudstate --version) "
+
 exit 0
