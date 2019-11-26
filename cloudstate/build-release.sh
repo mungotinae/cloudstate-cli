@@ -27,10 +27,10 @@ case `uname -s` in
         docker rmi build-"$1"-image
         
         echo "Compress binary file"
-        /usr/bin/upx --brute /home/rust/src/target/x86_64-unknown-linux-musl/release/cloudstate
+        /usr/bin/upx --brute cloudstate
 
         echo "Validate binary file"
-        file /home/rust/src/target/x86_64-unknown-linux-musl/release/cloudstate
+        file cloudstate
         
         echo "Generate relase file"
         tar vczf "$1"-"$2".tar.gz cloudstate

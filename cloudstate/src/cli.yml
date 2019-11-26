@@ -1,5 +1,5 @@
 name: cloudstate
-version: "0.3.53"
+version: "0.3.54"
 author: Adriano Santos <sleipnir@bsd.com.br>
 about: CloudState CLI
 args:
