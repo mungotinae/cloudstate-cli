@@ -8,7 +8,7 @@ rust:
 services:
 - docker
 before_install: cd cloudstate
-before_deploy: "./build-release cloudstate ${TRAVIS_TAG}-${TRAVIS_OS_NAME}"
+before_deploy: "./build-release.sh cloudstate ${TRAVIS_TAG}-${TRAVIS_OS_NAME}"
 deploy:
   provider: releases
   skip_cleanup: true
