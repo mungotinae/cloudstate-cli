@@ -1,5 +1,6 @@
 #!/bin/bash
 RELEASE_URL=https://api.github.com/repos/sleipnir/cloudstate-cli/releases/latest
+RELEASE_TYPE=linux
 
 if [ $HOME ]; then
   HOME_DIR=$HOME
@@ -27,6 +28,8 @@ if [[ "$OSTYPE" == "linux-gnu" ]]; then
 elif [[ "$OSTYPE" == "darwin"* ]]; then
   # Mac OSX
   if [ $( command -v brew ) ]; then
+    RELEASE_TYPE=osx
+
     BREW_PREFIX=$( brew --prefix )
     BASH_COMPLETION_DIR=$BREW_PREFIX/etc/bash_completion.d
     if [[ ! -d "$BASH_COMPLETION_DIR" ]]; then
@@ -89,22 +92,11 @@ fi
 
 # Download binary
 echo "Donwloading binaries..."
-if [[ "$OSTYPE" == "linux-gnu" ]]; then
-  curl -H 'Cache-Control: no-cache' -s $RELEASE_URL \
+curl -H 'Cache-Control: no-cache' -s $RELEASE_URL \
   | grep browser_download_url \
-  | grep linux.tar.gz \
+  | grep $RELEASE_TYPE.tar.gz \
   | cut -d '"' -f 4 \
   | wget -qi -
-
-elif [[ "$OSTYPE" == "darwin"* ]]; then
-  # Mac OSX
-  curl -H 'Cache-Control: no-cache' -s $RELEASE_URL \
-  | grep browser_download_url \
-  | grep osx.tar.gz \
-  | cut -d '"' -f 4 \
-  | wget -qi -
-
-fi
 
 tar -zxvf cloudstate*.tar.gz --directory /usr/local/bin
 chmod +x /usr/local/bin/cloudstate
