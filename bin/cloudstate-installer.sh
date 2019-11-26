@@ -100,7 +100,7 @@ fi
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
   curl -vvv -H 'Cache-Control: no-cache' -s https://api.github.com/repos/sleipnir/cloudstate-cli/releases/latest \
   | grep browser_download_url \
-  | grep unknown-linux-gnu.tar.gz \
+  | grep linux.tar.gz \
   | cut -d '"' -f 4 \
   | wget -qi -
 
@@ -108,7 +108,7 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
   # Mac OSX
   curl -vvv -H 'Cache-Control: no-cache' -s https://api.github.com/repos/sleipnir/cloudstate-cli/releases/latest \
   | grep browser_download_url \
-  | grep apple-darwin.tar.gz \
+  | grep osx.tar.gz \
   | cut -d '"' -f 4 \
   | wget -qi -
 
