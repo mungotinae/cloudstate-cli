@@ -12,7 +12,7 @@ install_c_toolchain() {
             ;;
         x86_64-unknown-linux-musl)
             sudo apt-get update && sudo apt-get install -y --no-install-recommends \
-                 pkg-config libssl-dev \
+                 pkg-config libssl-dev && \
             ls  -ltr /usr/lib/*libssl*
             ;;
         *)
