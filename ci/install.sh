@@ -10,6 +10,10 @@ install_c_toolchain() {
             sudo apt-get install -y --no-install-recommends \
                  gcc-aarch64-linux-gnu libc6-arm64-cross libc6-dev-arm64-cross pkg-config libssl-dev
             ;;
+        x86_64-unknown-linux-musl)
+            sudo apt-get update && apt-get install -y --no-install-recommends \
+                 pkg-config libssl-dev
+            ;;
         *)
             # For other targets, this is handled by addons.apt.packages in .travis.yml
             ;;
