@@ -44,16 +44,15 @@ CloudState CLI relies on a number of command line tools such as:
 [cloudstate]#  curl https://raw.githubusercontent.com/sleipnir/cloudstate-cli/master/bin/cloudstate-installer.sh | sh -  
 ```  
 
-> in Mac OS environments in addition to the script method you can use Homebrew installation
+> In Mac OSX environments in addition to the script method you can use Homebrew installation:
 > ```
 > [cloudstate]# brew install openssl@1.1
 > [cloudstate]# brew tap sleipnir/cloudstate-cli
 > [cloudstate]# brew install cloudstate-cli
 > ```
-<br/>
 > Note: The brew installation method so far does not provide shell completions capabilities.
 <br/>
-  
+
 ## Usage:  
 <br/>
 
