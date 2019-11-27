@@ -35,6 +35,8 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
     if [[ ! -d "$BASH_COMPLETION_DIR" ]]; then
       skip_bash_completion "Could not determine the path to bash_completion.d.  Skipping install of completion tools"
     fi
+
+    brew install openssl@1.1
   fi
 
 #elif [[ "$OSTYPE" == "cygwin" ]]; then
