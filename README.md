@@ -46,7 +46,6 @@ CloudState CLI relies on a number of command line tools such as:
 
 > In Mac OSX environments in addition to the script method you can use Homebrew installation:
 > ```
-> [cloudstate]# brew install openssl@1.1
 > [cloudstate]# brew tap sleipnir/cloudstate-cli
 > [cloudstate]# brew install cloudstate-cli
 > ```
