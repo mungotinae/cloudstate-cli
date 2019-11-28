@@ -46,7 +46,7 @@ subcommands:
               - java
               - node
               - go
-              - dotnet
+              - csharp
               - rust
               - python
               - scala
