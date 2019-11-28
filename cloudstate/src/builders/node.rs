@@ -2,6 +2,11 @@ use crate::builders::{ProjectBuilder, Application};
 use std::path::Path;
 use std::process::{Command, Stdio};
 
+use std::{env, fs};
+use crate::{set_deployment_vars, k8s_deploy, Emojis};
+use std::fs::File;
+use std::io::Write;
+
 pub struct NodeBuilder;
 
 impl ProjectBuilder for NodeBuilder {
