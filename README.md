@@ -57,7 +57,7 @@ CloudState CLI relies on a number of command line tools such as:
 
 ```  
 [cloudstate]# cloudstate --help
-Cloudstate 0.2.4
+Cloudstate 0.5.0
 Adriano Santos <sleipnir@bsd.com.br>
 CloudState CLI
 
@@ -89,7 +89,7 @@ SUBCOMMANDS:
 **Or in Specific Command**
 ```  
 [cloudstate]# cloudstate build --help
-cloudstate-build 0.2.4
+cloudstate-build 0.5.0
 Adriano Santos <sleipnir@bsd.com.br>
 Build project with template specified. Requires path. Example cloudstate --path=.
 
@@ -419,6 +419,7 @@ Profile    | Dependencies         | Resolved   | Maturity Level |
 csharp     | dotnet               | true       | ⌛             |
 go         | go                   | true       | 👍             |
 java       | java, [maven | sbt]  | true       | 👌             |
+kotlin     | java, [maven | sbt]  | true       | 👌             |
 node       | node                 | true       | 👌             |
 python     | python, virtualenv   | true       | ⌛             |
 rust       | rust, cargo          | true       | ⌛             |
