@@ -1,15 +1,15 @@
-extern crate dirs;
 extern crate cargo_toml_builder;
+extern crate dirs;
 
+use crate::builders::{Application, ProjectBuilder};
+use crate::{k8s_deploy, set_deployment_vars, Emojis};
 use cargo_toml_builder::prelude::*;
-use std::path::Path;
-use std::string::ToString;
-use crate::builders::{ProjectBuilder, Application};
-use std::{env, fs};
-use crate::{set_deployment_vars, k8s_deploy, Emojis};
 use std::fs::File;
 use std::io::Write;
+use std::path::Path;
 use std::process::{Command, Stdio};
+use std::string::ToString;
+use std::{env, fs};
 
 pub struct RustBuilder;
 
@@ -17,7 +17,11 @@ impl RustBuilder {
     fn get_cargo_toml(name: &str, version: &str) -> String {
         let log_dep = Dependency::version("log", "0.4.8");
         let log_rs_dep = Dependency::version("log4rs", "0.8.3");
-        let cloud_state_dep = Dependency::tag("cloudstate", "https://github.com/sleipnir/cloudstate-rust", "0.1.4");
+        let cloud_state_dep = Dependency::tag(
+            "cloudstate",
+            "https://github.com/sleipnir/cloudstate-rust",
+            "0.1.4",
+        );
         //let cloud_state_dep = Dependency::version("cloudstate", "0.0.1");
 
         let dependencies = vec![log_dep, log_rs_dep, cloud_state_dep];
@@ -34,7 +38,6 @@ impl RustBuilder {
 }
 
 impl ProjectBuilder for RustBuilder {
-
     fn is_dependencies_ok(&self) -> bool {
         Command::new("which")
             .arg("cargo")
@@ -62,18 +65,17 @@ impl ProjectBuilder for RustBuilder {
 
         let mut docker_file = File::create(docker_path).unwrap();
         docker_file.write_all(dockerfile.as_ref());
-
     }
 
     fn compile(&self, app: &Application) {
         env::set_current_dir(&app.work_dir);
 
-        println!("{} Downloading and install dependencies...", Emojis::default().floppy_disk());
+        println!(
+            "{} Downloading and install dependencies...",
+            Emojis::default().floppy_disk()
+        );
         println!("{} Compiling project...", Emojis::default().coffee());
-        let status = Command::new("cargo")
-            .arg("build")
-            .arg("--release")
-            .status();
+        let status = Command::new("cargo").arg("build").arg("--release").status();
 
         if status.is_ok() {
             println!("{} Project successfully compiled", Emojis::default().ok())
@@ -93,9 +95,11 @@ impl ProjectBuilder for RustBuilder {
             .status();
 
         if status.is_ok() {
-            println!("{} Image created successfully!", Emojis::default().frame_picture())
+            println!(
+                "{} Image created successfully!",
+                Emojis::default().frame_picture()
+            )
         }
-
     }
 
     fn push(self, app: Application) {

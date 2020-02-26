@@ -1,17 +1,21 @@
 pub mod command {
     extern crate inflector;
 
+    use crate::builders::{
+        csharp::CSharpBuilder, go::GoBuilder, java::JavaBuilder, node::NodeBuilder,
+        python::PythonBuilder, rust::RustBuilder, scala::ScalaBuilder, Application, ProjectBuilder,
+    };
+    use crate::{check_command, get_templates, get_user_dir, Emojis};
+    use clap::ArgMatches;
+    use inflector::Inflector;
+    use linked_hash_map::LinkedHashMap;
     use std::fs;
     use std::path::Path;
     use std::process::Command;
-    use crate::builders::{java::JavaBuilder, node::NodeBuilder, go::GoBuilder, csharp::CSharpBuilder, rust::RustBuilder, python::PythonBuilder, scala::ScalaBuilder, ProjectBuilder, Application};
-    use linked_hash_map::LinkedHashMap;
-    use inflector::Inflector;
-    use crate::{get_user_dir, get_templates, Emojis, check_command};
-    use clap::ArgMatches;
 
     const CLOUD_STATE_NAMESPACE: &str = "cloudstate";
-    const CLOUD_STATE_OPERATOR_DEPLOYMENT: &str = "https://raw.githubusercontent.com/cloudstateio/cloudstate/master/operator/cloudstate.yaml";
+    const CLOUD_STATE_OPERATOR_DEPLOYMENT: &str =
+        "https://raw.githubusercontent.com/cloudstateio/cloudstate/master/operator/cloudstate.yaml";
 
     pub fn upgrade() {
         let status = self_update::backends::github::Update::configure()
@@ -20,15 +24,16 @@ pub mod command {
             .bin_name("cloudstate")
             .show_download_progress(true)
             .current_version(env!("CARGO_PKG_VERSION"))
-            .build().unwrap()
-            .update().unwrap();
+            .build()
+            .unwrap()
+            .update()
+            .unwrap();
 
         println!("Update status: `{}`!", status.version());
     }
 
     pub fn scale(args: &ArgMatches) {
         //kubectl scale --replicas=3 deployment/shopping-cart
-
     }
 
     pub fn logs(args: &ArgMatches) {
@@ -36,7 +41,7 @@ pub mod command {
 
         let space = match args.value_of("namespace") {
             Some(namespace) => args.value_of("namespace").unwrap_or(CLOUD_STATE_NAMESPACE),
-            _ => CLOUD_STATE_NAMESPACE
+            _ => CLOUD_STATE_NAMESPACE,
         };
 
         log_container(
@@ -45,21 +50,42 @@ pub mod command {
             args.is_present("tail"),
             args.is_present("all"),
             args.is_present("since"),
-            args.value_of("since").unwrap_or("1m")
+            args.value_of("since").unwrap_or("1m"),
         );
-
     }
 
     pub fn check() {
-
         let mut commands = LinkedHashMap::new();
 
-        commands.insert("docker", format!("{} Docker not found in system path", Emojis::default().bomb() ));
-        commands.insert("kubectl", format!("{} Kubectl not found in system path", Emojis::default().bomb() ));
-        commands.insert("minikube", format!("{} Minikube not found in system path", Emojis::default().bomb() ));
+        commands.insert(
+            "docker",
+            format!(
+                "{} Docker not found in system path",
+                Emojis::default().bomb()
+            ),
+        );
+        commands.insert(
+            "kubectl",
+            format!(
+                "{} Kubectl not found in system path",
+                Emojis::default().bomb()
+            ),
+        );
+        commands.insert(
+            "minikube",
+            format!(
+                "{} Minikube not found in system path",
+                Emojis::default().bomb()
+            ),
+        );
 
         commands.insert("dotnet", "Dependency .NET not found in system path. If you use csharp please proceed to install it.".parse().unwrap());
-        commands.insert("go", "Dependency GO not found in system path. If you use GO please proceed to install it.".parse().unwrap());
+        commands.insert(
+            "go",
+            "Dependency GO not found in system path. If you use GO please proceed to install it."
+                .parse()
+                .unwrap(),
+        );
         commands.insert("java", "Dependency Java not found in system path. If you use Java please proceed to install it.".parse().unwrap());
         commands.insert("mvn", "Dependency Java not found in system path. If you use Java please proceed to install it.".parse().unwrap());
 
@@ -72,16 +98,18 @@ pub mod command {
             let result = check_command(&command);
 
             if result.unwrap() == 0 {
-                println!("{0: <1} Dependency {1: <10} OK!", Emojis::default().ok(), command.to_title_case())
+                println!(
+                    "{0: <1} Dependency {1: <10} OK!",
+                    Emojis::default().ok(),
+                    command.to_title_case()
+                )
             } else {
                 println!("{} {}", Emojis::default().nok(), expect);
             }
         }
-
-
     }
 
-    pub fn init(){
+    pub fn init() {
         // First download templates
         let home_dir = get_user_dir();
 
@@ -98,7 +126,10 @@ pub mod command {
 
     pub fn destroy() {
         //kubectl delete all --all -n {namespace}
-        println!("{} Destroying CloudState resources", Emojis::default().fire());
+        println!(
+            "{} Destroying CloudState resources",
+            Emojis::default().fire()
+        );
         let result = Command::new("kubectl")
             .arg("delete")
             .arg("all")
@@ -120,56 +151,51 @@ pub mod command {
             } else {
                 println!("{} CloudState survivor", Emojis::default().stuck_out());
             }
-
         } else {
             println!("{} CloudState survivor", Emojis::default().stuck_out());
         }
-
     }
 
     pub fn build(app: Application) {
         // Retrive project configuration
         match app.profile.as_str() {
-            "java"   => JavaBuilder{}.build(app),
-            "node"   => NodeBuilder{}.build(app),
-            "go"     => GoBuilder{}.build(app),
+            "java" => JavaBuilder {}.build(app),
+            "node" => NodeBuilder {}.build(app),
+            "go" => GoBuilder {}.build(app),
             "csharp" => CSharpBuilder {}.build(app),
-            "rust"   => RustBuilder{}.build(app),
-            "python" => PythonBuilder{}.build(app),
-            "scala"  => ScalaBuilder{}.build(app),
-            _        => println!("Invalid profile option")
+            "rust" => RustBuilder {}.build(app),
+            "python" => PythonBuilder {}.build(app),
+            "scala" => ScalaBuilder {}.build(app),
+            _ => println!("Invalid profile option"),
         }
-
     }
 
     pub fn push(app: Application) {
         // Retrive project configuration
         match app.profile.as_str() {
-            "java"   => JavaBuilder{}.push(app),
-            "node"   => NodeBuilder{}.push(app),
-            "go"     => GoBuilder{}.push(app),
+            "java" => JavaBuilder {}.push(app),
+            "node" => NodeBuilder {}.push(app),
+            "go" => GoBuilder {}.push(app),
             "csharp" => CSharpBuilder {}.push(app),
-            "rust"   => RustBuilder{}.push(app),
-            "python" => PythonBuilder{}.push(app),
-            "scala"  => ScalaBuilder{}.push(app),
-            _        => println!("Invalid profile option")
+            "rust" => RustBuilder {}.push(app),
+            "python" => PythonBuilder {}.push(app),
+            "scala" => ScalaBuilder {}.push(app),
+            _ => println!("Invalid profile option"),
         }
-
     }
 
     pub fn deploy(app: Application) {
         // Retrive project configuration
         match app.profile.as_str() {
-            "java"   => JavaBuilder{}.deploy(app),
-            "node"   => NodeBuilder{}.deploy(app),
-            "go"     => GoBuilder{}.deploy(app),
+            "java" => JavaBuilder {}.deploy(app),
+            "node" => NodeBuilder {}.deploy(app),
+            "go" => GoBuilder {}.deploy(app),
             "csharp" => CSharpBuilder {}.deploy(app),
-            "rust"   => RustBuilder{}.deploy(app),
-            "python" => PythonBuilder{}.deploy(app),
-            "scala"  => ScalaBuilder{}.deploy(app),
-            _        => println!("Invalid profile option")
+            "rust" => RustBuilder {}.deploy(app),
+            "python" => PythonBuilder {}.deploy(app),
+            "scala" => ScalaBuilder {}.deploy(app),
+            _ => println!("Invalid profile option"),
         }
-
     }
 
     pub fn create_project(app: Application) {
@@ -178,18 +204,16 @@ pub mod command {
         if !(Path::new(home_dir.as_str()).exists()) {
             println!("You must first boot CloudState with cloudstate --init. See cloudstate --help for help");
         } else {
-
             match app.profile.as_str() {
-                "java"   => JavaBuilder{}.create(app),
-                "node"   => NodeBuilder{}.create(app),
-                "go"     => GoBuilder{}.create(app),
+                "java" => JavaBuilder {}.create(app),
+                "node" => NodeBuilder {}.create(app),
+                "go" => GoBuilder {}.create(app),
                 "csharp" => CSharpBuilder {}.create(app),
-                "rust"   => RustBuilder{}.create(app),
-                "python" => PythonBuilder{}.create(app),
-                "scala"  => ScalaBuilder{}.create(app),
-                _        => println!("Invalid profile option")
+                "rust" => RustBuilder {}.create(app),
+                "python" => PythonBuilder {}.create(app),
+                "scala" => ScalaBuilder {}.create(app),
+                _ => println!("Invalid profile option"),
             }
-
         }
     }
 
@@ -203,9 +227,18 @@ pub mod command {
         profiles.insert("rust", "rust, cargo");
         profiles.insert("scala", "java, scala, sbt");
 
-        println!("{0: <10} | {1: <20} | {2: <10} | {3: <12} |", "Profile", "Dependencies", "Resolved", "Maturity Level");
+        println!(
+            "{0: <10} | {1: <20} | {2: <10} | {3: <12} |",
+            "Profile", "Dependencies", "Resolved", "Maturity Level"
+        );
         for (profile, dependencies) in &profiles {
-            println!("{0: <10} | {1: <20} | {2: <10} | {3: <13} |", profile, dependencies, resolve_dependencies(profile), maturity_level(profile.clone()));
+            println!(
+                "{0: <10} | {1: <20} | {2: <10} | {3: <13} |",
+                profile,
+                dependencies,
+                resolve_dependencies(profile),
+                maturity_level(profile.clone())
+            );
         }
 
         println!();
@@ -216,7 +249,14 @@ pub mod command {
         println!("{} Unknown", Emojis::default().unknown());
     }
 
-    fn log_container(application: &str, namespace: &str, tail: bool, all_containers: bool, have_since: bool, since: &str) {
+    fn log_container(
+        application: &str,
+        namespace: &str,
+        tail: bool,
+        all_containers: bool,
+        have_since: bool,
+        since: &str,
+    ) {
         let mut log = Command::new("kubectl");
         log.arg("logs");
         log.arg("-n");
@@ -229,10 +269,18 @@ pub mod command {
         }
 
         if all_containers {
-            println!("{} Get logs for {} and Sidecar containers", Emojis::default().magnifying_glass(), application);
+            println!(
+                "{} Get logs for {} and Sidecar containers",
+                Emojis::default().magnifying_glass(),
+                application
+            );
             log.arg("--all-containers");
         } else {
-            println!("{} Get logs for {} container", Emojis::default().magnifying_glass(), application);
+            println!(
+                "{} Get logs for {} container",
+                Emojis::default().magnifying_glass(),
+                application
+            );
             log.arg("-c").arg("user-container");
         }
 
@@ -245,49 +293,61 @@ pub mod command {
 
     fn maturity_level(profile: &str) -> char {
         match profile {
-            "java"   => Emojis::default().stable(),
-            "node"   => Emojis::default().stable(),
-            "scala"  => Emojis::default().work_in_progress(),
-            "go"     => Emojis::default().unstable(),
+            "java" => Emojis::default().stable(),
+            "node" => Emojis::default().stable(),
+            "scala" => Emojis::default().work_in_progress(),
+            "go" => Emojis::default().unstable(),
             "csharp" => Emojis::default().work_in_progress(),
-            "rust"   => Emojis::default().work_in_progress(),
+            "rust" => Emojis::default().work_in_progress(),
             "python" => Emojis::default().work_in_progress(),
-            _        => Emojis::default().unknown()
+            _ => Emojis::default().unknown(),
         }
     }
 
     fn resolve_dependencies(profile: &str) -> bool {
         match profile {
-            "java"   => JavaBuilder{}.is_dependencies_ok(),
-            "node"   => NodeBuilder{}.is_dependencies_ok(),
-            "scala"  => ScalaBuilder{}.is_dependencies_ok(),
-            "go"     => GoBuilder{}.is_dependencies_ok(),
+            "java" => JavaBuilder {}.is_dependencies_ok(),
+            "node" => NodeBuilder {}.is_dependencies_ok(),
+            "scala" => ScalaBuilder {}.is_dependencies_ok(),
+            "go" => GoBuilder {}.is_dependencies_ok(),
             "csharp" => CSharpBuilder {}.is_dependencies_ok(),
-            "rust"   => RustBuilder{}.is_dependencies_ok(),
-            "python" => PythonBuilder{}.is_dependencies_ok(),
-            _        => false
+            "rust" => RustBuilder {}.is_dependencies_ok(),
+            "python" => PythonBuilder {}.is_dependencies_ok(),
+            _ => false,
         }
     }
 
     fn create_namespace(namespace: String) -> Result<(), String> {
-        println!("{} Creating CloudState namespace...", Emojis::default().winking());
+        println!(
+            "{} Creating CloudState namespace...",
+            Emojis::default().winking()
+        );
         if let result = Command::new("kubectl")
             .arg("create")
             .arg("namespace")
             .arg(namespace)
             .status()
-            .is_ok() {
-
-            println!("{} Success on create CloudState namespace", Emojis::default().smiling());
+            .is_ok()
+        {
+            println!(
+                "{} Success on create CloudState namespace",
+                Emojis::default().smiling()
+            );
             return Ok(());
         };
 
-        println!("{} Failure on create CloudState namespace", Emojis::default().screaming());
+        println!(
+            "{} Failure on create CloudState namespace",
+            Emojis::default().screaming()
+        );
         return Err(String::from("Failure on create CloudState namespace"));
     }
 
     fn init_operator(namespace: String) -> Result<(), String> {
-        println!("{} Initializing CloudState operator...", Emojis::default().rocket());
+        println!(
+            "{} Initializing CloudState operator...",
+            Emojis::default().rocket()
+        );
         if let result = Command::new("kubectl")
             .arg("apply")
             .arg("-n")
@@ -295,13 +355,19 @@ pub mod command {
             .arg("-f")
             .arg(CLOUD_STATE_OPERATOR_DEPLOYMENT)
             .status()
-            .is_ok() {
-
-            println!("{} Success on installing CloudState operator", Emojis::default().success());
+            .is_ok()
+        {
+            println!(
+                "{} Success on installing CloudState operator",
+                Emojis::default().success()
+            );
             return Ok(());
         };
 
-        println!("{} Failure on installing CloudState operator", Emojis::default().crying());
-        return Err(String::from("Failure on installing CloudState operator"))
+        println!(
+            "{} Failure on installing CloudState operator",
+            Emojis::default().crying()
+        );
+        return Err(String::from("Failure on installing CloudState operator"));
     }
 }

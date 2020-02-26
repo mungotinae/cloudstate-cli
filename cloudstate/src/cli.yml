@@ -1,5 +1,5 @@
 name: cloudstate
-version: "0.4.0"
+version: "0.5.0"
 author: Adriano Santos <sleipnir@bsd.com.br>
 about: CloudState CLI
 args:
@@ -44,13 +44,14 @@ subcommands:
             takes_value: true
             possible_values:
               - java
+              - kotlin
               - node
               - go
               - csharp
               - rust
               - python
               - scala
-            help: Set language template for this project. Possible values is [java, node, go, csharp, rust, python, scala]
+            help: Set language template for this project. Possible values is [java, kotlin, node, go, csharp, rust, python, scala]
         - pattern:
             long: pattern
             takes_value: true
