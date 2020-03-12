@@ -139,17 +139,19 @@ subcommands:
   - run:
       about: Running user function & cloudstate proxy in Docker for tests purposes
       args:
-        - proxy:
+        - only-proxy:
             short: o
             long: only-proxy
             help: Running only Proxy (dev mode). Sharing the host network
         - proxy-port:
             short: p
             long: proxy-port
+            takes_value: true
             help: Proxy exposed port. Default is 9000
-        - function:
+        - function-port:
             short: u
             long: user-function-port
+            takes_value: true
             help: Indicates to the Proxy which port is the user function so that it can communicate
   - scale:
       about: Scale a user function

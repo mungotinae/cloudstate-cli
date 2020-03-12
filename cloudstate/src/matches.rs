@@ -62,6 +62,10 @@ impl<'a> Resolver<'a> {
             command::destroy();
         }
 
+        if let Some(run_matches) =_matches.subcommand_matches("run") {
+            command::run(run_matches);
+        }
+
         // Matches create
         if let Some(create_matches) =_matches.subcommand_matches("create") {
 

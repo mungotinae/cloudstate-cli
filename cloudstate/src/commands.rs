@@ -12,8 +12,12 @@ pub mod command {
     use std::fs;
     use std::path::Path;
     use std::process::Command;
+    use std::io::{self, Write};
 
+    const PROXY_PORT: &str = "9000";
+    const FUNCTION_PORT: &str = "8080";
     const CLOUD_STATE_NAMESPACE: &str = "cloudstate";
+    const CLOUDSTATE_PROXY_DEV_MODE: &str = "cloudstateio/cloudstate-proxy-native-dev-mode:latest";
     const CLOUD_STATE_OPERATOR_DEPLOYMENT: &str =
         "https://raw.githubusercontent.com/cloudstateio/cloudstate/master/operator/cloudstate.yaml";
 
@@ -52,6 +56,41 @@ pub mod command {
             args.is_present("since"),
             args.value_of("since").unwrap_or("1m"),
         );
+    }
+
+    pub fn run(args: &ArgMatches) {
+        let proxy_port = args.value_of("proxy_port").unwrap_or(PROXY_PORT);
+        let function_port = args.value_of("function-port").unwrap_or(FUNCTION_PORT);
+        
+        if args.is_present("only-proxy") {
+            //docker run --rm --net=host --name proxy -p 9000 -e USER-FUNCTION-PORT:8080 cloudstateio/cloudstate-proxy-native-dev-mode:latest
+            println!("Running only proxy container");
+            println!(
+                "Command: docker run --rm --net=host --name proxy --env HTTP_PORT:{} -e USER-FUNCTION-PORT:{} {}",
+                proxy_port, function_port, CLOUDSTATE_PROXY_DEV_MODE
+            );
+            println!("For stop press ctrl+c");
+
+            let output = Command::new("docker")
+                .arg("run")
+                .arg("--rm")
+                .arg("--net=host")
+                .arg("--name=proxy")
+                .arg("--env")
+                .arg(format!("HTTP_PORT:{}", proxy_port))
+                .arg("--env")
+                .arg(format!("USER_FUNCTION_PORT:{}", function_port))
+                .arg(CLOUDSTATE_PROXY_DEV_MODE)
+                .output()
+                .expect("Failed to execute proxy container");
+            
+            println!("status: {}", output.status);
+            io::stdout().write_all(&output.stdout).unwrap();
+            io::stderr().write_all(&output.stderr).unwrap();
+
+        } else {
+            unimplemented!();
+        }
     }
 
     pub fn check() {
