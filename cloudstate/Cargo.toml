@@ -21,16 +21,24 @@ edition = "2018"
 #ar     = "x86_64-apple-darwin14-ar"
 
 [dependencies]
+actix              = "0.9.0"
+actix-cors         = "0.2.0"
+actix-files        = "0.2.1"
+actix-web          = "2"
+cargo-toml-builder = "0.3.0"
+clap               = { version = "2.33.0", features = ["yaml", "wrap_help"] }
+dirs               = "2.0"
+flate2             = "1.0.12"
+git2               = "0.10"
 Inflector          = "0.11.4"
 linked-hash-map    = "0.5.2"
-clap               = { version = "2.33.0", features = ["yaml", "wrap_help"] }
-git2               = "0.10"
+listenfd           = "0.3"
 serde              = { version = "1.0", features = ["derive"] }
 serde_json         = "1.0.41"
 serde_yaml         = "0.8"
-cargo-toml-builder = "0.3.0"
-whoami             = "0.5.3"
-dirs               = "2.0"
-flate2             = "1.0.12"
-tar                = "0.4.26"
 self_update        = "0.8.0"
+tar                = "0.4.26"
+whoami             = "0.5.3"
+
+[dev-dependencies]
+actix-http-test    = "0.2.0"

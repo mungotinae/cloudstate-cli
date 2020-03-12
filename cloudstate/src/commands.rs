@@ -160,6 +160,7 @@ pub mod command {
         // Retrive project configuration
         match app.profile.as_str() {
             "java" => JavaBuilder {}.build(app),
+            "kotlin" => JavaBuilder {}.build(app),
             "node" => NodeBuilder {}.build(app),
             "go" => GoBuilder {}.build(app),
             "csharp" => CSharpBuilder {}.build(app),
@@ -174,6 +175,7 @@ pub mod command {
         // Retrive project configuration
         match app.profile.as_str() {
             "java" => JavaBuilder {}.push(app),
+            "kotlin" => JavaBuilder {}.push(app),
             "node" => NodeBuilder {}.push(app),
             "go" => GoBuilder {}.push(app),
             "csharp" => CSharpBuilder {}.push(app),
@@ -188,6 +190,7 @@ pub mod command {
         // Retrive project configuration
         match app.profile.as_str() {
             "java" => JavaBuilder {}.deploy(app),
+            "kotlin" => JavaBuilder {}.deploy(app),
             "node" => NodeBuilder {}.deploy(app),
             "go" => GoBuilder {}.deploy(app),
             "csharp" => CSharpBuilder {}.deploy(app),
@@ -206,6 +209,7 @@ pub mod command {
         } else {
             match app.profile.as_str() {
                 "java" => JavaBuilder {}.create(app),
+                "kotlin" => JavaBuilder {}.create(app),
                 "node" => NodeBuilder {}.create(app),
                 "go" => GoBuilder {}.create(app),
                 "csharp" => CSharpBuilder {}.create(app),
@@ -222,6 +226,7 @@ pub mod command {
         profiles.insert("csharp", "dotnet");
         profiles.insert("go", "go");
         profiles.insert("java", "java, [maven | sbt]");
+        profiles.insert("kotlin", "kotlin, [maven | gradle]");
         profiles.insert("node", "node");
         profiles.insert("python", "python, virtualenv");
         profiles.insert("rust", "rust, cargo");
@@ -294,6 +299,7 @@ pub mod command {
     fn maturity_level(profile: &str) -> char {
         match profile {
             "java" => Emojis::default().stable(),
+            "kotlin" => Emojis::default().stable(),
             "node" => Emojis::default().stable(),
             "scala" => Emojis::default().work_in_progress(),
             "go" => Emojis::default().unstable(),
@@ -307,6 +313,7 @@ pub mod command {
     fn resolve_dependencies(profile: &str) -> bool {
         match profile {
             "java" => JavaBuilder {}.is_dependencies_ok(),
+            "kotlin" => JavaBuilder {}.is_dependencies_ok(),
             "node" => NodeBuilder {}.is_dependencies_ok(),
             "scala" => ScalaBuilder {}.is_dependencies_ok(),
             "go" => GoBuilder {}.is_dependencies_ok(),

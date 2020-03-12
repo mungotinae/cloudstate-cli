@@ -137,7 +137,20 @@ subcommands:
             long: namespace
             help: Set k8s namespace for user function. Example. cloudstate deploy -n <namespace>
   - run:
-      about: Running user function & cloudstate proxy in Docker
+      about: Running user function & cloudstate proxy in Docker for tests purposes
+      args:
+        - proxy:
+            short: o
+            long: only-proxy
+            help: Running only Proxy (dev mode). Sharing the host network
+        - proxy-port:
+            short: p
+            long: proxy-port
+            help: Proxy exposed port. Default is 9000
+        - function:
+            short: u
+            long: user-function-port
+            help: Indicates to the Proxy which port is the user function so that it can communicate
   - scale:
       about: Scale a user function
       args:
@@ -175,3 +188,18 @@ subcommands:
             long: since
             help: Filter
             takes_value: true
+  - server:
+      about: Run in server mode. This exposes an HTTP API for generations of projects via Templates
+      args:
+        - port:
+            short: p
+            long: port
+            help: HTTP Port binding
+        - content:
+            short: c
+            long: content
+            help: Directory path of frontend static files
+        - templates:
+            short: t
+            long: templates
+            help: Optional directory path of files used for templates. Default is ~/.cloudstate/templates

@@ -73,7 +73,7 @@ impl<'a> Resolver<'a> {
 
                 println!("Creating user function project: {:?}", project_name);
                 if let Some(ref profile) = create_matches.value_of("profile") {
-                    let supported = ["java", "node", "go", "csharp", "rust", "python", "scala"];
+                    let supported = ["java", "kotlin", "node", "go", "csharp", "rust", "python", "scala"];
                     if !supported.contains(profile) {
                         return Err(String::from("Invalid Template name!"));
                     }
