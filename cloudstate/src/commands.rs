@@ -58,36 +58,9 @@ pub mod command {
         );
     }
 
-    pub fn run(args: &ArgMatches) {
-        let proxy_port = args.value_of("proxy_port").unwrap_or(PROXY_PORT);
-        let function_port = args.value_of("function-port").unwrap_or(FUNCTION_PORT);
-        
+    pub fn run(args: &ArgMatches) {       
         if args.is_present("only-proxy") {
-            //docker run --rm --net=host --name proxy -p 9000 -e USER-FUNCTION-PORT:8080 cloudstateio/cloudstate-proxy-native-dev-mode:latest
-            println!("Running only proxy container");
-            println!(
-                "Command: docker run --rm --net=host --name proxy --env HTTP_PORT:{} -e USER-FUNCTION-PORT:{} {}",
-                proxy_port, function_port, CLOUDSTATE_PROXY_DEV_MODE
-            );
-            println!("For stop press ctrl+c");
-
-            let output = Command::new("docker")
-                .arg("run")
-                .arg("--rm")
-                .arg("--net=host")
-                .arg("--name=proxy")
-                .arg("--env")
-                .arg(format!("HTTP_PORT:{}", proxy_port))
-                .arg("--env")
-                .arg(format!("USER_FUNCTION_PORT:{}", function_port))
-                .arg(CLOUDSTATE_PROXY_DEV_MODE)
-                .output()
-                .expect("Failed to execute proxy container");
-            
-            println!("status: {}", output.status);
-            io::stdout().write_all(&output.stdout).unwrap();
-            io::stderr().write_all(&output.stderr).unwrap();
-
+            runProxy(&args);
         } else {
             unimplemented!();
         }
@@ -291,6 +264,39 @@ pub mod command {
         println!("{} Unstable but usable", Emojis::default().unstable());
         println!("{} Work in progress", Emojis::default().work_in_progress());
         println!("{} Unknown", Emojis::default().unknown());
+    }
+
+    fn runProxy(args: &ArgMatches) {
+        let proxy_port = args.value_of("proxy-port").unwrap_or(PROXY_PORT);
+        let function_port = args.value_of("function-port").unwrap_or(FUNCTION_PORT);
+        let proxy_image = args.value_of("proxy-image").unwrap_or(CLOUDSTATE_PROXY_DEV_MODE);
+
+        println!("Running only proxy container");
+        if args.is_present("show") {
+            println!(
+                "Command: docker run --rm --net=host --name proxy --env HTTP_PORT:{} --env USER_FUNCTION_PORT:{} {}",
+                proxy_port, function_port, proxy_image
+            );
+        }
+        
+        println!("For stop press ctrl+c");
+
+        let output = Command::new("docker")
+            .arg("run")
+            .arg("--rm")
+            .arg("--net=host")
+            .arg("--name=proxy")
+            .arg("--env")
+            .arg(format!("HTTP_PORT={}", proxy_port))
+            .arg("--env")
+            .arg(format!("USER_FUNCTION_PORT={}", function_port))
+            .arg(proxy_image)
+            .output()
+            .expect("Failed to execute proxy container");
+        
+        println!("status: {}", output.status);
+        io::stdout().write_all(&output.stdout).unwrap();
+        io::stderr().write_all(&output.stderr).unwrap();
     }
 
     fn log_container(

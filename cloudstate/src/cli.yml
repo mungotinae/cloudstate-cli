@@ -139,6 +139,10 @@ subcommands:
   - run:
       about: Running user function & cloudstate proxy in Docker for tests purposes
       args:
+        - show:
+            short: s
+            long: show
+            help: Shows the command that would be executed manually
         - only-proxy:
             short: o
             long: only-proxy
@@ -148,11 +152,21 @@ subcommands:
             long: proxy-port
             takes_value: true
             help: Proxy exposed port. Default is 9000
+        - proxy-image:
+            short: i
+            long: proxy-image
+            takes_value: true
+            help: Run the proxy with the container selected image. Default is 'cloudstateio/cloudstate-proxy-native-dev-mode:latest'
         - function-port:
             short: u
             long: user-function-port
             takes_value: true
             help: Indicates to the Proxy which port is the user function so that it can communicate
+        - function-image:
+            short: I
+            long: function-image
+            takes_value: true
+            help: Run the user-function with the container selected image.
   - scale:
       about: Scale a user function
       args:
