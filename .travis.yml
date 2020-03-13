@@ -7,7 +7,7 @@ rust:
 - nightly
 services:
 - docker
-before_install: cd cloudstate
+before_install: cd cloudstate && cargo clean
 before_deploy: "./build-release.sh cloudstate ${TRAVIS_TAG}-${TRAVIS_OS_NAME}"
 deploy:
   provider: releases
