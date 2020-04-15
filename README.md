@@ -16,7 +16,7 @@ Read more about the design, architecture, techniques, and technologies behind Cl
 
 **CloudState CLI** 
 
-Is a *lightweight*, *fast*, and fun client that lets you go from zero to production with Cloudstate *Stateful Serveless* functions in minutes. Cloudstate CLI provides:
+Is a *lightweight*, *fast*, *opinative*, *community driven* and fun client that lets you go from zero to production with Cloudstate *Stateful Serveless* functions in minutes. Cloudstate CLI provides:
 
 -   Simple command API.
 -   Autocomplete support.

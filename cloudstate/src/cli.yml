@@ -204,18 +204,3 @@ subcommands:
             long: since
             help: Filter
             takes_value: true
-  - server:
-      about: Run in server mode. This exposes an HTTP API for generations of projects via Templates
-      args:
-        - port:
-            short: p
-            long: port
-            help: HTTP Port binding
-        - content:
-            short: c
-            long: content
-            help: Directory path of frontend static files
-        - templates:
-            short: t
-            long: templates
-            help: Optional directory path of files used for templates. Default is ~/.cloudstate/templates

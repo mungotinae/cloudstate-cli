@@ -21,10 +21,6 @@ edition = "2018"
 #ar     = "x86_64-apple-darwin14-ar"
 
 [dependencies]
-actix              = "0.9.0"
-actix-cors         = "0.2.0"
-actix-files        = "0.2.1"
-actix-web          = "2"
 cargo-toml-builder = "0.3.0"
 clap               = { version = "2.33.0", features = ["yaml", "wrap_help"] }
 dirs               = "2.0"
@@ -41,4 +37,3 @@ tar                = "0.4.26"
 whoami             = "0.5.3"
 
 [dev-dependencies]
-actix-http-test    = "0.2.0"
