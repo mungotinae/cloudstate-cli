@@ -47,7 +47,7 @@ CloudState CLI relies on a number of command line tools such as:
 > In Mac OSX environments in addition to the script method you can use Homebrew installation:
 > ```
 > [cloudstate]# brew tap sleipnir/cloudstate-cli
-> [cloudstate]# brew install cloudstate-cli
+> [cloudstate]# brew install sleipnir/cloudstate-cli/cloudstate-cli
 > ```
 > Note: The brew installation method so far does not provide shell completions capabilities.
 <br/>
@@ -57,54 +57,56 @@ CloudState CLI relies on a number of command line tools such as:
 
 ```  
 [cloudstate]# cloudstate --help
-Cloudstate 0.5.0
+cloudstate 0.5.4
 Adriano Santos <sleipnir@bsd.com.br>
 CloudState CLI
 
 USAGE:
- cloudstate [FLAGS] [SUBCOMMAND]
+    cloudstate [FLAGS] [SUBCOMMAND]
 
 FLAGS:
-     --check            Test dependencies
- -h, --help             Prints help information
- -l, --list-profiles    List all profiles supported
-     --upgrade          Update CloudState CLI version
- -V, --version          Prints version information
+        --check            Test dependencies
+    -h, --help             Prints help information
+    -l, --list-profiles    List all profiles supported
+        --upgrade          Update CloudState CLI version
+    -V, --version          Prints version information
 
 SUBCOMMANDS:
- build        Build project with template specified. Requires path. Example. cloudstate build --path=.
- create       Create a new user function project from template. Example. cloudstate create --name=shopping-cart
-              --profile=java --registry=docker.io --tag=1.0.1
- deploy       Deploy user function with CloudState sidecar in K8s environment
- destroy      Destroy CloudState namespace and others resources
- help         Prints this message or the help of the given subcommand(s)
- init         Initialize a CloudState k8s namespace/operator
- logs         Show application logs
- provision    Shortcut to build, push and deploy. Example. cloudstate provision -p . -t 1.0.1 -n production
- run          Running user function & cloudstate proxy in Docker
+    build          Build project with template specified. Requires path. Example. cloudstate build --path=.
+    completions    Generates completion scripts for your shell
+    create         Create a new user function project from template. Example. cloudstate create --name=shopping-cart --profile=java --registry=docker.io --tag=1.0.1
+    deploy         Deploy user function with CloudState sidecar in K8s environment
+    destroy        Destroy CloudState namespace and others resources
+    help           Prints this message or the help of the given subcommand(s)
+    init           Initialize a CloudState k8s namespace/operator
+    logs           Show application logs
+    provision      Shortcut to build, push and deploy. Example. cloudstate provision -p . -t 1.0.1 -n production
+    run            Running user function & cloudstate proxy in Docker for tests purposes
+    scale          Scale a user function
 
 ```  
 <br/>
 
 **Or in Specific Command**
 ```  
-[cloudstate]# cloudstate build --help
-cloudstate-build 0.5.0
-Adriano Santos <sleipnir@bsd.com.br>
-Build project with template specified. Requires path. Example cloudstate --path=.
+[cloudstate]# cloudstate run --help
+cloudstate-run 
+Running user function & cloudstate proxy in Docker for tests purposes
 
 USAGE:
-  cloudstate build [FLAGS] [OPTIONS]
+    cloudstate run [FLAGS] [OPTIONS]
 
 FLAGS:
-  -h, --help       Prints help information
-      --push       Push container image in repository
-  -V, --version    Prints version information
+    -h, --help          Prints help information
+    -o, --only-proxy    Running only Proxy (dev mode). Sharing the host network
+    -s, --show          Shows the command that would be executed manually
+    -V, --version       Prints version information
 
 OPTIONS:
-      --path <path>    Set the path of build
-  -t, --tag <tag>      Used in conjunction with 'create' and/or 'build'. Set version of user function. Used to create
-                       container images. Example -t 1.0.1 or --tag=0.1.0
+    -I, --function-image <function-image>       Run the user-function with the container selected image.
+    -u, --user-function-port <function-port>    Indicates to the Proxy which port is the user function so that it can communicate
+    -i, --proxy-image <proxy-image>             Run the proxy with the container selected image. Default is 'cloudstateio/cloudstate-proxy-native-dev-mode:latest'
+    -p, --proxy-port <proxy-port>               Proxy exposed port. Default is 9000
 
 ```  
 <br/>
