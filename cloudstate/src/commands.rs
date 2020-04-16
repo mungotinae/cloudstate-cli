@@ -62,7 +62,7 @@ pub mod command {
         if args.is_present("only-proxy") {
             runProxy(&args);
         } else {
-            unimplemented!();
+            runAll(&args);
         }
     }
 
@@ -264,6 +264,29 @@ pub mod command {
         println!("{} Unstable but usable", Emojis::default().unstable());
         println!("{} Work in progress", Emojis::default().work_in_progress());
         println!("{} Unknown", Emojis::default().unknown());
+    }
+
+    fn runAll(args: &ArgMatches) {
+        let proxy_port = args.value_of("proxy-port").unwrap_or(PROXY_PORT);
+        let function_port = args.value_of("function-port").unwrap_or(FUNCTION_PORT);
+        let proxy_image = args.value_of("proxy-image").unwrap_or(CLOUDSTATE_PROXY_DEV_MODE);
+
+        /*println!("Starting User container...");
+        let output = Command::new("docker")
+            .arg("run")
+            .arg("--rm")
+            .arg("--net=host")
+            .arg("--name=proxy")
+            .arg("--env")
+            .arg(format!("HTTP_PORT={}", proxy_port))
+            .arg("--env")
+            .arg(format!("USER_FUNCTION_PORT={}", function_port))
+            .arg(proxy_image)
+            .output()
+            .expect("Failed to execute user container");
+        
+        runProxy(args.clone());
+        */
     }
 
     fn runProxy(args: &ArgMatches) {
