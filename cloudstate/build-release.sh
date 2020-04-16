@@ -37,7 +37,7 @@ case `uname -s` in
         ;;
     *)
         echo "Building standard release binaries"
-        cargo build --release
+        RUSTFLAGS="-C link-arg=-undefined -C link-arg=dynamic_lookup" cargo build --release
         tar vczf "$1"-"$2".tar.gz target/release/cloudstate
         ;;
 esac
