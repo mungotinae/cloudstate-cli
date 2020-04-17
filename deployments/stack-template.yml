@@ -1,0 +1,19 @@
+version: '3.5'
+services:
+  pod:
+    image: rycus86/podlike
+    command: -logs -ipc=false -pull
+    labels:
+      # proxy container
+      pod.component.proxy: |
+        image: {proxy-image}
+        environment:
+          - USER_FUNCTION_PORT={user-port}
+          - HTTP_PORT=9000
+      # User Function Container
+      pod.component.function: |
+        image: {user-func-imagename}:{tag}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:rw
+    ports:
+      - {expose-port}:9000

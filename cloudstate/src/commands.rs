@@ -268,12 +268,14 @@ pub mod command {
     }
 
     fn run_all(app: &Application, args: &ArgMatches) {
+
         let proxy_port = args.value_of("proxy-port").unwrap_or(PROXY_PORT);
         let function_port = args.value_of("function-port").unwrap_or(FUNCTION_PORT);
         let proxy_image = args.value_of("proxy-image").unwrap_or(CLOUDSTATE_PROXY_DEV_MODE);
 
         let deployment_path = Path::new(&app.work_dir).join("stack.yml");
-        let stack_path = Path::new(&app.home_dir).join("/.cloudstate/templates/deployments/stack.yml");
+        let path = format!("{}{}", &app.home_dir, "/templates/deployments/stack.yml");
+        let stack_path = Path::new(&path);
         let stack_template_content = fs::read_to_string(stack_path.clone()).unwrap();
 
         let image_name = &app.registry;
@@ -282,7 +284,9 @@ pub mod command {
         let deployment_proxy_port = proxy_name.replace("{expose-port}", proxy_port.as_ref());
         let deployment_name = deployment_proxy_port.replace("{application-name}", app.name.as_ref());
         let deployment_image = deployment_name.replace("{user-func-imagename}", image_name.as_str());
-        let deployment_content = deployment_image.replace("{tag}", app.tag.as_ref());
+        let deployment_user_port = deployment_image.replace("{user-port}", function_port.as_ref());
+
+        let deployment_content = deployment_user_port.replace("{tag}", app.tag.as_ref());
         let mut stack_file = File::create(deployment_path.clone()).unwrap();
         stack_file.write_all(deployment_content.as_ref());
         println!("Running all containers in Swarm mode... ");

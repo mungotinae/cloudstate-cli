@@ -63,8 +63,13 @@ impl<'a> Resolver<'a> {
         }
 
         if let Some(run_matches) =_matches.subcommand_matches("run") {
-            let mut application = Application::default();
-            command::run(application, run_matches);
+            let path = format!("{}/.cloudstate/user.json", env::current_dir().unwrap().to_str().unwrap());
+            let app_settings = fs::read_to_string(path);
+            if app_settings.is_ok() {
+                let mut application: Application = serde_json::from_str(app_settings.unwrap().as_str()).unwrap();
+                command::run(application, run_matches);
+            }    
+            
         }
 
         // Matches create
