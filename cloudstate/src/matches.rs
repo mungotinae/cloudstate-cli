@@ -63,7 +63,8 @@ impl<'a> Resolver<'a> {
         }
 
         if let Some(run_matches) =_matches.subcommand_matches("run") {
-            command::run(run_matches);
+            let mut application = Application::default();
+            command::run(application, run_matches);
         }
 
         // Matches create

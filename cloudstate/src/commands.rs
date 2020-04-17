@@ -13,6 +13,7 @@ pub mod command {
     use std::path::Path;
     use std::process::Command;
     use std::io::{self, Write};
+    use std::fs::File;
 
     const PROXY_PORT: &str = "9000";
     const FUNCTION_PORT: &str = "8080";
@@ -58,11 +59,11 @@ pub mod command {
         );
     }
 
-    pub fn run(args: &ArgMatches) {       
+    pub fn run(app: Application, args: &ArgMatches) {       
         if args.is_present("only-proxy") {
-            runProxy(&args);
+            run_proxy(&args);
         } else {
-            runAll(&args);
+            run_all(&app, &args);
         }
     }
 
@@ -266,30 +267,41 @@ pub mod command {
         println!("{} Unknown", Emojis::default().unknown());
     }
 
-    fn runAll(args: &ArgMatches) {
+    fn run_all(app: &Application, args: &ArgMatches) {
         let proxy_port = args.value_of("proxy-port").unwrap_or(PROXY_PORT);
         let function_port = args.value_of("function-port").unwrap_or(FUNCTION_PORT);
         let proxy_image = args.value_of("proxy-image").unwrap_or(CLOUDSTATE_PROXY_DEV_MODE);
 
-        /*println!("Starting User container...");
+        let deployment_path = Path::new(&app.work_dir).join("stack.yml");
+        let stack_path = Path::new(&app.home_dir).join("/.cloudstate/templates/deployments/stack.yml");
+        let stack_template_content = fs::read_to_string(stack_path.clone()).unwrap();
+
+        let image_name = &app.registry;
+
+        let proxy_name = stack_template_content.replace("{proxy-image}", proxy_image.as_ref());
+        let deployment_proxy_port = proxy_name.replace("{expose-port}", proxy_port.as_ref());
+        let deployment_name = deployment_proxy_port.replace("{application-name}", app.name.as_ref());
+        let deployment_image = deployment_name.replace("{user-func-imagename}", image_name.as_str());
+        let deployment_content = deployment_image.replace("{tag}", app.tag.as_ref());
+        let mut stack_file = File::create(deployment_path.clone()).unwrap();
+        stack_file.write_all(deployment_content.as_ref());
+        println!("Running all containers in Swarm mode... ");
+
         let output = Command::new("docker")
-            .arg("run")
-            .arg("--rm")
-            .arg("--net=host")
-            .arg("--name=proxy")
-            .arg("--env")
-            .arg(format!("HTTP_PORT={}", proxy_port))
-            .arg("--env")
-            .arg(format!("USER_FUNCTION_PORT={}", function_port))
-            .arg(proxy_image)
+            .arg("stack")
+            .arg("deploy")
+            .arg("--compose-file")
+            .arg(&deployment_path)
+            .arg("cloudstatestack")
             .output()
-            .expect("Failed to execute user container");
-        
-        runProxy(args.clone());
-        */
+            .expect("Failed to deploy Stack in Swarm mode");
+
+        println!("status: {}", output.status);
+        io::stdout().write_all(&output.stdout).unwrap();
+        io::stderr().write_all(&output.stderr).unwrap();
     }
 
-    fn runProxy(args: &ArgMatches) {
+    fn run_proxy(args: &ArgMatches) {
         let proxy_port = args.value_of("proxy-port").unwrap_or(PROXY_PORT);
         let function_port = args.value_of("function-port").unwrap_or(FUNCTION_PORT);
         let proxy_image = args.value_of("proxy-image").unwrap_or(CLOUDSTATE_PROXY_DEV_MODE);
