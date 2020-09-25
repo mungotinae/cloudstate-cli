@@ -1,4 +1,4 @@
-package io.cloudstate.cli;
+package io.cloudstate.cli.produces;
 
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;

@@ -13,10 +13,10 @@
     <maven.compiler.target>11</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <quarkus-plugin.version>1.8.1.Final</quarkus-plugin.version>
+    <quarkus-plugin.version>1.6.1.Final</quarkus-plugin.version> <!-- Migrate to 1.8.1.Final -->
     <quarkus.platform.artifact-id>quarkus-universe-bom</quarkus.platform.artifact-id>
     <quarkus.platform.group-id>io.quarkus</quarkus.platform.group-id>
-    <quarkus.platform.version>1.8.1.Final</quarkus.platform.version>
+    <quarkus.platform.version>1.6.1.Final</quarkus.platform.version> <!-- Migrate to 1.8.1.Final -->
     <surefire-plugin.version>3.0.0-M5</surefire-plugin.version>
   </properties>
 
@@ -33,13 +33,6 @@
   </dependencyManagement>
 
   <dependencies>
-    <!--
-    <dependency>
-      <groupId>info.picocli</groupId>
-      <artifactId>picocli-codegen</artifactId>
-    </dependency>
-    -->
-
     <dependency>
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-picocli</artifactId>
@@ -50,7 +43,34 @@
       <artifactId>quarkus-kubernetes-client</artifactId>
     </dependency>
 
-    <!-- Test -->
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-qute</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.github.docker-java</groupId>
+      <artifactId>docker-java</artifactId>
+      <version>3.2.5</version>
+      <exclusions>
+        <exclusion>
+          <groupId>com.github.docker-java</groupId>
+          <artifactId>docker-java-transport-jersey</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>com.github.docker-java</groupId>
+          <artifactId>docker-java-transport-netty</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
+    <dependency>
+      <groupId>com.github.docker-java</groupId>
+      <artifactId>docker-java-transport-zerodep</artifactId>
+      <version>3.2.5</version>
+    </dependency>
+
+    <!-- Tests -->
     <dependency>
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-junit5</artifactId>
@@ -79,8 +99,6 @@
         <executions>
           <execution>
             <goals>
-              <goal>generate-code</goal>
-              <goal>generate-code-tests</goal>
               <goal>build</goal>
             </goals>
           </execution>
@@ -100,7 +118,6 @@
           </systemPropertyVariables>
         </configuration>
       </plugin>
-
       <plugin>
         <groupId>pl.project13.maven</groupId>
         <artifactId>git-commit-id-plugin</artifactId>

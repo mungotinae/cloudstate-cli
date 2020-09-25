@@ -16,8 +16,8 @@ public class CloudStateVersionProvider implements CommandLine.IVersionProvider {
     private String[] getActualVersion() {
         Properties props = loadGitProperties();
         String commit = String.valueOf(props.get("git.commit.id"));
-        String release = String.valueOf(props.get("git.commit.message.full"));
-        return new String[]{"CloudState CLI", String.format("%s. Commit: %s", release, commit)};
+        String version ="1.0.1";
+        return new String[]{String.format("CloudState CLI v%s", version), String.format("Commit: %s", commit)};
     }
 
     private Properties loadGitProperties() {
